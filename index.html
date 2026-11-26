@@ -830,10 +830,39 @@
       <label for="inpPasswordSegreteria">Password</label>
       <input type="password" id="inpPasswordSegreteria" placeholder="Inserisci password segreteria" autocomplete="current-password" required />
     </div>
-    <button class="btn btn-gold" id="btnEntraGestionale" type="button" onclick="return verificaAccessoSegreteria(event);" style="width:100%; padding:10px 14px; font-size:13.5px;">Entra nel Gestionale</button>
+    <button class="btn btn-gold" id="btnEntraGestionale" type="submit" onclick="return verificaAccessoSegreteria(event);" style="width:100%; padding:10px 14px; font-size:13.5px;">Entra nel Gestionale</button>
     <div class="lock-error" id="lockError">Password non corretta. Riprova.</div>
   </form>
 </div>
+<script>
+  function verificaAccessoSegreteria(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    var inp = document.getElementById("inpPasswordSegreteria");
+    var err = document.getElementById("lockError");
+    var screen = document.getElementById("lockScreen");
+    var val = inp ? inp.value.trim() : "";
+
+    if (val.toLowerCase() === "violoncello89") {
+      if (screen) {
+        screen.classList.add("unlocked");
+        screen.style.setProperty("display", "none", "important");
+      }
+      if (err) err.style.display = "none";
+      if (inp) inp.value = "";
+      if (typeof window._onSbloccoGestionale === "function") {
+        try { window._onSbloccoGestionale(); } catch (ex) {}
+      }
+      return false;
+    } else {
+      if (err) {
+        err.textContent = "Password non corretta. Inserisci Violoncello89 e riprova.";
+        err.style.display = "block";
+      }
+      if (inp) inp.focus();
+      return false;
+    }
+  }
+</script>
 
 <div class="toast-banner" id="toastBanner"></div>
 
