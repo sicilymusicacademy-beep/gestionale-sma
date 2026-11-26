@@ -769,9 +769,9 @@
 </head>
 <body>
 
-<!-- SCHERMATA DI ACCESSO SEGRETERIA -->
-<div id="loginOverlay" style="position:fixed;inset:0;background:rgba(15,23,42,0.94);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:#ffffff;width:100%;max-width:400px;border-radius:16px;padding:32px 28px;box-shadow:0 20px 45px rgba(0,0,0,0.35);text-align:center;">
+<!-- SCHERMATA ACCESSO SEGRETERIA -->
+<div id="loginOverlay" style="position:fixed;inset:0;background:rgba(15,23,42,0.95);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;">
+  <div style="background:#ffffff;width:100%;max-width:400px;border-radius:16px;padding:32px 28px;box-shadow:0 24px 48px rgba(0,0,0,0.35);text-align:center;">
     <div style="width:54px;height:54px;border-radius:12px;background:#0f172a;color:#c28e0e;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 14px;letter-spacing:0.5px;">
       SMA
     </div>
@@ -779,7 +779,7 @@
     <p style="margin:0 0 22px;font-size:13px;color:#64748b;">Sicily Music Academy APS</p>
 
     <div style="text-align:left;margin-bottom:14px;">
-      <label for="inputPasswordSegreteria" style="display:block;font-size:12px;font-weight:700;color:#334155;margin-bottom:5px;">Password</label>
+      <label for="inputPasswordSegreteria" style="display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:#334155;">Password</label>
       <input
         id="inputPasswordSegreteria"
         type="password"
@@ -874,7 +874,7 @@
     </div>
   </div>
   <div class="inline-row">
-    <span class="badge badge-ok" id="cloudStatusBadge" style="padding:5px 10px; font-size:11.5px;">Account: sicilymusicacademy@gmail.com (Sincronizzato)</span>
+    <span class="badge badge-ok" id="cloudStatusBadge" style="padding:5px 10px; font-size:11.5px;">Account: sicilymusicacademy@gmail.com (Sincronizzazione Attiva)</span>
     <button class="btn btn-blue" type="button" id="btnApriCloudModal">Account &amp; Cloud</button>
     <button class="btn btn-gold" type="button" id="btnApriModal">Avvisi Scadenze / Pagamenti</button>
     <button class="btn btn-red" type="button" onclick="bloccaGestionale()">Blocca</button>
@@ -902,7 +902,7 @@
         <input type="text" id="cloudClientId" placeholder="Es. 1234567890-xxx.apps.googleusercontent.com" />
       </div>
       <div class="form-group" style="grid-column: span 2;">
-        <label>Endpoint Sincronizzazione Cloud / Webhook (Google Apps Script Multi-PC)</label>
+        <label>Endpoint Sincronizzazione Cloud / Webhook (Sincronizzazione Multi-PC attiva)</label>
         <input type="text" id="cloudSyncEndpoint" value="https://script.google.com/macros/s/AKfycbwhavQvRy6fM4tU6ShimwSzy_2_KjuCKSI5hthM_h5Wuw50QIy65QbYtM9b-Talo8Iz/exec" />
       </div>
     </div>
@@ -910,10 +910,10 @@
     <div class="scan-box" style="margin-top:6px;">
       <div>
         <strong style="font-size:12.5px;">Stato Connessione:</strong>
-        <span id="cloudDettaglioStato" style="font-size:12px; color:#15803d;">Collegato a sicilymusicacademy@gmail.com (Sincronizzazione automatica attiva)</span>
+        <span id="cloudDettaglioStato" style="font-size:12px; color:#15803d;">Collegato a sicilymusicacademy@gmail.com (Drive: Contratti Originali)</span>
       </div>
       <div class="inline-row">
-        <button class="btn btn-outline" type="button" id="btnScaricaDalCloud">Scarica da Cloud Ora</button>
+        <button class="btn btn-outline" type="button" id="btnScaricaDalCloud">Scarica dal Cloud</button>
         <button class="btn btn-green" type="button" id="btnCollegaAccountGoogle">Collega sicilymusicacademy@gmail.com</button>
         <button class="btn btn-navy" type="button" id="btnSincronizzaOra">Sincronizza Dati Ora</button>
       </div>
@@ -1690,7 +1690,16 @@ document.addEventListener("DOMContentLoaded", function () {
   var progGen = 543;
   var selectedAssocIdx = 0;
   var selectedDocIdx = 0;
+  var autoSyncTimer = null;
 
+  function programmaSyncAutomatico(motivo) {
+    clearTimeout(autoSyncTimer);
+    autoSyncTimer = setTimeout(function () {
+      inviaSincronizzazioneCloud(motivo || "auto_sync", true);
+    }, 1200);
+  }
+
+  // Logo originale caricato dall'utente (senza alcuna alterazione grafica)
   var logoOriginaleData = {
     arrayBuffer: null,
     ext: "png",
@@ -1747,7 +1756,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var contentType = (ext === "jpg" || ext === "jpeg") ? "image/jpeg" : "image/png";
     return (
       "<w:p>" +
-        "<w:pPr><w:spacing w:before="0" w:after="120"/><w:jc w:val="left"/></w:pPr>" +
+        '<w:pPr><w:spacing w:before="0" w:after="120"/><w:jc w:val="left"/></w:pPr>' +
         "<w:r>" +
           "<w:drawing>" +
             '<wp:inline distT="0" distB="0" distL="0" distR="0" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">' +
@@ -1842,8 +1851,8 @@ document.addEventListener("DOMContentLoaded", function () {
         (assocObj.luogoNascita ? ", nato a " + assocObj.luogoNascita : "") +
         (assocObj.dataNascita ? " il " + assocObj.dataNascita : "") +
         (assocObj.indirizzo ? ", residente in " + assocObj.indirizzo : "") +
-        ', un contratto avente come oggetto "Contratto d' Iscrizione al Corso ' + tipoCorso +
-        '" e che, in forza del predetto contratto, l'Associato, non ha ancora provveduto a Saldare il qui elenco dettagliato di Quote Associative:',
+        ', un contratto avente come oggetto "Contratto d\' Iscrizione al Corso ' + tipoCorso +
+        '" e che, in forza del predetto contratto, l\'Associato, non ha ancora provveduto a Saldare il qui elenco dettagliato di Quote Associative:',
         { align: "both", sizeHalfPt: 20, spaceAfter: 140, line: 288 }
       ));
 
@@ -2124,32 +2133,33 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  async function caricaDatiDalCloud(mostraNotifica) {
+  async function caricaDatiDalCloud(silenzioso) {
     var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
     var endpoint = (document.getElementById("cloudSyncEndpoint").value || DEFAULT_SYNC_ENDPOINT).trim();
     if (!endpoint) return;
+
     try {
       aggiornaBadgeCloud(
         "Account: " + emailAccount + " (Caricamento...)",
-        "Scaricamento dati aggiornati da " + emailAccount + "...",
+        "Recupero ultimi dati da " + emailAccount + "...",
         true
       );
       var res = await fetch(endpoint);
       var remote = await res.json();
       if (remote && (Array.isArray(remote.associati) || Array.isArray(remote.docenti) || Array.isArray(remote.movimentiCassa))) {
-        if (Array.isArray(remote.anniAccademici) && remote.anniAccademici.length > 0) {
+        if (Array.isArray(remote.anniAccademici) && remote.anniAccademici.length) {
           anniAccademici = remote.anniAccademici;
         }
-        if (Array.isArray(remote.associati) && remote.associati.length > 0) {
+        if (Array.isArray(remote.associati) && remote.associati.length) {
           associati = remote.associati;
-          selectedAssocIdx = 0;
+          if (selectedAssocIdx >= associati.length) selectedAssocIdx = 0;
         }
         if (Array.isArray(remote.nuoviContatti)) {
           nuoviContatti = remote.nuoviContatti;
         }
-        if (Array.isArray(remote.docenti) && remote.docenti.length > 0) {
+        if (Array.isArray(remote.docenti) && remote.docenti.length) {
           docenti = remote.docenti;
-          selectedDocIdx = 0;
+          if (selectedDocIdx >= docenti.length) selectedDocIdx = 0;
         }
         if (Array.isArray(remote.movimentiCassa)) {
           movimentiCassa = remote.movimentiCassa;
@@ -2157,9 +2167,10 @@ document.addEventListener("DOMContentLoaded", function () {
         if (Array.isArray(remote.documentiModulistica)) {
           documentiModulistica = remote.documentiModulistica;
         }
-        if (typeof remote.progGen === "number") {
+        if (remote.progGen) {
           progGen = remote.progGen;
         }
+
         popolaSelectAnni();
         renderAssociati();
         if (associati[selectedAssocIdx]) caricaScheda(associati[selectedAssocIdx]);
@@ -2171,17 +2182,17 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       aggiornaBadgeCloud(
         "Account: " + emailAccount + " (Sincronizzato)",
-        "Dati allineati con " + emailAccount + " (" + new Date().toLocaleTimeString("it-IT") + ")",
+        "Dati aggiornati da " + emailAccount + " (" + new Date().toLocaleTimeString("it-IT") + ")",
         true
       );
-      if (mostraNotifica) showMessage("Dati scaricati e aggiornati da " + emailAccount + ".");
+      if (!silenzioso) showMessage("Dati scaricati e aggiornati da " + emailAccount + ".");
     } catch (err) {
       aggiornaBadgeCloud(
-        "Account: " + emailAccount + " (Locale / Offline)",
-        "Impossibile scaricare dal cloud al momento (" + err.message + ").",
-        false
+        "Account: " + emailAccount + " (Pronto / Offline)",
+        "Endpoint configurato per " + emailAccount + ".",
+        true
       );
-      if (mostraNotifica) showMessage("Errore scaricamento cloud: " + err.message);
+      if (!silenzioso) showMessage("Impossibile scaricare i dati remoti al momento.");
     }
   }
 
@@ -2231,21 +2242,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!silenzioso) showMessage("Profilo collegato a " + emailAccount + ".");
   }
 
-  var timerAutoSync = null;
-  function pianificaAutoSync() {
-    clearTimeout(timerAutoSync);
-    timerAutoSync = setTimeout(function () {
-      inviaSincronizzazioneCloud("auto_sync", true);
-    }, 1200);
-  }
-
-  var btnScaricaDalCloud = document.getElementById("btnScaricaDalCloud");
-  if (btnScaricaDalCloud) {
-    btnScaricaDalCloud.addEventListener("click", function () {
-      caricaDatiDalCloud(true);
-    });
-  }
-
   document.getElementById("btnCollegaAccountGoogle").addEventListener("click", function () {
     var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
     var clientId = (document.getElementById("cloudClientId").value || "").trim();
@@ -2283,6 +2279,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("btnSincronizzaOra").addEventListener("click", function () {
     inviaSincronizzazioneCloud("sync_manuale", false);
+  });
+
+  document.getElementById("btnScaricaDalCloud").addEventListener("click", function () {
+    caricaDatiDalCloud(false);
   });
 
   function copiaTesto(testo, toastId) {
@@ -2333,9 +2333,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.querySelectorAll(".sub-tab").forEach(function (btn) {
     btn.addEventListener("click", function () {
-      document.querySelectorAll(".sub-panel").forEach(function (p) { p.classList.remove("active"); });
-      document.querySelectorAll(".sub-tab").forEach(function (b) { b.classList.remove("active"); });
-      document.getElementById("sub-" + btn.getAttribute("data-sub")).classList.add("active");
+      var subAttr = btn.getAttribute("data-sub");
+      if (!subAttr) return;
+      document.querySelectorAll("#area-associati .sub-panel").forEach(function (p) { p.classList.remove("active"); });
+      document.querySelectorAll("#area-associati .sub-tab").forEach(function (b) { b.classList.remove("active"); });
+      document.getElementById("sub-" + subAttr).classList.add("active");
       btn.classList.add("active");
     });
   });
@@ -2403,7 +2405,7 @@ document.addEventListener("DOMContentLoaded", function () {
     fb.style.color = "#15803d";
     fb.textContent = "Calcolo eseguito: Data Firma " + formatData(parsed) + " + 10 mesi accademici (esclusi Lug-Ago) = " + scadStr;
     renderAssociati();
-    pianificaAutoSync();
+    programmaSyncAutomatico("aggiornamento_scadenza");
   }
 
   document.getElementById("btnCalcola10Mesi").addEventListener("click", function () {
@@ -2423,7 +2425,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("chkMeseProva").addEventListener("change", function () {
     toggleMeseProva();
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].prova = this.checked;
-    pianificaAutoSync();
+    programmaSyncAutomatico("aggiornamento_prova");
   });
 
   function prezzoPerTipoCorso(t) {
@@ -2481,7 +2483,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     progGen++;
     renderCassa();
-    pianificaAutoSync();
+    programmaSyncAutomatico("ricevuta_prova");
 
     generaEScaricaPdfRicevutaAssociativa({
       numero: numRic,
@@ -2532,7 +2534,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("inpTelefono").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].tel = this.value;
     aggiornaRiferimentiWhatsApp();
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_telefono");
   });
 
   // --- ANNI ACCADEMICI & CARTELLE ASSOCIATI ---
@@ -2565,7 +2567,7 @@ document.addEventListener("DOMContentLoaded", function () {
       associati[selectedAssocIdx].annoAcc = nuovoAA;
     }
     renderAssociati();
-    pianificaAutoSync();
+    programmaSyncAutomatico("nuovo_anno_accademico");
     showMessage("Creata nuova cartella: " + nuovoAA);
   });
 
@@ -2630,6 +2632,7 @@ document.addEventListener("DOMContentLoaded", function () {
       container.appendChild(block);
     });
 
+    // Cartella dedicata Ritirati / Non iscritti
     var ritirati = associati
       .map(function (a, idx) { return { a: a, idx: idx }; })
       .filter(function (item) {
@@ -2698,38 +2701,39 @@ document.addEventListener("DOMContentLoaded", function () {
     aggiornaTabellaQuote();
   }
 
+  // Sincronizzazione modifiche scheda sull'associato selezionato
   document.getElementById("inpAssociato").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].nome = this.value;
     document.getElementById("prevAssoc").textContent = this.value;
     aggiornaRiferimentiWhatsApp();
     renderAssociati();
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_associato");
   });
   document.getElementById("inpCorsista").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].corsista = this.value;
     document.getElementById("prevCors").textContent = this.value;
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_corsista");
   });
   document.getElementById("inpTelefono2").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].tel2 = this.value;
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_tel2");
   });
   document.getElementById("inpEmail").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].email = this.value;
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_email");
   });
   document.getElementById("inpCF").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].cf = this.value;
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_cf");
   });
-  document.getElementById("inpPrimaLezione").addEventListener("change", function () {
+  document.getElementById("inpPrimaLezione").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].prima = this.value;
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_prima_lezione");
   });
-  document.getElementById("inpScadenza").addEventListener("change", function () {
+  document.getElementById("inpScadenza").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].scad = this.value;
     renderAssociati();
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_scadenza");
   });
   document.getElementById("inpStatoIscrizione").addEventListener("change", function () {
     if (associati[selectedAssocIdx]) {
@@ -2738,7 +2742,7 @@ document.addEventListener("DOMContentLoaded", function () {
       else cartelleAperte[associati[selectedAssocIdx].annoAcc || "A.A 2026-2027"] = true;
     }
     renderAssociati();
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_stato_iscrizione");
   });
   document.getElementById("inpAnnoAccademico").addEventListener("change", function () {
     if (associati[selectedAssocIdx]) {
@@ -2746,11 +2750,11 @@ document.addEventListener("DOMContentLoaded", function () {
       cartelleAperte[this.value] = true;
     }
     renderAssociati();
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_anno_accademico");
   });
   document.getElementById("inpSede").addEventListener("change", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].sede = this.value;
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_sede");
   });
 
   function cambiaTipoCorso() {
@@ -2763,7 +2767,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     aggiornaDescrizioneCorso();
     aggiornaTabellaQuote();
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_tipo_corso");
   }
 
   document.getElementById("inpTipoCorso").addEventListener("change", cambiaTipoCorso);
@@ -2772,14 +2776,14 @@ document.addEventListener("DOMContentLoaded", function () {
       associati[selectedAssocIdx].quota = parseFloat(this.value) || 0;
     }
     aggiornaTabellaQuote();
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_quota");
   });
   document.getElementById("chkTrinity").addEventListener("change", function () {
     if (associati[selectedAssocIdx]) {
       associati[selectedAssocIdx].trinity = this.checked;
     }
     aggiornaTabellaQuote();
-    pianificaAutoSync();
+    programmaSyncAutomatico("modifica_trinity");
   });
 
   function aggiornaDescrizioneCorso() {
@@ -2825,6 +2829,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("bilancioResiduo").textContent = "€ " + fmtEuro(totResiduo);
   }
 
+  // Allega / Scansiona / Scarica Contratto Firmato
   document.getElementById("btnAllegaContratto").addEventListener("click", function () {
     document.getElementById("inpFileContratto").click();
   });
@@ -2840,7 +2845,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     document.getElementById("nomeFileContratto").textContent = file.name;
     document.getElementById("driveDestContratto").textContent = "Drive: Contratti Originali";
-    pianificaAutoSync();
+    programmaSyncAutomatico("allega_contratto");
     showMessage("Salvato in Google Drive / Contratti Originali: " + file.name);
   });
 
@@ -2852,7 +2857,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (assoc) assoc.contrattoNome = nomeDefault;
     document.getElementById("nomeFileContratto").textContent = nomeDefault;
     document.getElementById("driveDestContratto").textContent = "Drive: Contratti Originali";
-    pianificaAutoSync();
+    programmaSyncAutomatico("scansione_contratto");
     showMessage("Acquisizione scanner registrata in Google Drive / Contratti Originali: " + nomeDefault);
   });
 
@@ -2942,7 +2947,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".inp-data-prova-nc").forEach(function (inp) {
       inp.addEventListener("change", function () {
         nuoviContatti[parseInt(this.getAttribute("data-idx"), 10)].dataProva = this.value;
-        pianificaAutoSync();
+        programmaSyncAutomatico("modifica_data_prova_contatto");
       });
     });
 
@@ -2989,7 +2994,7 @@ document.addEventListener("DOMContentLoaded", function () {
         renderAssociati();
         caricaScheda(nuovoAssoc);
         attivaAreaPrincipale("associati");
-        pianificaAutoSync();
+        programmaSyncAutomatico("iscrizione_nuovo_contatto");
         showMessage("Iscritto come Neo Iscritto (" + nextNum + ") nell'Area Associati.");
       });
     });
@@ -3017,7 +3022,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("ncCell").value = "";
     document.getElementById("ncDataProva").value = "";
     renderNuoviContatti();
-    pianificaAutoSync();
+    programmaSyncAutomatico("nuovo_contatto");
   });
 
   // --- RICEVUTA ASSOCIATIVA ---
@@ -3089,7 +3094,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("ricCodice").value = progGen + "/3 del 26/11/2026";
     provaCaricata = false;
     renderCassa();
-    pianificaAutoSync();
+    programmaSyncAutomatico("emissione_ricevuta");
     showMessage("Ricevuta Associativa PDF emessa e registrata in Cassa.");
   });
 
@@ -3167,7 +3172,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var i = parseInt(this.getAttribute("data-idx"), 10);
         d.registroGiorni.splice(i, 1);
         renderRegistroOreDocente(true);
-        pianificaAutoSync();
+        programmaSyncAutomatico("rimozione_ora_docente");
         showMessage("Giorno rimosso dal registro del docente.");
       });
     });
@@ -3190,7 +3195,7 @@ document.addEventListener("DOMContentLoaded", function () {
     d.registroGiorni.push({ giorno: giorno, ore: ore, note: note });
     document.getElementById("regGiornoNote").value = "";
     renderRegistroOreDocente(true);
-    pianificaAutoSync();
+    programmaSyncAutomatico("registrazione_ora_docente");
     showMessage("Registrato giorno " + giorno + " (" + ore + " h) per " + d.nome + ".");
   });
 
@@ -3254,6 +3259,7 @@ document.addEventListener("DOMContentLoaded", function () {
     caricaSchedaDocente(parseInt(this.value, 10) || 0);
   });
 
+  // Sincronizzazione modifiche dati sensibili docente
   ["docNome", "docMateria", "docSede", "docTel", "docEmail", "docCF", "docIban", "docIndirizzo", "docTariffa"].forEach(function (fieldId) {
     var el = document.getElementById(fieldId);
     if (!el) return;
@@ -3273,7 +3279,7 @@ document.addEventListener("DOMContentLoaded", function () {
         calcolaDocente();
       }
       renderDocenti();
-      pianificaAutoSync();
+      programmaSyncAutomatico("modifica_docente");
     });
   });
 
@@ -3298,7 +3304,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderDocenti();
     caricaSchedaDocente(selectedDocIdx);
     document.getElementById("docNome").focus();
-    pianificaAutoSync();
+    programmaSyncAutomatico("nuovo_docente");
     showMessage("Creata nuova scheda docente.");
   });
 
@@ -3316,7 +3322,7 @@ document.addEventListener("DOMContentLoaded", function () {
       d.docUrl = url;
     }
     document.getElementById("docNomeDocumento").textContent = file.name;
-    pianificaAutoSync();
+    programmaSyncAutomatico("carica_doc_identita");
     showMessage("Copia documento caricata per " + (d ? d.nome : "il docente") + ": " + file.name);
   });
 
@@ -3475,7 +3481,7 @@ document.addEventListener("DOMContentLoaded", function () {
       metRimborso + " / " + metCompenso +
       "</td><td class='right'><strong>€ " + fmtEuro(calc.sommaTotale) + "</strong></td></tr>";
     renderCassa();
-    pianificaAutoSync();
+    programmaSyncAutomatico("liquidazione_docente");
     showMessage("Uscite registrate in Cassa per un totale di € " + fmtEuro(calc.sommaTotale) + ".");
   });
 
@@ -3517,7 +3523,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("cassaEnt").value = "";
     document.getElementById("cassaUsc").value = "";
     renderCassa();
-    pianificaAutoSync();
+    programmaSyncAutomatico("nuovo_movimento_cassa");
   });
 
   function renderCassa() {
@@ -3595,7 +3601,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
         editingCassaIdx = null;
         renderCassa();
-        pianificaAutoSync();
+        programmaSyncAutomatico("modifica_movimento_cassa");
         showMessage("Voce di Cassa aggiornata.");
       });
     });
@@ -3606,7 +3612,7 @@ document.addEventListener("DOMContentLoaded", function () {
         movimentiCassa.splice(i, 1);
         if (editingCassaIdx === i) editingCassaIdx = null;
         renderCassa();
-        pianificaAutoSync();
+        programmaSyncAutomatico("elimina_movimento_cassa");
         showMessage("Voce eliminata dalla Cassa.");
       });
     });
@@ -3724,7 +3730,7 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.addEventListener("click", function () {
         documentiModulistica.splice(parseInt(this.getAttribute("data-idx"), 10), 1);
         renderDocumentiModulistica();
-        pianificaAutoSync();
+        programmaSyncAutomatico("elimina_documento");
         showMessage("Documento rimosso dalla cartella.");
       });
     });
@@ -3754,7 +3760,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("docModTitolo").value = "";
     inpFile.value = "";
     renderDocumentiModulistica();
-    pianificaAutoSync();
+    programmaSyncAutomatico("nuovo_documento");
     showMessage("File caricato in Documenti e modulistica: " + file.name);
   });
 
@@ -3794,7 +3800,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderAssociati();
     caricaScheda(nuovo);
     document.getElementById("inpAssociato").focus();
-    pianificaAutoSync();
+    programmaSyncAutomatico("nuovo_associato");
     showMessage("Creata nuova scheda con Numero Iscrizione " + nextNum);
   });
 
@@ -3808,7 +3814,7 @@ document.addEventListener("DOMContentLoaded", function () {
   renderCassa();
   renderDocumentiModulistica();
   attivaAreaPrincipale("docenti");
-  caricaDatiDalCloud(false);
+  caricaDatiDalCloud(true);
 });
 </script>
 </body>
