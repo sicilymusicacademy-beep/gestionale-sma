@@ -1,0 +1,2566 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sicily Music Academy APS — Gestionale Segreteria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://unpkg.com/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+  :root {
+    --navy: #0f172a;
+    --navy-soft: #1e293b;
+    --gold: #c28e0e;
+    --gold-hover: #a87909;
+    --gold-soft: #fef9e7;
+    --gold-border: #eab308;
+    --bg: #f4f6f9;
+    --surface: #ffffff;
+    --surface-alt: #f8fafc;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text: #0f172a;
+    --muted: #64748b;
+    --green: #15803d;
+    --green-bg: #dcfce7;
+    --red: #b91c1c;
+    --red-bg: #fee2e2;
+    --blue: #0369a1;
+    --blue-bg: #e0f2fe;
+    --wa: #16a34a;
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.22);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.45;
+  }
+
+  /* Notifica toast elegante */
+  .toast-banner {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 440px;
+    background: var(--navy);
+    color: #fff;
+    border-left: 4px solid var(--gold);
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    z-index: 90;
+    display: none;
+  }
+
+  /* Header principale */
+  .topbar {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    color: #fff;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid var(--gold);
+    flex-wrap: wrap;
+    gap: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-badge {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 800;
+    padding: 9px 13px;
+    border-radius: 10px;
+    letter-spacing: 0.6px;
+    font-size: 13px;
+    box-shadow: 0 2px 8px rgba(194, 142, 14, 0.35);
+  }
+
+  .brand h1 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .brand small {
+    color: #cbd5e1;
+    font-size: 11.5px;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* Pulsanti */
+  .btn {
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn-gold {
+    background: var(--gold);
+    color: var(--navy);
+    font-weight: 700;
+  }
+  .btn-gold:hover { background: var(--gold-hover); color: #fff; }
+
+  .btn-navy {
+    background: var(--navy);
+    color: #fff;
+  }
+  .btn-navy:hover { background: var(--navy-soft); }
+
+  .btn-green {
+    background: var(--green);
+    color: #fff;
+  }
+
+  .btn-wa {
+    background: var(--wa);
+    color: #fff;
+  }
+
+  .btn-red {
+    background: var(--red);
+    color: #fff;
+  }
+
+  .btn-blue {
+    background: var(--blue);
+    color: #fff;
+  }
+
+  .btn-outline {
+    background: var(--surface);
+    border-color: var(--border-strong);
+    color: var(--text);
+  }
+  .btn-outline:hover {
+    background: var(--surface-alt);
+    border-color: #94a3b8;
+  }
+
+  .btn-sm {
+    padding: 5px 10px;
+    font-size: 11.5px;
+    border-radius: 6px;
+  }
+
+  /* Barra navigazione sezioni */
+  .main-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 12px 24px 0;
+    background: #e9eef5;
+    border-bottom: 1px solid var(--border-strong);
+    flex-wrap: wrap;
+  }
+
+  .main-tab {
+    padding: 10px 18px;
+    border-radius: 10px 10px 0 0;
+    border: 1px solid transparent;
+    border-bottom: none;
+    background: transparent;
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    color: #475569;
+    transition: all 0.15s ease;
+  }
+
+  .main-tab:hover {
+    color: var(--navy);
+    background: rgba(255, 255, 255, 0.55);
+  }
+
+  .main-tab.active {
+    background: var(--bg);
+    color: var(--navy);
+    font-weight: 700;
+    border-color: var(--border-strong);
+    position: relative;
+    top: 1px;
+  }
+
+  .area {
+    display: none;
+    padding: 20px 24px 32px;
+    max-width: 1480px;
+    margin: 0 auto;
+  }
+
+  .area.active {
+    display: block;
+  }
+
+  /* Griglia a due colonne */
+  .split {
+    display: grid;
+    grid-template-columns: 330px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+
+  @media (max-width: 960px) {
+    .split { grid-template-columns: 1fr; }
+    .topbar, .main-tabs, .area { padding-left: 14px; padding-right: 14px; }
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .card h3 {
+    margin: 0 0 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: -0.01em;
+  }
+
+  /* Controlli form */
+  .search-input, input, select, textarea {
+    width: 100%;
+    padding: 8px 11px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    color: var(--text);
+    background: var(--surface);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(194, 142, 14, 0.15);
+  }
+
+  /* Cartelle Anno Accademico */
+  .folder-block {
+    margin-top: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface-alt);
+    overflow: hidden;
+  }
+
+  .folder-header {
+    padding: 9px 12px;
+    background: #eef2f6;
+    font-weight: 700;
+    font-size: 12.5px;
+    color: var(--navy);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+
+  .folder-header.ritirati {
+    background: #fef2f2;
+    color: #991b1b;
+  }
+
+  .folder-body {
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .folder-body.collapsed {
+    display: none;
+  }
+
+  .assoc-item {
+    padding: 9px 11px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    background: var(--surface);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12.5px;
+    gap: 8px;
+    transition: all 0.14s ease;
+  }
+
+  .assoc-item:hover {
+    border-color: #94a3b8;
+    background: #f8fafc;
+  }
+
+  .assoc-item.active {
+    background: var(--gold-soft);
+    border-color: var(--gold);
+    font-weight: 700;
+    box-shadow: 0 0 0 1px rgba(194, 142, 14, 0.25);
+  }
+
+  .assoc-item span.date {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .badge-neo {
+    background: var(--green-bg);
+    color: var(--green);
+    border: 1px solid #86efac;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    margin-left: 5px;
+  }
+
+  .badge-scad {
+    background: var(--red-bg);
+    color: var(--red);
+    border: 1px solid #fca5a5;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 999px;
+    margin-left: 5px;
+  }
+
+  .badge-iscr {
+    background: #e2e8f0;
+    color: var(--navy);
+    font-size: 10.5px;
+    font-weight: 800;
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin-right: 6px;
+  }
+
+  /* Sotto-schede */
+  .sub-tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .sub-tab {
+    padding: 7px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-strong);
+    background: var(--surface-alt);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.14s ease;
+  }
+
+  .sub-tab:hover {
+    background: #f1f5f9;
+  }
+
+  .sub-tab.active {
+    background: var(--navy);
+    color: #fff;
+    border-color: var(--navy);
+  }
+
+  .sub-panel { display: none; }
+  .sub-panel.active { display: block; }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 16px;
+  }
+
+  .form-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px 16px;
+  }
+
+  @media (max-width: 760px) {
+    .form-grid, .form-grid-3 { grid-template-columns: 1fr; }
+  }
+
+  .form-group label {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: #334155;
+    letter-spacing: 0.01em;
+  }
+
+  .inline-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .dates-box {
+    margin-top: 14px;
+    padding: 14px;
+    background: #f8fafc;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) auto;
+    gap: 12px;
+    align-items: end;
+  }
+
+  @media (max-width: 820px) {
+    .dates-box { grid-template-columns: 1fr; }
+  }
+
+  .calc-feedback {
+    grid-column: 1 / -1;
+    font-size: 12px;
+    color: var(--green);
+    font-weight: 600;
+    margin-top: 2px;
+  }
+
+  .trial-box {
+    margin-top: 14px;
+    padding: 14px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+  }
+
+  .trial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .trial-fields {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #fcd34d;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 16px;
+  }
+
+  .trial-fields.disabled {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .scan-box {
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .wa-card {
+    border: 1px solid #bbf7d0;
+    background: #f0fdf4;
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 12px;
+  }
+
+  .wa-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .wa-card-header strong {
+    color: #166534;
+    font-size: 13px;
+  }
+
+  .wa-text {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid #86efac;
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 12.5px;
+    color: var(--text);
+    resize: vertical;
+    min-height: 70px;
+  }
+
+  .copy-toast {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--green);
+    display: none;
+  }
+
+  /* Tabelle */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    background: var(--surface);
+  }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+    text-align: left;
+  }
+
+  th {
+    background: var(--surface-alt);
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  tbody tr:hover {
+    background: #f8fafc;
+  }
+
+  .right { text-align: right; }
+  .center { text-align: center; }
+
+  .badge {
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+  }
+
+  .badge-ok { background: var(--green-bg); color: var(--green); }
+  .badge-warn { background: #fef3c7; color: #b45309; }
+  .badge-info { background: var(--blue-bg); color: var(--blue); }
+
+  .bilancio-bar {
+    margin-top: 14px;
+    padding: 14px 18px;
+    background: var(--navy);
+    color: #fff;
+    border-radius: 10px;
+    border-left: 5px solid var(--gold);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .bilancio-item small {
+    display: block;
+    font-size: 11px;
+    color: #cbd5e1;
+  }
+
+  .bilancio-item strong {
+    font-size: 16px;
+  }
+
+  .cassa-summary {
+    margin-top: 12px;
+    padding: 12px 16px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border-strong);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 12.5px;
+  }
+
+  .filter-bar {
+    display: grid;
+    grid-template-columns: 170px 210px 1fr auto;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface-alt);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    align-items: center;
+  }
+
+  @media (max-width: 820px) {
+    .filter-bar { grid-template-columns: 1fr; }
+  }
+
+  /* Modali */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.58);
+    backdrop-filter: blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 60;
+    padding: 16px;
+  }
+
+  .modal-backdrop.hidden {
+    display: none !important;
+  }
+
+  .modal {
+    background: var(--surface);
+    width: min(740px, 95vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 14px;
+    border-top: 5px solid var(--gold);
+    padding: 20px 22px;
+    box-shadow: var(--shadow-lg);
+  }
+
+  .modal-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+
+  .modal h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+
+  .close-x {
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    font-weight: 700;
+    cursor: pointer;
+    color: var(--muted);
+    line-height: 1;
+    padding: 2px 6px;
+  }
+
+  .close-x:hover {
+    color: var(--navy);
+  }
+
+  .alert-box {
+    padding: 11px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 10px;
+    font-size: 12.5px;
+  }
+
+  .alert-red { background: var(--red-bg); border-left: 4px solid var(--red); color: #7f1d1d; }
+  .alert-amber { background: #fef3c7; border-left: 4px solid var(--gold); color: #78350f; }
+  .alert-blue { background: var(--blue-bg); border-left: 4px solid var(--blue); color: #0c4a6e; }
+
+  .pdf-preview {
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    padding: 18px;
+    border-radius: 10px;
+    margin-top: 14px;
+  }
+
+  .pdf-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid var(--gold);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .note-pill {
+    display: inline-block;
+    background: var(--blue-bg);
+    color: var(--blue);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 6px;
+  }
+
+  .drive-pill {
+    display: inline-block;
+    background: var(--green-bg);
+    color: var(--green);
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 6px;
+  }
+
+  /* Schermata di blocco accesso segreteria */
+  .lock-screen {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 100;
+  }
+
+  .lock-screen.unlocked {
+    display: none !important;
+  }
+
+  .lock-card {
+    background: var(--surface);
+    width: min(420px, 100%);
+    border-radius: 16px;
+    border-top: 5px solid var(--gold);
+    padding: 26px 24px;
+    box-shadow: var(--shadow-lg);
+    text-align: center;
+  }
+
+  .lock-card h2 {
+    margin: 10px 0 6px;
+    font-size: 19px;
+    font-weight: 800;
+    color: var(--navy);
+  }
+
+  .lock-card p {
+    margin: 0 0 18px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  .lock-error {
+    color: var(--red);
+    background: var(--red-bg);
+    border: 1px solid #fca5a5;
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- SCHERMATA DI ACCESSO SEGRETERIA -->
+<div class="lock-screen" id="lockScreen">
+  <form class="lock-card" id="lockForm">
+    <div class="brand-badge" style="display:inline-block;">SMA APS</div>
+    <h2>Accesso Segreteria</h2>
+    <p>Sicily Music Academy APS — Inserisci la password per accedere al gestionale.</p>
+    <div class="form-group" style="text-align:left; margin-bottom:14px;">
+      <label for="inpPasswordSegreteria">Password</label>
+      <input type="password" id="inpPasswordSegreteria" placeholder="Inserisci password segreteria" autocomplete="current-password" required />
+    </div>
+    <button class="btn btn-gold" type="submit" style="width:100%; padding:10px 14px; font-size:13.5px;">Entra nel Gestionale</button>
+    <div class="lock-error" id="lockError">Password non corretta. Riprova.</div>
+  </form>
+</div>
+
+<div class="toast-banner" id="toastBanner"></div>
+
+<!-- POPUP AVVISI ALL'APERTURA -->
+<div class="modal-backdrop hidden" id="startupModal" style="display:none;">
+  <div class="modal">
+    <div class="modal-top">
+      <h2>Avvisi Segreteria all'Apertura</h2>
+      <button class="close-x" type="button" id="btnCloseX" title="Chiudi">×</button>
+    </div>
+    <div class="alert-box alert-amber">
+      <strong>Scadenza Contratti:</strong> Tra 12 giorni scade il contratto dell'associato <strong>Mario Rossi</strong> (#SMA-1), Corsista: <strong>Giulia Rossi</strong> (Scad. 14/10/2027).
+    </div>
+    <div class="alert-box alert-amber">
+      <strong>Scadenza Mese di Prova (Esterno al Contratto):</strong> Tra 3 giorni termina il mese di prova dell'associato <strong>Rosetta Bonanno</strong> (#SMA-3 — Corsista: <strong>Sofia Bonanno</strong>) — Chiusura prova: 28/11/2026.
+    </div>
+    <div class="alert-box alert-red">
+      <strong>Promemoria Completamento Pagamento:</strong> Associato <strong>Rosetta Bonanno</strong> (#SMA-3) — Ric. <code>542/1</code>: versato acconto € 60,00, residuo da saldare € 60,00.
+    </div>
+    <div class="alert-box alert-blue">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
+        <div>
+          <strong>Promemoria Ritardo Oltre Giorno 5 (Solo Informativo):</strong> Quota mensile Novembre di <strong>Lucia Verdi</strong> (#SMA-2 — € 135,00) non saldata entro il 5. <em>Nota contrattuale: eventuale maggiorazione 30% non applicata automaticamente.</em>
+        </div>
+        <button class="btn btn-wa" type="button" id="btnCopiaRitardoPopup" style="white-space:nowrap;">Copia Messaggio Ritardatari</button>
+      </div>
+    </div>
+    <div style="text-align:right; margin-top:12px;">
+      <button class="btn btn-navy" type="button" id="btnChiudiModal">Chiudi e vai al Gestionale</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-badge">SMA APS</div>
+    <div>
+      <h1>SICILY MUSIC ACADEMY APS — Gestionale Segreteria</h1>
+      <small>C.F. 97332490826 • Misilmeri / Monreale • Registered Exam Centre 67642 (Trinity College London)</small>
+    </div>
+  </div>
+  <div class="inline-row">
+    <span class="badge badge-warn" id="cloudStatusBadge" style="padding:5px 10px; font-size:11.5px;">Account: sicilymusicacademy@gmail.com (Locale / Da collegare)</span>
+    <button class="btn btn-blue" type="button" id="btnApriCloudModal">Account &amp; Cloud</button>
+    <button class="btn btn-gold" type="button" id="btnApriModal">Avvisi Scadenze / Pagamenti</button>
+    <button class="btn btn-outline" type="button" id="btnBloccaGestionale" style="color:var(--navy);">Blocca</button>
+  </div>
+</div>
+
+<!-- MODALE COLLEGAMENTO ACCOUNT ASSOCIATIVO & SINCRONIZZAZIONE MULTI-PC -->
+<div class="modal-backdrop hidden" id="cloudModal" style="display:none;">
+  <div class="modal">
+    <div class="modal-top">
+      <h2>Collegamento Account Associativo &amp; Sincronizzazione Online</h2>
+      <button class="close-x" type="button" id="btnCloseCloudX" title="Chiudi">×</button>
+    </div>
+    <div class="alert-box alert-blue">
+      <strong>Account Associativo Target:</strong> <code>sicilymusicacademy@gmail.com</code> — Cartella Drive: <code>Contratti Originali</code>.
+    </div>
+
+    <div class="form-grid" style="margin-bottom:10px;">
+      <div class="form-group">
+        <label>Email Account Associativo</label>
+        <input type="email" id="cloudAccountEmail" value="sicilymusicacademy@gmail.com" />
+      </div>
+      <div class="form-group">
+        <label>Google OAuth Client ID (per login &amp; Drive API)</label>
+        <input type="text" id="cloudClientId" placeholder="Es. 1234567890-xxx.apps.googleusercontent.com" />
+      </div>
+      <div class="form-group" style="grid-column: span 2;">
+        <label>Endpoint Sincronizzazione Cloud / Webhook (opzionale per sincronizzazione multi-PC immediata)</label>
+        <input type="text" id="cloudSyncEndpoint" value="https://script.google.com/macros/s/AKfycbwhavQvRy6fM4tU6ShimwSzy_2_KjuCKSI5hthM_h5Wuw50QIy65QbYtM9b-Talo8Iz/exec" placeholder="https://script.google.com/macros/s/.../exec" />
+      </div>
+    </div>
+
+    <div class="scan-box" style="margin-top:6px;">
+      <div>
+        <strong style="font-size:12.5px;">Stato Connessione:</strong>
+        <span id="cloudDettaglioStato" style="font-size:12px; color:#334155;">In attesa di connessione con sicilymusicacademy@gmail.com</span>
+      </div>
+      <div class="inline-row">
+        <button class="btn btn-green" type="button" id="btnCollegaAccountGoogle">Collega sicilymusicacademy@gmail.com</button>
+        <button class="btn btn-navy" type="button" id="btnSincronizzaOra">Sincronizza Dati Ora</button>
+      </div>
+    </div>
+
+    <div style="text-align:right; margin-top:12px;">
+      <button class="btn btn-outline" type="button" id="btnChiudiCloudModal">Chiudi</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDE PRINCIPALI -->
+<div class="main-tabs">
+  <button class="main-tab" type="button" data-area="associati">Area Associati</button>
+  <button class="main-tab" type="button" data-area="nuovicontatti">Nuovi Contatti / Richieste <span class="badge-neo" id="countNuoviContatti">2</span></button>
+  <button class="main-tab active" type="button" data-area="docenti">Area Docenti</button>
+  <button class="main-tab" type="button" data-area="cassa">Cassa (Entrate / Uscite)</button>
+  <button class="main-tab" type="button" data-area="documenti">Documenti e modulistica</button>
+</div>
+
+<!-- ==================== AREA ASSOCIATI ==================== -->
+<div class="area" id="area-associati">
+  <div class="split">
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:8px;">
+        <h3 style="margin:0;">Elenco Associati</h3>
+        <button class="btn btn-outline btn-sm" type="button" id="btnNuovoAnnoAccademico">+ Nuovo A.A.</button>
+      </div>
+      <input type="text" class="search-input" id="searchAssoc" placeholder="Cerca associato o N° iscr..." />
+      <div id="assocFoldersContainer"></div>
+      <button class="btn btn-gold" type="button" style="width:100%; margin-top:10px;" id="btnNuovoAssoc">+ Nuovo Associato</button>
+    </div>
+
+    <div class="card">
+      <div class="sub-tabs">
+        <button class="sub-tab active" type="button" data-sub="scheda">Scheda &amp; Contratto</button>
+        <button class="sub-tab" type="button" data-sub="quote">Riepilogo Quote</button>
+        <button class="sub-tab" type="button" data-sub="ricevute">Nuova Ricevuta Associativa</button>
+        <button class="sub-tab" type="button" data-sub="messaggi">Messaggi WhatsApp</button>
+      </div>
+
+      <!-- SOTTO-AREA: SCHEDA & CONTRATTO -->
+      <div class="sub-panel active" id="sub-scheda">
+        <div class="form-grid-3" style="margin-bottom:10px;">
+          <div class="form-group">
+            <label>Numero d'Iscrizione Associato</label>
+            <input type="text" id="inpNumIscrizione" value="SMA-1" readonly style="background:#f8fafc; font-weight:800; color:var(--navy);" />
+          </div>
+          <div class="form-group">
+            <label>Stato Iscrizione</label>
+            <select id="inpStatoIscrizione">
+              <option value="Attivo">Associato Attivo</option>
+              <option value="Neo Iscritto">Neo Iscritto</option>
+              <option value="Non attivo/Scaduto">Non attivo/Scaduto</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Anno Accademico / Cartella</label>
+            <select id="inpAnnoAccademico"></select>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Associato (Contraente)</label>
+            <input type="text" id="inpAssociato" value="Mario Rossi" />
+          </div>
+          <div class="form-group">
+            <label>Corsista (Allievo)</label>
+            <input type="text" id="inpCorsista" value="Giulia Rossi" />
+          </div>
+          <div class="form-group">
+            <label>Sede</label>
+            <select id="inpSede">
+              <option>Misilmeri</option>
+              <option>Monreale</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Telefono Principale / WhatsApp</label>
+            <input type="text" id="inpTelefono" value="329 0000000" />
+          </div>
+          <div class="form-group">
+            <label>Secondo Telefono (Altro Genitore / Parente)</label>
+            <input type="text" id="inpTelefono2" value="338 1122334" placeholder="Cellulare secondo genitore/parente" />
+          </div>
+          <div class="form-group">
+            <label>Email Associato</label>
+            <input type="email" id="inpEmail" value="mario.rossi@email.it" placeholder="esempio@email.it" />
+          </div>
+          <div class="form-group">
+            <label>Codice Fiscale Associato</label>
+            <input type="text" id="inpCF" value="RSSMRA80A01G273X" />
+          </div>
+          <div class="form-group">
+            <label>Tipologia Contratto</label>
+            <select id="inpTipoCorso">
+              <option value="Strumentale">Corso Strumentale (€ 120,00 - 4 lezioni)</option>
+              <option value="Principale">Corso Principale (€ 135,00 - 4 strum. + 4 solfeggio)</option>
+              <option value="Principale+secondo">Principale+secondo (€ 195,00 - 4 solf. + 4 strum. princ. + 4 sec. strum.)</option>
+              <option value="Strumentale+secondo">Strumentale+secondo (€ 180,00 - 4 strum. princ. + 4 sec. strum.)</option>
+              <option value="Light">Strumentale (Light) bambini 3/5 anni (€ 75,00 - 2 lezioni)</option>
+            </select>
+            <div class="note-pill" id="descCorsoPill">4 lezioni di strumento al mese</div>
+          </div>
+          <div class="form-group">
+            <label>Quota Mensile Contrattuale (€) — Determina il Riepilogo Quote</label>
+            <input type="number" step="0.01" id="inpQuotaMensile" value="120.00" />
+            <div class="inline-row" style="margin-top:5px;">
+              <input type="checkbox" id="chkTrinity" style="width:auto;" checked />
+              <span style="font-size:12px;">Certificazione Trinity College London (+ € 25,00/mese)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIQUADRO DATE CONTRATTO -->
+        <div class="dates-box">
+          <div class="form-group">
+            <label style="color:var(--blue);">Data Firma Contratto (Comanda)*</label>
+            <input type="text" id="inpDataFirma" value="14/10/2026" placeholder="GG/MM/AAAA" />
+          </div>
+          <div class="form-group">
+            <label>Data Prima Lezione</label>
+            <input type="text" id="inpPrimaLezione" value="19/10/2026" placeholder="GG/MM/AAAA" />
+          </div>
+          <div class="form-group">
+            <label>Data Scadenza Contratto</label>
+            <input type="text" id="inpScadenza" value="14/10/2027" placeholder="GG/MM/AAAA" />
+          </div>
+          <button class="btn btn-navy" type="button" id="btnCalcola10Mesi">Calcola +10 Mesi da Firma</button>
+          <div class="calc-feedback" id="calcFeedback">Calcolo attivo: Data Firma 14/10/2026 + 10 mesi accademici (esclusi Lug-Ago) = 14/10/2027</div>
+        </div>
+
+        <!-- RIQUADRO MESE DI PROVA -->
+        <div class="trial-box">
+          <div class="trial-header">
+            <label style="font-size:13px; font-weight:800; color:#92400e; display:flex; align-items:center; gap:8px; cursor:pointer;">
+              <input type="checkbox" id="chkMeseProva" style="width:auto; transform:scale(1.15);" />
+              Attiva Mese di Prova (esterno al contratto annuale)
+            </label>
+            <span style="font-size:11.5px; color:#78350f; font-weight:600;">Non incide sulla scadenza del contratto principale</span>
+          </div>
+
+          <div class="trial-fields disabled" id="trialFieldsBox">
+            <div class="form-group">
+              <label>Tipo di Contratto / Corso in Prova</label>
+              <select id="provaTipoCorso">
+                <option value="Strumentale">Corso Strumentale (€ 120,00 - 4 lezioni)</option>
+                <option value="Principale">Corso Principale (€ 135,00 - 4 strum. + 4 solfeggio)</option>
+                <option value="Principale+secondo">Principale+secondo (€ 195,00)</option>
+                <option value="Strumentale+secondo">Strumentale+secondo (€ 180,00)</option>
+                <option value="Light">Strumentale (Light) bambini 3/5 anni (€ 75,00 - 2 lezioni)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Quota Mese di Prova (€)</label>
+              <div class="inline-row">
+                <input type="number" step="0.01" id="provaQuota" value="120.00" />
+                <button class="btn btn-gold" type="button" id="btnRicProva" style="white-space:nowrap;">Emetti Ric. Associativa Prova (PDF)</button>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Data Firma (Mese di Prova)</label>
+              <input type="text" id="provaDataFirma" value="01/11/2026" />
+            </div>
+            <div class="form-group">
+              <label>Data Prima Lezione (Prova)</label>
+              <input type="text" id="provaPrimaLezione" value="03/11/2026" />
+            </div>
+            <div class="form-group" style="grid-column: span 2;">
+              <label>Data Chiusura Prova / Ultima Lezione (Modificabile)</label>
+              <div class="inline-row">
+                <input type="text" id="provaChiusura" value="03/12/2026" />
+                <button class="btn btn-outline" type="button" id="btnCalcolaProva" style="white-space:nowrap;">Calcola +1 Mese Prova</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scan-box">
+          <div>
+            <strong style="font-size:12.5px;">Contratto Firmato:</strong>
+            <span id="nomeFileContratto" style="color:var(--green); font-size:12.5px;">Contratto_SMA-1_Mario_Rossi.pdf</span>
+            <span class="drive-pill" id="driveDestContratto">Drive: Contratti Originali</span>
+            <div style="margin-top:4px; font-size:11.5px; color:#334155;">
+              <strong>Logo Originale (.png / .jpg):</strong>
+              <span id="nomeLogoOriginale" style="color:var(--navy); font-weight:600;">Nessun file caricato (clicca "Carica Logo Originale")</span>
+            </div>
+          </div>
+          <div class="inline-row">
+            <input type="file" id="inpFileContratto" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" style="display:none;" />
+            <input type="file" id="inpFileLogoOriginale" accept=".png,.jpg,.jpeg,image/png,image/jpeg" style="display:none;" />
+            <button class="btn btn-outline" type="button" id="btnCaricaLogoOriginale">Carica Logo Originale</button>
+            <button class="btn btn-red" type="button" id="btnCreaComunicazioneDocx">Crea Comunicazione Insoluto (.docx)</button>
+            <button class="btn btn-navy" type="button" id="btnScanContratto">Scansiona da Stampante (PDF)</button>
+            <button class="btn btn-outline" type="button" id="btnAllegaContratto">Allega PDF / JPG</button>
+            <button class="btn btn-blue" type="button" id="btnScaricaContratto">Scarica Contratto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOTTO-AREA: RIEPILOGO QUOTE -->
+      <div class="sub-panel" id="sub-quote">
+        <p style="margin:0 0 8px; font-size:12.5px; color:#334155;">
+          L'importo mensile è stabilito <strong>esclusivamente dalla Scheda &amp; Contratto</strong> (non viene mai sovrascritto dall'importo delle ricevute emesse). Quota Associativa Annuale (€ 50,00), Concerto di Capodanno (€ 40,00) e Concerto di Fine Anno (€ 60,00) restano invariate.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th class="center" style="width:40px;">#</th>
+              <th>Voce Anno Accademico</th>
+              <th>Dettaglio / Scadenza</th>
+              <th class="right">Importo (€)</th>
+              <th class="center">Stato</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyQuote"></tbody>
+        </table>
+
+        <div class="bilancio-bar">
+          <div class="bilancio-item">
+            <small>Totale Annuo a Bilancio Associato</small>
+            <strong style="color:#fbbf24;" id="bilancioTotale">€ 0,00</strong>
+          </div>
+          <div class="bilancio-item">
+            <small>Già Versato / Saldato</small>
+            <strong style="color:#4ade80;" id="bilancioSaldato">€ 0,00</strong>
+          </div>
+          <div class="bilancio-item">
+            <small>Residuo da Saldare a Bilancio</small>
+            <strong style="color:#f87171;" id="bilancioResiduo">€ 0,00</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOTTO-AREA: NUOVA RICEVUTA ASSOCIATIVA -->
+      <div class="sub-panel" id="sub-ricevute">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Numerazione Automatica (N° Generale / N° Associato)</label>
+            <input type="text" id="ricCodice" value="543/2 del 26/11/2026" readonly style="background:#f8fafc; font-weight:700;" />
+          </div>
+          <div class="form-group">
+            <label>Metodo di Pagamento</label>
+            <select id="ricMetodo">
+              <option value="Contanti">Contanti</option>
+              <option value="P2P (Postepay)">P2P (Postepay) — richiede prova PDF/JPG</option>
+              <option value="Bonifico Bancario">Bonifico Bancario — richiede prova PDF/JPG</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Voce Quota Associativa / Causale</label>
+            <input type="text" id="ricVoce" value="Quota Associativa — Mese 3 (Novembre) - 2026/2027" />
+          </div>
+          <div class="form-group">
+            <label>Importo Ricevuta Versato (€)</label>
+            <input type="number" step="0.01" id="ricImporto" value="145.00" />
+          </div>
+          <div class="form-group">
+            <label>Note / Acconto / Residuo Quota Associativa</label>
+            <input type="text" id="ricNote" placeholder="Es. Saldo quota associativa mensile Novembre" />
+          </div>
+          <div class="form-group" id="boxProva" style="display:none;">
+            <label>Prova Pagamento P2P / Bonifico (PDF o JPG)</label>
+            <button class="btn btn-outline" type="button" id="btnAllegaProva">Carica Ricevuta PDF / JPG</button>
+            <span id="statoProva" style="font-size:11.5px; color:var(--red); margin-left:6px;">Nessun file caricato</span>
+          </div>
+        </div>
+
+        <div class="inline-row" style="margin-top:10px; justify-content:space-between;">
+          <label style="font-size:12px; font-weight:600;">
+            <input type="checkbox" style="width:auto;" /> Attiva promemoria completamento pagamento all'apertura
+          </label>
+          <div class="inline-row">
+            <button class="btn btn-green" type="button" id="btnEmettiRic">Emetti Ricevuta Associativa PDF &amp; Registra in Cassa</button>
+            <button class="btn btn-wa" type="button" id="btnInviaRicWa">Invia su WhatsApp (<span id="lblWaRicIscr">Iscr. #SMA-1</span>)</button>
+          </div>
+        </div>
+
+        <div class="pdf-preview">
+          <div class="pdf-header">
+            <div>
+              <strong style="font-size:13.5px;">SICILY MUSIC ACADEMY APS — RICEVUTA ASSOCIATIVA</strong><br/>
+              <span style="font-size:11px; color:var(--muted);">C.so Vittorio Emanuele, 334 - Misilmeri (PA) • C.F. 97332490826</span>
+            </div>
+            <div style="text-align:right; font-size:11.5px;">
+              <strong>RICEVUTA ASSOCIATIVA N. <span id="prevRicNum">543/2</span></strong><br/>
+              <span>Data: 26/11/2026</span>
+            </div>
+          </div>
+          <div style="font-size:12px; margin-bottom:8px;">
+            <strong>N° Iscr.:</strong> <span id="prevNumIscr">SMA-1</span> &nbsp;|&nbsp;
+            <strong>Associato:</strong> <span id="prevAssoc">Mario Rossi</span> &nbsp;|&nbsp;
+            <strong>Corsista:</strong> <span id="prevCors">Giulia Rossi</span> &nbsp;|&nbsp;
+            <strong>Metodo:</strong> <span id="prevMetodo">Contanti</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Quota Associativa / Causale</th>
+                <th>Dettaglio Quota Associativa</th>
+                <th class="right">Versato</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td id="prevVoce">Quota Associativa — Mese 3 (Novembre) - 2026/2027</td>
+                <td id="prevDett">Quota Associativa — 4 lezioni di strumento al mese</td>
+                <td class="right"><strong id="prevImp">€ 145,00</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top:8px; font-size:10.5px; color:var(--muted);">
+            Ricevuta associativa per versamento quota associativa / contributo istituzionale riservato ai soci (art. 148 TUIR / D.Lgs. 117/2017) — Non costituisce fattura commerciale.
+          </div>
+        </div>
+      </div>
+
+      <!-- SOTTO-AREA: MESSAGGI PREIMPOSTATI WHATSAPP -->
+      <div class="sub-panel" id="sub-messaggi">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
+          <p style="margin:0; font-size:12.5px; color:#334155;">
+            Clicca su <strong>Copia Messaggio</strong> per copiarlo negli appunti oppure su <strong>Apri WhatsApp</strong> per avviare direttamente la chat con l'associato selezionato.
+          </p>
+          <span class="badge badge-info" id="waTargetBadge">Collegato a: Iscr. #SMA-1 — Mario Rossi (329 0000000)</span>
+        </div>
+
+        <div class="wa-card">
+          <div class="wa-card-header">
+            <strong>1. MESSAGGIO PER NEO ISCRITTI</strong>
+            <div class="inline-row">
+              <span class="copy-toast" id="toast-neo">Copiato negli appunti!</span>
+              <button class="btn btn-navy" type="button" data-copy="msg-neo" data-toast="toast-neo">Copia Messaggio</button>
+              <button class="btn btn-wa btn-open-wa" type="button" data-msg="msg-neo">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-1</span>)</button>
+            </div>
+          </div>
+          <textarea class="wa-text" id="msg-neo" readonly>Benvenuti nella nostra grande famiglia! Sicily Music Academy ®, Questo è il numero della segreteria. Per qualunque cosa non esiti a contattarmi.</textarea>
+        </div>
+
+        <div class="wa-card">
+          <div class="wa-card-header">
+            <strong>2. MESSAGGIO PER RICORDO SCADENZA MENSILE (Entro giorno 5)</strong>
+            <div class="inline-row">
+              <span class="copy-toast" id="toast-scad">Copiato negli appunti!</span>
+              <button class="btn btn-navy" type="button" data-copy="msg-scad" data-toast="toast-scad">Copia Messaggio</button>
+              <button class="btn btn-wa btn-open-wa" type="button" data-msg="msg-scad">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-1</span>)</button>
+            </div>
+          </div>
+          <textarea class="wa-text" id="msg-scad" readonly>Caro Associato, Buon Pomeriggio! Le ricordiamo di saldare entro giorno 5 c.m la quota mensile del corso accademico. Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
+        </div>
+
+        <div class="wa-card">
+          <div class="wa-card-header">
+            <strong>3. MESSAGGIO PER I RITARDATARI (Oltre giorno 5)</strong>
+            <div class="inline-row">
+              <span class="copy-toast" id="toast-rit">Copiato negli appunti!</span>
+              <button class="btn btn-navy" type="button" data-copy="msg-rit" data-toast="toast-rit">Copia Messaggio</button>
+              <button class="btn btn-wa btn-open-wa" type="button" data-msg="msg-rit">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-1</span>)</button>
+            </div>
+          </div>
+          <textarea class="wa-text" id="msg-rit" readonly>Caro Associato, Buon Pomeriggio! Dal controllo amministrativo risulta ancora in sospeso l’ultima quota mensile del corso accademico (scadenza giorno 5 c.m.). La invitiamo a regolarizzare il pagamento appena possibile. Qualora avesse già provveduto, la preghiamo di ignorare questo messaggio e di inviarci la ricevuta di pagamento. Cordiali Saluti, La segreteria Sicily Music Academy ®.</textarea>
+        </div>
+
+        <div class="wa-card">
+          <div class="wa-card-header">
+            <strong>4. COORDINATE PAGAMENTO (Bonifico Bancario &amp; P2P Postepay)</strong>
+            <div class="inline-row">
+              <span class="copy-toast" id="toast-coord">Copiato negli appunti!</span>
+              <button class="btn btn-navy" type="button" data-copy="msg-coord" data-toast="toast-coord">Copia Messaggio</button>
+              <button class="btn btn-wa btn-open-wa" type="button" data-msg="msg-coord">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-1</span>)</button>
+            </div>
+          </div>
+          <textarea class="wa-text" id="msg-coord" readonly style="min-height:145px;">Caro Associato, Buon Pomeriggio! Di seguito indichiamo le coordinate e le modalità per il saldo della quota associativa:
+
+🔹 BONIFICO BANCARIO
+Intestatario: Sicily Music Academy A.P.S.
+IBAN: IT20C0103004604000004330514
+Banca / Filiale: Monte dei Paschi
+Causale: Quota associativa [NOME ASSOCIATO] - mese di [MESE]
+
+🔹 P2P / RICARICA POSTEPAY
+Intestatario carta: Davide Cutrona - CTRDVD89C06G273R
+Numero carta Postepay: 4023601364872879
+Causale / Nota: Quota associativa [NOME ASSOCIATO] - [MESE]
+
+Una volta effettuato il pagamento, la preghiamo di inviarci gentile conferma allegando o indicando la ricevuta.
+Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== AREA NUOVI CONTATTI / RICHIESTE ==================== -->
+<div class="area" id="area-nuovicontatti">
+  <div class="card">
+    <h3>Database Nuovi Contatti / Richieste &amp; Prove Gratuite</h3>
+    <p style="margin:0 0 10px; font-size:12.5px; color:#334155;">
+      Registra qui i nuovi contatti che chiedono informazioni o prenotano una <strong>prova gratuita</strong>. Quando il contatto si iscrive ufficialmente, clicca su <strong>Iscritta → Passa ad Associati</strong>: verrà spostato nell'Area Associati come <strong>Neo Iscritto</strong> con nuovo Numero d'Iscrizione progressivo (<code>SMA-4</code>, <code>SMA-5</code>...).
+    </p>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr 130px 120px 180px 130px auto; gap:8px; margin-bottom:12px; align-items:end; background:#f8fafc; padding:10px; border:1px solid var(--border); border-radius:8px;">
+      <div class="form-group">
+        <label>Nome *</label>
+        <input type="text" id="ncNome" placeholder="Es. Chiara" />
+      </div>
+      <div class="form-group">
+        <label>Cognome *</label>
+        <input type="text" id="ncCognome" placeholder="Es. Esposito" />
+      </div>
+      <div class="form-group">
+        <label>Cellulare *</label>
+        <input type="text" id="ncCell" placeholder="333 1234567" />
+      </div>
+      <div class="form-group">
+        <label>Sede</label>
+        <select id="ncSede">
+          <option>Misilmeri</option>
+          <option>Monreale</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Corso / Strumento</label>
+        <select id="ncCorso">
+          <option value="Strumentale">Corso Strumentale (€ 120)</option>
+          <option value="Principale">Corso Principale (€ 135)</option>
+          <option value="Principale+secondo">Principale+secondo (€ 195)</option>
+          <option value="Strumentale+secondo">Strumentale+secondo (€ 180)</option>
+          <option value="Light">Strumentale Light 3/5 anni (€ 75)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Data Prova Gratuita</label>
+        <input type="text" id="ncDataProva" placeholder="GG/MM/AAAA" />
+      </div>
+      <button class="btn btn-navy" type="button" id="btnAddNuovoContatto">+ Salva Contatto</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="center" style="width:45px;">#</th>
+          <th>Nome e Cognome</th>
+          <th style="width:130px;">Cellulare</th>
+          <th style="width:100px;">Sede</th>
+          <th>Corso / Strumento</th>
+          <th style="width:150px;">Data Prova Gratuita</th>
+          <th class="center" style="width:240px;">Azioni</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyNuoviContatti"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ==================== AREA DOCENTI ==================== -->
+<div class="area active" id="area-docenti">
+  <div class="split">
+    <div class="card">
+      <h3>Elenco Docenti</h3>
+      <div class="assoc-list" id="docentiList"></div>
+      <button class="btn btn-gold" type="button" style="width:100%; margin-top:10px;" id="btnNuovoDocente">+ Nuovo Docente</button>
+    </div>
+
+    <div class="card">
+      <div class="sub-tabs" id="docSubTabs">
+        <button class="sub-tab active" type="button" data-doc-sub="scheda-docente">Scheda Docente (Dati &amp; Documento)</button>
+        <button class="sub-tab" type="button" data-doc-sub="area-operativa-docente">Area Operativa Docente</button>
+      </div>
+
+      <!-- SOTTO-AREA 1: SCHEDA DOCENTE (DATI SENSIBILI & COPIA DOCUMENTO) -->
+      <div class="sub-panel active" id="doc-sub-scheda-docente">
+        <h3>Scheda Docente — Dati Sensibili &amp; Copia Documento</h3>
+        <div class="form-grid">
+          <div class="form-group"><label>Docente (Nome e Cognome)</label><input type="text" id="docNome" value="M° Marco Bianchi" /></div>
+          <div class="form-group"><label>Strumento / Materia</label><input type="text" id="docMateria" value="Pianoforte / Teoria" /></div>
+          <div class="form-group">
+            <label>Sede di Insegnamento</label>
+            <select id="docSede">
+              <option>Misilmeri</option>
+              <option>Monreale</option>
+              <option>Entrambe (Misilmeri / Monreale)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Cellulare</label><input type="text" id="docTel" value="333 9876543" placeholder="Cellulare docente" /></div>
+          <div class="form-group"><label>Email</label><input type="email" id="docEmail" value="marco.bianchi@email.it" placeholder="Email docente" /></div>
+          <div class="form-group"><label>Codice Fiscale / P.IVA</label><input type="text" id="docCF" value="BNCMRC85C12G273L" /></div>
+          <div class="form-group"><label>IBAN</label><input type="text" id="docIban" value="IT60X0542811101000000123456" /></div>
+          <div class="form-group"><label>Residenza / Indirizzo</label><input type="text" id="docIndirizzo" value="Via Cavour 15, Misilmeri (PA)" placeholder="Indirizzo completo" /></div>
+          <div class="form-group" style="grid-column: span 2;">
+            <label>Copia Documento d'Identità Docente</label>
+            <div class="inline-row">
+              <input type="file" id="inpFileDocIdentita" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" style="display:none;" />
+              <button class="btn btn-outline" type="button" id="btnCaricaDocIdentita">Carica Copia Documento</button>
+              <button class="btn btn-blue" type="button" id="btnScaricaDocIdentita">Scarica Documento</button>
+              <span id="docNomeDocumento" style="color:var(--green); font-size:12px;">Documento_Marco_Bianchi.pdf</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:14px;">Storico Liquidazioni Docente</h3>
+        <table>
+          <thead>
+            <tr>
+              <th style="width:95px;">Data</th>
+              <th>Descrizione / Periodo</th>
+              <th style="width:140px;">Metodo</th>
+              <th class="right" style="width:110px;">Importo (€)</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyStoricoDoc">
+            <tr>
+              <td>31/10/2026</td>
+              <td>Compenso Ottobre 2026 (10h Pianoforte)</td>
+              <td>Bonifico Bancario</td>
+              <td class="right"><strong>€ 250,00</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SOTTO-AREA 2: SELETTORE DOCENTE A TENDINA & AREA IN PREPARAZIONE -->
+      <div class="sub-panel" id="doc-sub-area-operativa-docente">
+        <div class="form-grid" style="margin-bottom:12px;">
+          <div class="form-group" style="grid-column: span 2;">
+            <label>Seleziona Docente</label>
+            <select id="selDocenteTendina"></select>
+          </div>
+        </div>
+
+        <div class="alert-box alert-blue" id="boxRiepilogoDocenteSelezionato">
+          <strong>Docente selezionato:</strong> <span id="lblDocTendinaNome">M° Marco Bianchi</span> —
+          <span id="lblDocTendinaDettagli">Pianoforte / Teoria • Tel: 333 9876543</span>
+        </div>
+
+        <!-- REGISTRO GIORNALIERO ORE SVOLTE (SOSTITUISCE REGISTRO CARTACEO) -->
+        <div style="margin-bottom:14px; padding:10px 12px; background:#f8fafc; border:1px solid var(--border); border-radius:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+            <strong style="font-size:13px; color:var(--navy);">Registro Presenze &amp; Ore Giornaliere Docente</strong>
+            <span class="badge badge-info" id="lblTotOreRegistro">Totale Giorni: 0 • Ore Registrate: 12,0 h</span>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 120px 95px 1fr auto; gap:8px; margin-bottom:8px; align-items:end;">
+            <div class="form-group">
+              <label>Giorno / Data</label>
+              <input type="text" id="regGiornoData" value="26/11/2026" placeholder="GG/MM/AAAA" />
+            </div>
+            <div class="form-group">
+              <label>Ore Svolte</label>
+              <input type="number" step="0.5" min="0" id="regGiornoOre" value="2" />
+            </div>
+            <div class="form-group">
+              <label>Note Lezione / Attività</label>
+              <input type="text" id="regGiornoNote" placeholder="Es. Lezioni individuali pianoforte / teoria" />
+            </div>
+            <button class="btn btn-navy" type="button" id="btnAddGiornoOre">+ Registra Giorno</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th class="center" style="width:45px;">#</th>
+                <th style="width:110px;">Giorno</th>
+                <th class="right" style="width:90px;">Ore</th>
+                <th>Note / Attività</th>
+                <th class="center" style="width:85px;">Azioni</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyRegistroOreDoc"></tbody>
+          </table>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group"><label>Ore Svolte nel Periodo</label><input type="number" step="0.5" id="docOre" value="12" /></div>
+          <div class="form-group"><label>Rimborso spese (€)</label><input type="number" step="0.01" id="docTariffa" value="25.00" /></div>
+          <div class="form-group">
+            <label>Metodo Pagamento Rimborso Spese</label>
+            <select id="docMetodoRimborso">
+              <option value="Contanti">Contanti</option>
+              <option value="Bonifico Bancario">Bonifico Bancario</option>
+              <option value="P2P (Postepay)">P2P (Postepay)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Compenso P.O. (€)</label><input type="number" step="0.01" id="docTotale" value="300.00" /></div>
+          <div class="form-group">
+            <label>Metodo Pagamento Compenso P.O.</label>
+            <select id="docMetodoCompenso">
+              <option value="Bonifico Bancario">Bonifico Bancario</option>
+              <option value="Contanti">Contanti</option>
+              <option value="P2P (Postepay)">P2P (Postepay)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Totale Complessivo (Rimborso spese + Compenso P.O.)</label>
+            <input type="text" id="docTotaleComplessivo" value="€ 325,00" readonly style="background:#f8fafc; font-weight:800; color:var(--navy);" />
+          </div>
+        </div>
+
+        <div class="scan-box">
+          <div>
+            <strong style="font-size:12.5px;">Riepilogo Mensile Docente:</strong>
+            <span id="docRiepilogoStato" style="color:var(--muted); font-size:12.5px;">Pronto per la generazione PDF</span>
+          </div>
+          <div class="inline-row">
+            <button class="btn btn-gold" type="button" id="btnCreaRiepilogoMensilePdf">Crea Riepilogo mensile (PDF)</button>
+            <button class="btn btn-red" type="button" id="btnLiquidaDoc">Registra Uscita in Cassa</button>
+          </div>
+        </div>
+
+        <div class="note-pill" style="margin-top:12px;">
+          Area pronta per le prossime istruzioni sul docente selezionato nel menu a tendina.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== CASSA (ENTRATE / USCITE) ==================== -->
+<div class="area" id="area-cassa">
+  <div class="card">
+    <h3>Registro Giornaliero di Cassa (Entrate / Uscite)</h3>
+
+    <div class="filter-bar">
+      <select id="filtroCassaSede">
+        <option value="Tutte">Tutte le Sedi</option>
+        <option value="Misilmeri">Sede Misilmeri</option>
+        <option value="Monreale">Sede Monreale</option>
+      </select>
+      <select id="filtroCassaMet">
+        <option value="Tutti">Tutti i Metodi</option>
+        <option value="Contanti">Solo Contanti</option>
+        <option value="Tracciabili">Solo Tracciabili (P2P + Bonifici)</option>
+      </select>
+      <input type="text" id="filtroCassaTesto" placeholder="Filtra per descrizione o numero ricevuta..." />
+      <button class="btn btn-outline" type="button" id="btnResetFiltriCassa">Reset Filtri</button>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 105px 115px 1fr 150px 100px 100px auto; gap:8px; margin-bottom:10px;">
+      <input type="text" id="cassaData" value="26/11/2026" />
+      <select id="cassaSede">
+        <option>Misilmeri</option>
+        <option>Monreale</option>
+      </select>
+      <input type="text" id="cassaDesc" placeholder="Descrizione entrata o uscita..." />
+      <select id="cassaMet">
+        <option>Contanti</option>
+        <option>P2P (Postepay)</option>
+        <option>Bonifico Bancario</option>
+      </select>
+      <input type="number" step="0.01" id="cassaEnt" placeholder="Entrata +€" />
+      <input type="number" step="0.01" id="cassaUsc" placeholder="Uscita -€" />
+      <button class="btn btn-navy" type="button" id="btnAddCassa">+ Aggiungi</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="center" style="width:45px;">Riga</th>
+          <th style="width:95px;">Data</th>
+          <th style="width:95px;">Sede</th>
+          <th>Descrizione Movimento</th>
+          <th style="width:135px;">Metodo</th>
+          <th class="right" style="width:100px;">Entrate (+€)</th>
+          <th class="right" style="width:100px;">Uscite (-€)</th>
+          <th class="right" style="width:105px;">Saldo (€)</th>
+          <th class="center" style="width:140px;">Azioni</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyCassa"></tbody>
+    </table>
+
+    <div class="cassa-summary">
+      <span style="color:var(--green);" id="totEntrateLbl">Totale Entrate: € 0,00</span>
+      <span style="color:var(--red);" id="totUsciteLbl">Totale Uscite: € 0,00</span>
+      <span style="color:#0369a1;" id="saldoContantiLbl">Saldo Contanti: € 0,00</span>
+      <span style="color:#7c3aed;" id="saldoTraccLbl">Saldo Tracciabili: € 0,00</span>
+      <span style="color:var(--navy);" id="saldoNettoLbl">Saldo Netto: € 0,00</span>
+      <button class="btn btn-green" type="button" id="btnExportExcelCassa">Esporta in Excel (.xlsx)</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== DOCUMENTI E MODULISTICA ==================== -->
+<div class="area" id="area-documenti">
+  <div class="card">
+    <h3>Documenti e modulistica — Cartella Unica (PDF, DOCX, JPG)</h3>
+    <p style="margin:0 0 10px; font-size:12.5px; color:#334155;">
+      Carica qui regolamenti, moduli di iscrizione, disdette, liberatorie o documenti dell'associazione nei formati <strong>PDF</strong>, <strong>DOCX</strong> e <strong>JPG</strong>. Tutti i file restano raccolti in un'unica cartella comune.
+    </p>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr auto; gap:10px; margin-bottom:12px; align-items:end; background:#f8fafc; padding:10px; border:1px solid var(--border); border-radius:8px;">
+      <div class="form-group">
+        <label>Titolo / Descrizione Documento</label>
+        <input type="text" id="docModTitolo" placeholder="Es. Modulo Disdetta Associativa" />
+      </div>
+      <div class="form-group">
+        <label>Seleziona File (.pdf, .docx, .jpg)</label>
+        <input type="file" id="docModFile" accept=".pdf,.docx,.jpg,.jpeg,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg" />
+      </div>
+      <button class="btn btn-navy" type="button" id="btnAddDocMod">+ Carica nella Cartella</button>
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <input type="text" class="search-input" id="searchDocMod" placeholder="Cerca documento per nome o titolo..." />
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th class="center" style="width:45px;">#</th>
+          <th>Titolo / Nome File</th>
+          <th style="width:90px;">Formato</th>
+          <th style="width:105px;">Data</th>
+          <th style="width:95px;">Dimensione</th>
+          <th class="center" style="width:175px;">Azioni</th>
+        </tr>
+      </thead>
+      <tbody id="tbodyDocMod"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  function showMessage(msg) {
+    var banner = document.getElementById("toastBanner");
+    if (!banner) return;
+    banner.textContent = msg;
+    banner.style.display = "block";
+    clearTimeout(banner._t);
+    banner._t = setTimeout(function () {
+      banner.style.display = "none";
+    }, 3400);
+  }
+
+  function fmtEuro(val) {
+    return Number(val || 0).toFixed(2).replace(".", ",");
+  }
+
+  var anniAccademici = ["A.A 2026-2027"];
+  var cartelleAperte = { "A.A 2026-2027": true, "Ritirati/non iscritti": true };
+
+  var associati = [
+    { id: 1, numIscr: "SMA-1", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Mario Rossi", corsista: "Giulia Rossi", luogoNascita: "Palermo", dataNascita: "01/01/1980", indirizzo: "Via Roma 10, Misilmeri", sede: "Misilmeri", tel: "329 0000000", tel2: "338 1122334", email: "mario.rossi@email.it", cf: "RSSMRA80A01G273X", scad: "14/10/2027", tipo: "Strumentale", quota: 120.00, trinity: true, firma: "14/10/2026", prima: "19/10/2026", prova: false, contrattoNome: "Contratto_SMA-1_Mario_Rossi.pdf", contrattoUrl: "" },
+    { id: 2, numIscr: "SMA-2", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Lucia Verdi", corsista: "Matteo Verdi", luogoNascita: "Monreale", dataNascita: "12/02/1984", indirizzo: "Via Umberto 22, Monreale", sede: "Monreale", tel: "333 4455667", tel2: "320 9988776", email: "lucia.verdi@email.it", cf: "VRDLCU84B45G273Y", scad: "15/10/2027", tipo: "Principale", quota: 135.00, trinity: false, firma: "15/10/2026", prima: "20/10/2026", prova: false, contrattoNome: "Contratto_SMA-2_Lucia_Verdi.pdf", contrattoUrl: "" },
+    { id: 3, numIscr: "SMA-3", statoIscr: "Neo Iscritto", annoAcc: "A.A 2026-2027", nome: "Rosetta Bonanno", corsista: "Sofia Bonanno", luogoNascita: "Misilmeri", dataNascita: "03/03/1988", indirizzo: "Corso V. Emanuele 50, Misilmeri", sede: "Misilmeri", tel: "347 7788990", tel2: "", email: "rosetta.bonanno@email.it", cf: "BNNRTT88C50G273Z", scad: "01/12/2027", tipo: "Light", quota: 75.00, trinity: false, firma: "01/12/2026", prima: "04/12/2026", prova: true, contrattoNome: "Contratto_SMA-3_Rosetta_Bonanno.pdf", contrattoUrl: "" }
+  ];
+
+  var nuoviContatti = [
+    { id: 101, nome: "Chiara", cognome: "Esposito", cell: "331 5566778", sede: "Misilmeri", corso: "Strumentale", dataProva: "28/11/2026" },
+    { id: 102, nome: "Davide", cognome: "Russo", cell: "349 2233445", sede: "Monreale", corso: "Principale+secondo", dataProva: "02/12/2026" }
+  ];
+
+  var docenti = [
+    { id: 1, nome: "M° Marco Bianchi", materia: "Pianoforte / Teoria", sede: "Misilmeri", tel: "333 9876543", email: "marco.bianchi@email.it", cf: "BNCMRC85C12G273L", iban: "IT60X0542811101000000123456", indirizzo: "Via Cavour 15, Misilmeri (PA)", tariffa: 25, docNome: "Documento_Marco_Bianchi.pdf", docUrl: "", registroGiorni: [{ giorno: "04/11/2026", ore: 4, note: "Lezioni pomeridiane pianoforte" }, { giorno: "11/11/2026", ore: 4, note: "Lezioni pianoforte e solfeggio" }, { giorno: "18/11/2026", ore: 4, note: "Preparazione saggio / esami" }] },
+    { id: 2, nome: "Prof.ssa Elena Russo", materia: "Canto Moderno / Coro", sede: "Monreale", tel: "340 1122334", email: "elena.russo@email.it", cf: "RSSLNE90D52G273K", iban: "IT45Y0200804600000105544332", indirizzo: "Corso Pietro Novelli 40, Monreale (PA)", tariffa: 25, docNome: "Documento_Elena_Russo.pdf", docUrl: "", registroGiorni: [{ giorno: "05/11/2026", ore: 3, note: "Canto moderno e coro" }, { giorno: "12/11/2026", ore: 3, note: "Tecnica vocale" }] },
+    { id: 3, nome: "M° Luca Conti", materia: "Chitarra Classica / Moderna", sede: "Entrambe (Misilmeri / Monreale)", tel: "328 5544332", email: "luca.conti@email.it", cf: "CNTLCU88E10G273W", iban: "IT12Z0760104600001044332211", indirizzo: "Via Roma 88, Misilmeri (PA)", tariffa: 22, docNome: "Documento_Luca_Conti.pdf", docUrl: "", registroGiorni: [{ giorno: "06/11/2026", ore: 3, note: "Chitarra classica e moderna" }] }
+  ];
+
+  var movimentiCassa = [
+    { data: "24/11/2026", sede: "Misilmeri", desc: "Ric. Ass. 542/1 - Rosetta Bonanno (#SMA-3 Quota annuale + Mese 1)", met: "Bonifico Bancario", ent: 125.00, usc: 0 },
+    { data: "25/11/2026", sede: "Monreale", desc: "Acquisto cancelleria e materiali segreteria", met: "Contanti", ent: 0, usc: 28.50 }
+  ];
+
+  var documentiModulistica = [
+    { titolo: "Statuto e Regolamento Interno Sicily Music Academy APS", nomeFile: "Regolamento_SMA_APS.pdf", formato: "PDF", data: "01/09/2026", size: "420 KB", url: "" },
+    { titolo: "Modulo Iscrizione e Consenso Trattamento Dati", nomeFile: "Modulo_Iscrizione_SMA.docx", formato: "DOCX", data: "01/09/2026", size: "185 KB", url: "" }
+  ];
+
+  var editingCassaIdx = null;
+  var provaCaricata = false;
+  var progGen = 543;
+  var selectedAssocIdx = 0;
+  var selectedDocIdx = 0;
+
+  // Logo originale caricato dall'utente (senza alcuna alterazione grafica)
+  var logoOriginaleData = {
+    arrayBuffer: null,
+    ext: "png",
+    nome: ""
+  };
+
+  function xmlEscape(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&apos;");
+  }
+
+  function creaParagrafoWordXml(testo, opts) {
+    var o = opts || {};
+    var jc = o.align ? '<w:jc w:val="' + o.align + '"/>' : '';
+    var spacingBefore = o.spaceBefore || 0;
+    var spacingAfter = (o.spaceAfter !== undefined) ? o.spaceAfter : 120;
+    var lineSpacing = o.line || 276;
+    var rPrParts = [];
+    if (o.bold) rPrParts.push("<w:b/>");
+    if (o.italic) rPrParts.push("<w:i/>");
+    if (o.color) rPrParts.push('<w:color w:val="' + o.color + '"/>');
+    if (o.sizeHalfPt) {
+      rPrParts.push('<w:sz w:val="' + o.sizeHalfPt + '"/>');
+      rPrParts.push('<w:szCs w:val="' + o.sizeHalfPt + '"/>');
+    }
+    var rPr = rPrParts.length ? "<w:rPr>" + rPrParts.join("") + "</w:rPr>" : "";
+    return (
+      "<w:p>" +
+        "<w:pPr>" +
+          '<w:spacing w:before="' + spacingBefore + '" w:after="' + spacingAfter + '" w:line="' + lineSpacing + '" w:lineRule="auto"/>' +
+          jc +
+        "</w:pPr>" +
+        "<w:r>" +
+          rPr +
+          '<w:t xml:space="preserve">' + xmlEscape(testo) + "</w:t>" +
+        "</w:r>" +
+      "</w:p>"
+    );
+  }
+
+  function creaParagrafoLogoWordXml(hasLogo, ext) {
+    if (!hasLogo) {
+      return creaParagrafoWordXml("[Logo originale Sicily Music Academy non ancora caricato — clicca su 'Carica Logo Originale' per includerlo tal quale]", {
+        italic: true,
+        color: "B45309",
+        sizeHalfPt: 18,
+        spaceAfter: 140
+      });
+    }
+    var contentType = (ext === "jpg" || ext === "jpeg") ? "image/jpeg" : "image/png";
+    // Dimensione in EMU: larghezza 1.75 pollici (~1600200 EMU), altezza ~0.95 pollici (~868680 EMU)
+    return (
+      "<w:p>" +
+        "<w:pPr><w:spacing w:before=\"0\" w:after=\"120\"/><w:jc w:val=\"left\"/></w:pPr>" +
+        "<w:r>" +
+          "<w:drawing>" +
+            '<wp:inline distT="0" distB="0" distL="0" distR="0" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">' +
+              '<wp:extent cx="1600200" cy="868680"/>' +
+              '<wp:docPr id="1" name="Logo Originale" descr="' + contentType + '"/>' +
+              '<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' +
+                '<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' +
+                  '<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' +
+                    "<pic:nvPicPr>" +
+                      '<pic:cNvPr id="0" name="logo_originale"/>' +
+                      "<pic:cNvPicPr/>" +
+                    "</pic:nvPicPr>" +
+                    "<pic:blipFill>" +
+                      '<a:blip r:embed="rIdLogo1" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"/>' +
+                      "<a:stretch><a:fillRect/></a:stretch>" +
+                    "</pic:blipFill>" +
+                    "<pic:spPr>" +
+                      '<a:xfrm><a:off x="0" y="0"/><a:ext cx="1600200" cy="868680"/></a:xfrm>' +
+                      '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>' +
+                    "</pic:spPr>" +
+                  "</pic:pic>" +
+                "</a:graphicData>" +
+              "</a:graphic>" +
+            "</wp:inline>" +
+          "</w:drawing>" +
+        "</w:r>" +
+      "</w:p>"
+    );
+  }
+
+  async function generaEScaricaDocxComunicazioneInsoluto() {
+    try {
+      if (!window.JSZip) {
+        showMessage("Libreria DOCX (JSZip) non disponibile offline.");
+        return;
+      }
+
+      var assocObj = associati[selectedAssocIdx] || {};
+      var numIscr = document.getElementById("inpNumIscrizione").value || "SMA-1";
+      var sede = document.getElementById("inpSede").value || "Misilmeri";
+      var associato = document.getElementById("inpAssociato").value || "Associato";
+      var corsista = document.getElementById("inpCorsista").value || "";
+      var tipoCorso = document.getElementById("inpTipoCorso").value || "Strumentale";
+      var dataFirma = document.getElementById("inpDataFirma").value || "-";
+      var scadenza = document.getElementById("inpScadenza").value || "-";
+
+      var baseMensile = parseFloat(document.getElementById("inpQuotaMensile").value) || 0;
+      var trinityExtra = document.getElementById("chkTrinity").checked ? 25.00 : 0;
+      var totaleMese = baseMensile + trinityExtra;
+
+      var mesi = ["Settembre", "Ottobre", "Novembre", "Dicembre", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno"];
+      var vociAnnue = [{ voce: "Quota Annuale Associativa", imp: 50.00, stato: "Saldata" }];
+      mesi.forEach(function (m, i) {
+        vociAnnue.push({
+          voce: "Quota Associativa Mensile del Mese di " + m + " 2026",
+          imp: totaleMese,
+          stato: i < 2 ? "Saldata" : "Da pagare"
+        });
+      });
+      vociAnnue.push({ voce: "Quota Concerto di Capodanno", imp: 40.00, stato: "Da pagare" });
+      vociAnnue.push({ voce: "Quota Concerto di Fine Anno Accademico", imp: 60.00, stato: "Da pagare" });
+
+      var insolute = vociAnnue.filter(function (v) { return v.stato !== "Saldata"; });
+      var versate = vociAnnue.filter(function (v) { return v.stato === "Saldata"; });
+      var totInsoluto = insolute.reduce(function (acc, item) { return acc + item.imp; }, 0);
+      var totRidottoArt7 = Number((totInsoluto * 0.5).toFixed(2));
+
+      var bodyParts = [];
+      var hasLogo = !!logoOriginaleData.arrayBuffer;
+      var imgExt = (logoOriginaleData.ext === "jpg" || logoOriginaleData.ext === "jpeg") ? "jpeg" : "png";
+
+      bodyParts.push(creaParagrafoLogoWordXml(hasLogo, imgExt));
+      bodyParts.push(creaParagrafoWordXml('"SICILY MUSIC ACADEMY" APS', { bold: true, sizeHalfPt: 26, spaceAfter: 60 }));
+      bodyParts.push(creaParagrafoWordXml("CELL. 329.3715380 - EMAIL. direzione.sicilymusicacademy@gmail.com", { sizeHalfPt: 18, color: "475569", spaceAfter: 40 }));
+      bodyParts.push(creaParagrafoWordXml("C.F : 97332490826 - www.sicilymusicacademy.it | Iscr. #" + numIscr, { sizeHalfPt: 18, color: "475569", spaceAfter: 180 }));
+
+      bodyParts.push(creaParagrafoWordXml(
+        "Oggetto : Richiesta di Saldo delle quote Associative – Associata " + associato + (corsista ? " (Corsista: " + corsista + ")" : ""),
+        { bold: true, sizeHalfPt: 21, spaceAfter: 140 }
+      ));
+
+      bodyParts.push(creaParagrafoWordXml(
+        "La Sicily Music Academy ®APS, Ente di Formazione Musicale con sede legale in Corso Vittorio Emanuele ,334 – Misilmeri (PA) e in Salita San Cristoforo, 7, Monreale (PA),",
+        { align: "both", sizeHalfPt: 20, spaceAfter: 160, line: 288 }
+      ));
+
+      bodyParts.push(creaParagrafoWordXml("PREMESSO CHE", { align: "center", bold: true, sizeHalfPt: 21, spaceBefore: 80, spaceAfter: 140 }));
+
+      bodyParts.push(creaParagrafoWordXml(
+        "Con tutta la cordialità che ci lega alla nostra comunità associativa, ricordiamo che in data " + dataFirma +
+        " l'Associazione stipulava con l'Associato " + associato +
+        (assocObj.luogoNascita ? ", nato a " + assocObj.luogoNascita : "") +
+        (assocObj.dataNascita ? " il " + assocObj.dataNascita : "") +
+        (assocObj.indirizzo ? ", residente in " + assocObj.indirizzo : "") +
+        ', un contratto avente come oggetto "Contratto d\' Iscrizione al Corso ' + tipoCorso +
+        '" e che, in forza del predetto contratto, l\'Associato, non ha ancora provveduto a Saldare il qui elenco dettagliato di Quote Associative:',
+        { align: "both", sizeHalfPt: 20, spaceAfter: 140, line: 288 }
+      ));
+
+      insolute.forEach(function (item) {
+        bodyParts.push(creaParagrafoWordXml(
+          "• " + item.voce + " di € " + fmtEuro(item.imp) + ";",
+          { align: "both", sizeHalfPt: 19, spaceAfter: 80, line: 264 }
+        ));
+      });
+
+      bodyParts.push(creaParagrafoWordXml(
+        "Le Quote Associative Insolute Totali ammontano a € " + fmtEuro(totInsoluto),
+        { bold: true, color: "B91C1C", sizeHalfPt: 21, spaceBefore: 100, spaceAfter: 140 }
+      ));
+
+      bodyParts.push(creaParagrafoWordXml(
+        "Dai nostri archivi ci risultano versate tali quote :",
+        { sizeHalfPt: 20, spaceAfter: 100, line: 276 }
+      ));
+
+      versate.forEach(function (item) {
+        bodyParts.push(creaParagrafoWordXml(
+          "• " + item.voce + " € " + fmtEuro(item.imp) + ";",
+          { align: "both", sizeHalfPt: 19, color: "334155", spaceAfter: 80, line: 264 }
+        ));
+      });
+
+      bodyParts.push(creaParagrafoWordXml("Tutto ciò premesso, L'Associazione,", { sizeHalfPt: 20, spaceBefore: 120, spaceAfter: 100 }));
+      bodyParts.push(creaParagrafoWordXml("CHIEDE", { align: "center", bold: true, sizeHalfPt: 22, spaceBefore: 60, spaceAfter: 140 }));
+
+      bodyParts.push(creaParagrafoWordXml(
+        "Gentilmente all'Associato " + associato +
+        (assocObj.luogoNascita ? ", nato a " + assocObj.luogoNascita : "") +
+        (assocObj.dataNascita ? " il " + assocObj.dataNascita : "") +
+        (assocObj.indirizzo ? ", residente in " + assocObj.indirizzo : "") +
+        ", di adempiere alle proprie Obbligazioni Contrattuali Associative, quindi al Pagamento della Quota Associativa Complessiva di € " +
+        fmtEuro(totInsoluto) + " (alla data odierna) in questi termini e condizioni :",
+        { align: "both", sizeHalfPt: 20, spaceAfter: 140, line: 288 }
+      ));
+
+      bodyParts.push(creaParagrafoWordXml(
+        "• Pagamento in misura ridotta pari a € " + fmtEuro(totRidottoArt7) +
+        ", come previsto dall'Art. 7 del sopra citato Contratto, da effettuarsi entro e non oltre il " + scadenza +
+        " per la definizione e risoluzione integrale dell'insoluto e del relativo Contratto Associativo. Le ricordiamo con cortesia che, in considerazione della data di sottoscrizione del contratto (" +
+        dataFirma + "), questa rappresenta l'ultima possibilità di avvalersi dell'applicazione del suddetto Art. 7. In caso di mancato saldo entro il termine indicato, l'agevolazione non sarà più applicabile e l'intero ammontare dell'insoluto dovrà essere versato in un'unica soluzione, per un importo pari a € " +
+        fmtEuro(totInsoluto) + ".",
+        { align: "both", sizeHalfPt: 19, spaceAfter: 160, line: 288 }
+      ));
+
+      bodyParts.push(creaParagrafoWordXml("Il Pagamento dovrà pervenire tramite Bonifico Bancario alle seguenti Coordinate Bancarie ;", { align: "both", sizeHalfPt: 20, spaceAfter: 100, line: 276 }));
+      bodyParts.push(creaParagrafoWordXml("Conto : Monte dei Paschi di Siena", { sizeHalfPt: 19, spaceAfter: 60 }));
+      bodyParts.push(creaParagrafoWordXml("Intestato a : Sicily Music Academy APS.", { sizeHalfPt: 19, spaceAfter: 60 }));
+      bodyParts.push(creaParagrafoWordXml("IBAN : IT20C0103004604000004330514", { bold: true, sizeHalfPt: 19, spaceAfter: 60 }));
+      bodyParts.push(creaParagrafoWordXml("Causale : Quote Associative Insolute " + associato + (corsista ? " – " + corsista : "") + ".", { bold: true, sizeHalfPt: 19, spaceAfter: 160 }));
+
+      bodyParts.push(creaParagrafoWordXml(
+        "Una volta effettuato il Pagamento chiediamo gentilmente all'Associato di mandare la Ricevuta del Bonifico (se intende anche disdire il contratto allegare il Modulo di Disdetta Associativa, scaricabile da qui : https://bit.ly/3R49Qjv , compilato e firmato) nei formati PDF o JPG all' Email. Direzione.sicilymusicacademy@gmail.com;",
+        { align: "both", sizeHalfPt: 19, spaceAfter: 160, line: 288 }
+      ));
+
+      bodyParts.push(creaParagrafoWordXml("In Attesa di sue, La direzione,  SICILY MUSIC ACADEMY.", { bold: true, sizeHalfPt: 20, spaceAfter: 200 }));
+      bodyParts.push(creaParagrafoWordXml(sede + ", 26/11/2026                                                                                Firma Presidente", { sizeHalfPt: 19, spaceAfter: 120 }));
+
+      var documentXml =
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" ' +
+        'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
+        "<w:body>" +
+        bodyParts.join("") +
+        '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="900" w:right="1000" w:bottom="900" w:left="1000"/></w:sectPr>' +
+        "</w:body>" +
+        "</w:document>";
+
+      var contentTypesXml =
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+        '<Default Extension="xml" ContentType="application/xml"/>' +
+        '<Default Extension="png" ContentType="image/png"/>' +
+        '<Default Extension="jpeg" ContentType="image/jpeg"/>' +
+        '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
+        "</Types>";
+
+      var rootRelsXml =
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+        '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
+        "</Relationships>";
+
+      var docRelsParts = [];
+      if (hasLogo) {
+        docRelsParts.push(
+          '<Relationship Id="rIdLogo1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/logo_originale.' + imgExt + '"/>'
+        );
+      }
+      var docRelsXml =
+        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+        docRelsParts.join("") +
+        "</Relationships>";
+
+      var zip = new window.JSZip();
+      zip.file("[Content_Types].xml", contentTypesXml);
+      zip.folder("_rels").file(".rels", rootRelsXml);
+      var wordFolder = zip.folder("word");
+      wordFolder.file("document.xml", documentXml);
+      wordFolder.folder("_rels").file("document.xml.rels", docRelsXml);
+      if (hasLogo) {
+        wordFolder.folder("media").file("logo_originale." + imgExt, logoOriginaleData.arrayBuffer);
+      }
+
+      var blob = await zip.generateAsync({ type: "blob" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "Comunicazione_Insoluto_" + numIscr + "_" + associato.replace(/\s+/g, "_") + ".docx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+      showMessage("File modificabile .docx generato per " + associato + ".");
+    } catch (err) {
+      showMessage("Errore nella generazione del file .docx: " + err.message);
+    }
+  }
+
+  function generaEScaricaPdfRicevutaAssociativa(dati) {
+    try {
+      var jspdfLib = window.jspdf;
+      if (!jspdfLib || !jspdfLib.jsPDF) {
+        showMessage("Libreria PDF non disponibile offline.");
+        return;
+      }
+      var doc = new jspdfLib.jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+      doc.setFillColor(15, 23, 42);
+      doc.rect(14, 14, 182, 24, "F");
+      doc.setTextColor(255, 255, 255);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text("SICILY MUSIC ACADEMY APS — RICEVUTA ASSOCIATIVA", 20, 24);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(9);
+      doc.text("C.so Vittorio Emanuele, 334 - Misilmeri (PA) | C.F. 97332490826", 20, 30);
+      doc.text("Registered Exam Centre 67642 - Trinity College London", 20, 35);
+
+      doc.setTextColor(15, 23, 42);
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(11.5);
+      doc.text("RICEVUTA ASSOCIATIVA N. " + dati.numero, 14, 48);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text("Data emissione: " + dati.data, 145, 48);
+
+      doc.setDrawColor(194, 142, 14);
+      doc.setLineWidth(0.8);
+      doc.line(14, 51, 196, 51);
+
+      doc.setFontSize(10);
+      doc.text("Numero Iscrizione: " + dati.numIscr, 14, 60);
+      doc.text("Sede: " + dati.sede, 145, 60);
+      doc.text("Associato (Contraente): " + dati.associato, 14, 67);
+      doc.text("Corsista (Allievo): " + dati.corsista, 14, 74);
+      doc.text("Metodo di Pagamento: " + dati.metodo, 14, 81);
+
+      doc.setFillColor(241, 245, 249);
+      doc.rect(14, 90, 182, 9, "F");
+      doc.setFont("helvetica", "bold");
+      doc.text("Quota Associativa / Causale", 17, 96);
+      doc.text("Dettaglio Quota Associativa", 95, 96);
+      doc.text("Importo", 175, 96);
+
+      doc.setFont("helvetica", "normal");
+      doc.rect(14, 99, 182, 18);
+      doc.text(String(dati.voce || "").substring(0, 40), 17, 107);
+      doc.text(String(dati.dettaglio || "").substring(0, 40), 95, 107);
+      doc.setFont("helvetica", "bold");
+      doc.text("EUR " + fmtEuro(dati.importo), 168, 107);
+
+      var yCur = 125;
+      if (dati.note) {
+        doc.setFont("helvetica", "italic");
+        doc.setFontSize(9);
+        doc.text("Note: " + dati.note, 14, yCur);
+        yCur += 8;
+      }
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(8.5);
+      doc.text(
+        "Ricevuta associativa per versamento quota associativa / contributo istituzionale riservato ai soci (art. 148 TUIR / D.Lgs. 117/2017) - Non costituisce fattura commerciale.",
+        14,
+        yCur,
+        { maxWidth: 182 }
+      );
+
+      doc.setFontSize(9.5);
+      doc.text("La Segreteria - Sicily Music Academy APS", 130, 152);
+      doc.line(130, 162, 192, 162);
+
+      doc.save(dati.fileName);
+    } catch (err) {
+      showMessage("Errore nella generazione della Ricevuta Associativa PDF: " + err.message);
+    }
+  }
+
+  // --- POPUP AVVISI ---
+  var DEFAULT_CLOUD_ENDPOINT = "https://script.google.com/macros/s/AKfycbwhavQvRy6fM4tU6ShimwSzy_2_KjuCKSI5hthM_h5Wuw50QIy65QbYtM9b-Talo8Iz/exec";
+  var modal = document.getElementById("startupModal");
+  var cloudModal = document.getElementById("cloudModal");
+  var accountCollegato = true;
+  var autoSyncTimer = null;
+
+  function chiudiModal() {
+    if (modal) {
+      modal.classList.add("hidden");
+      modal.style.display = "none";
+    }
+  }
+
+  function apriModal() {
+    if (modal) {
+      modal.classList.remove("hidden");
+      modal.style.display = "flex";
+    }
+  }
+
+  function chiudiCloudModal() {
+    if (cloudModal) {
+      cloudModal.classList.add("hidden");
+      cloudModal.style.display = "none";
+    }
+  }
+
+  function apriCloudModal() {
+    if (cloudModal) {
+      cloudModal.classList.remove("hidden");
+      cloudModal.style.display = "flex";
+    }
+  }
+
+  function aggiornaBadgeCloud(testoBadge, testoDettaglio, connesso) {
+    var badge = document.getElementById("cloudStatusBadge");
+    var dett = document.getElementById("cloudDettaglioStato");
+    if (badge) {
+      badge.textContent = testoBadge;
+      badge.className = connesso ? "badge badge-ok" : "badge badge-warn";
+    }
+    if (dett) {
+      dett.textContent = testoDettaglio;
+      dett.style.color = connesso ? "var(--green)" : "#334155";
+      dett.style.fontWeight = connesso ? "700" : "400";
+    }
+  }
+
+  document.getElementById("btnChiudiModal").addEventListener("click", chiudiModal);
+  document.getElementById("btnCloseX").addEventListener("click", chiudiModal);
+  document.getElementById("btnApriModal").addEventListener("click", apriModal);
+  document.getElementById("btnApriCloudModal").addEventListener("click", apriCloudModal);
+  document.getElementById("btnCloseCloudX").addEventListener("click", chiudiCloudModal);
+  document.getElementById("btnChiudiCloudModal").addEventListener("click", chiudiCloudModal);
+
+  modal.addEventListener("click", function (e) {
+    if (e.target === modal) chiudiModal();
+  });
+
+  cloudModal.addEventListener("click", function (e) {
+    if (e.target === cloudModal) chiudiCloudModal();
+  });
+
+  async function inviaSincronizzazioneCloud(azione, silenzioso) {
+    var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
+    var endpoint = (document.getElementById("cloudSyncEndpoint").value || DEFAULT_CLOUD_ENDPOINT).trim();
+    var payload = {
+      azione: azione,
+      account: emailAccount,
+      timestamp: new Date().toISOString(),
+      cartellaDrive: "Contratti Originali",
+      anniAccademici: anniAccademici,
+      associati: associati,
+      nuoviContatti: nuoviContatti,
+      docenti: docenti,
+      movimentiCassa: movimentiCassa,
+      documentiModulistica: documentiModulistica
+    };
+
+    if (endpoint) {
+      try {
+        await fetch(endpoint, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+        aggiornaBadgeCloud(
+          "Account: " + emailAccount + " (Sincronizzato)",
+          "Ultimo salvataggio cloud su " + emailAccount + " (" + new Date().toLocaleTimeString("it-IT") + ")",
+          true
+        );
+        if (!silenzioso) {
+          showMessage("Dati sincronizzati con " + emailAccount + ".");
+        }
+        return;
+      } catch (err) {
+        if (!silenzioso) {
+          showMessage("Errore di rete nella sincronizzazione cloud: " + err.message);
+        }
+      }
+    }
+
+    accountCollegato = true;
+    aggiornaBadgeCloud(
+      "Account: " + emailAccount + " (Pronto)",
+      "Profilo " + emailAccount + " impostato.",
+      true
+    );
+    if (!silenzioso) {
+      showMessage("Profilo collegato a " + emailAccount + ".");
+    }
+  }
+
+  function programmaAutoSync(azione) {
+    clearTimeout(autoSyncTimer);
+    autoSyncTimer = setTimeout(function () {
+      inviaSincronizzazioneCloud(azione || "auto_sync", true);
+    }, 900);
+  }
+
+  async function caricaDatiDalCloud(silenzioso) {
+    var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
+    var endpoint = (document.getElementById("cloudSyncEndpoint").value || DEFAULT_CLOUD_ENDPOINT).trim();
+    if (!endpoint) return;
+
+    try {
+      aggiornaBadgeCloud(
+        "Account: " + emailAccount + " (Aggiornamento...)",
+        "Scaricamento ultimi dati da " + emailAccount + "...",
+        true
+      );
+      var resp = await fetch(endpoint, { method: "GET" });
+      if (!resp.ok) throw new Error("HTTP " + resp.status);
+      var data = await resp.json();
+
+      if (data && typeof data === "object" && Object.keys(data).length > 0) {
+        if (Array.isArray(data.anniAccademici) && data.anniAccademici.length > 0) {
+          anniAccademici = data.anniAccademici;
+          anniAccademici.forEach(function (aa) {
+            if (cartelleAperte[aa] === undefined) cartelleAperte[aa] = true;
+          });
+        }
+        if (Array.isArray(data.associati) && data.associati.length > 0) {
+          associati = data.associati;
+          selectedAssocIdx = Math.min(selectedAssocIdx, associati.length - 1);
+        }
+        if (Array.isArray(data.nuoviContatti)) {
+          nuoviContatti = data.nuoviContatti;
+        }
+        if (Array.isArray(data.docenti) && data.docenti.length > 0) {
+          docenti = data.docenti;
+          selectedDocIdx = Math.min(selectedDocIdx, docenti.length - 1);
+        }
+        if (Array.isArray(data.movimentiCassa)) {
+          movimentiCassa = data.movimentiCassa;
+        }
+        if (Array.isArray(data.documentiModulistica)) {
+          documentiModulistica = data.documentiModulistica;
+        }
+
+        popolaSelectAnni();
+        renderAssociati();
+        if (associati[selectedAssocIdx]) caricaScheda(associati[selectedAssocIdx]);
+        renderNuoviContatti();
+        renderDocenti();
+        caricaSchedaDocente(selectedDocIdx);
+        renderCassa();
+        renderDocumentiModulistica();
+
+        aggiornaBadgeCloud(
+          "Account: " + emailAccount + " (Aggiornato Cloud)",
+          "Dati aggiornati dal cloud (" + new Date().toLocaleTimeString("it-IT") + ")",
+          true
+        );
+        if (!silenzioso) {
+          showMessage("Dati aggiornati da " + emailAccount + ".");
+        }
+      } else {
+        aggiornaBadgeCloud(
+          "Account: " + emailAccount + " (Connesso)",
+          "Connesso a " + emailAccount + " — pronto a salvare i dati.",
+          true
+        );
+      }
+    } catch (err) {
+      aggiornaBadgeCloud(
+        "Account: " + emailAccount + " (Connesso)",
+        "Connesso a " + emailAccount + " (" + err.message + ")",
+        true
+      );
+    }
+  }
+
+  document.getElementById("btnCollegaAccountGoogle").addEventListener("click", function () {
+    var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
+    var clientId = (document.getElementById("cloudClientId").value || "").trim();
+    accountCollegato = true;
+    if (clientId && window.google && window.google.accounts && window.google.accounts.oauth2) {
+      try {
+        var tokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: clientId,
+          scope: "https://www.googleapis.com/auth/drive.file openid email profile",
+          hint: emailAccount,
+          callback: function (resp) {
+            if (resp && resp.access_token) {
+              aggiornaBadgeCloud(
+                "Account: " + emailAccount + " (Connesso Google)",
+                "Connesso a Google Drive con " + emailAccount + " (cartella: Contratti Originali).",
+                true
+              );
+              showMessage("Accesso Google completato per " + emailAccount);
+            }
+          }
+        });
+        tokenClient.requestAccessToken({ prompt: "consent" });
+        return;
+      } catch (err) {
+        showMessage("Avvio OAuth Google non riuscito: " + err.message);
+      }
+    }
+    aggiornaBadgeCloud(
+      "Account: " + emailAccount + " (Configurato)",
+      "Account associativo impostato su " + emailAccount + " (Drive: Contratti Originali).",
+      true
+    );
+    showMessage("Account associativo impostato su " + emailAccount);
+  });
+
+  document.getElementById("btnSincronizzaOra").addEventListener("click", function () {
+    inviaSincronizzazioneCloud("sync_manuale", false);
+  });
+
+  function copiaTesto(testo, toastId) {
+// ... existing code ... -->
+    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].scad = scadStr;
+    fb.style.color = "#15803d";
+    fb.textContent = "Calcolo eseguito: Data Firma " + formatData(parsed) + " + 10 mesi accademici (esclusi Lug-Ago) = " + scadStr;
+    renderAssociati();
+    programmaAutoSync("aggiorna_scadenza");
+  }
+
+  document.getElementById("btnCalcola10Mesi").addEventListener("click", function () {
+// ... existing code ... -->
+    progGen++;
+    renderCassa();
+    programmaAutoSync("ricevuta_prova");
+
+    generaEScaricaPdfRicevutaAssociativa({
+// ... existing code ... -->
+    renderAssociati();
+    showMessage("Creata nuova cartella: " + nuovoAA);
+    programmaAutoSync("nuovo_aa");
+  });
+
+  function creaElementoAssociato(a, idx) {
+// ... existing code ... -->
+  document.getElementById("inpAssociato").addEventListener("input", function () {
+    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].nome = this.value;
+    document.getElementById("prevAssoc").textContent = this.value;
+    aggiornaRiferimentiWhatsApp();
+    renderAssociati();
+    programmaAutoSync("modifica_associato");
+  });
+  document.getElementById("inpCorsista").addEventListener("input", function () {
+    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].corsista = this.value;
+    document.getElementById("prevCors").textContent = this.value;
+    programmaAutoSync("modifica_associato");
+  });
+  document.getElementById("inpStatoIscrizione").addEventListener("change", function () {
+    if (associati[selectedAssocIdx]) {
+      associati[selectedAssocIdx].statoIscr = this.value;
+      if (this.value === "Non attivo/Scaduto") cartelleAperte["Ritirati/non iscritti"] = true;
+      else cartelleAperte[associati[selectedAssocIdx].annoAcc || "A.A 2026-2027"] = true;
+    }
+    renderAssociati();
+    programmaAutoSync("modifica_stato_associato");
+  });
+  document.getElementById("inpAnnoAccademico").addEventListener("change", function () {
+    if (associati[selectedAssocIdx]) {
+      associati[selectedAssocIdx].annoAcc = this.value;
+      cartelleAperte[this.value] = true;
+    }
+    renderAssociati();
+    programmaAutoSync("modifica_aa_associato");
+  });
+  document.getElementById("inpSede").addEventListener("change", function () {
+    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].sede = this.value;
+    programmaAutoSync("modifica_sede_associato");
+  });
+
+  function cambiaTipoCorso() {
+    var tipo = document.getElementById("inpTipoCorso").value;
+    var nuovaQuota = prezzoPerTipoCorso(tipo);
+    document.getElementById("inpQuotaMensile").value = nuovaQuota.toFixed(2);
+    if (associati[selectedAssocIdx]) {
+      associati[selectedAssocIdx].tipo = tipo;
+      associati[selectedAssocIdx].quota = nuovaQuota;
+    }
+    aggiornaDescrizioneCorso();
+    aggiornaTabellaQuote();
+    programmaAutoSync("modifica_corso_associato");
+  }
+
+  document.getElementById("inpTipoCorso").addEventListener("change", cambiaTipoCorso);
+  document.getElementById("inpQuotaMensile").addEventListener("input", function () {
+    if (associati[selectedAssocIdx]) {
+      associati[selectedAssocIdx].quota = parseFloat(this.value) || 0;
+    }
+    aggiornaTabellaQuote();
+    programmaAutoSync("modifica_quota_associato");
+  });
+  document.getElementById("chkTrinity").addEventListener("change", function () {
+    if (associati[selectedAssocIdx]) {
+      associati[selectedAssocIdx].trinity = this.checked;
+    }
+    aggiornaTabellaQuote();
+    programmaAutoSync("modifica_trinity_associato");
+  });
+
+  function aggiornaDescrizioneCorso() {
+// ... existing code ... -->
+        renderNuoviContatti();
+        renderAssociati();
+        caricaScheda(nuovoAssoc);
+        attivaAreaPrincipale("associati");
+        showMessage("Iscritto come Neo Iscritto (" + nextNum + ") nell'Area Associati.");
+        programmaAutoSync("iscrizione_nuovo_contatto");
+      });
+    });
+  }
+
+  document.getElementById("btnAddNuovoContatto").addEventListener("click", function () {
+// ... existing code ... -->
+    document.getElementById("ncNome").value = "";
+    document.getElementById("ncCognome").value = "";
+    document.getElementById("ncCell").value = "";
+    document.getElementById("ncDataProva").value = "";
+    renderNuoviContatti();
+    programmaAutoSync("nuovo_contatto");
+  });
+
+  // --- RICEVUTA ASSOCIATIVA ---
+// ... existing code ... -->
+    progGen++;
+    document.getElementById("ricCodice").value = progGen + "/3 del 26/11/2026";
+    provaCaricata = false;
+    renderCassa();
+    showMessage("Ricevuta Associativa PDF emessa e registrata in Cassa.");
+    programmaAutoSync("ricevuta_associativa");
+  });
+
+  document.getElementById("btnInviaRicWa").addEventListener("click", function () {
+// ... existing code ... -->
+    document.querySelectorAll(".btn-del-giorno-doc").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var i = parseInt(this.getAttribute("data-idx"), 10);
+        d.registroGiorni.splice(i, 1);
+        renderRegistroOreDocente(true);
+        showMessage("Giorno rimosso dal registro del docente.");
+        programmaAutoSync("rimozione_giorno_docente");
+      });
+    });
+  }
+
+  document.getElementById("btnAddGiornoOre").addEventListener("click", function () {
+// ... existing code ... -->
+    d.registroGiorni.push({ giorno: giorno, ore: ore, note: note });
+    document.getElementById("regGiornoNote").value = "";
+    renderRegistroOreDocente(true);
+    showMessage("Registrato giorno " + giorno + " (" + ore + " h) per " + d.nome + ".");
+    programmaAutoSync("aggiunta_giorno_docente");
+  });
+
+  function caricaSchedaDocente(idx) {
+// ... existing code ... -->
+      else if (fieldId === "docTariffa") {
+        d.tariffa = parseFloat(this.value) || 0;
+        calcolaDocente();
+      }
+      renderDocenti();
+      programmaAutoSync("modifica_docente");
+    });
+  });
+
+  document.getElementById("btnNuovoDocente").addEventListener("click", function () {
+// ... existing code ... -->
+    caricaSchedaDocente(selectedDocIdx);
+    document.getElementById("docNome").focus();
+    showMessage("Creata nuova scheda docente.");
+    programmaAutoSync("nuovo_docente");
+  });
+
+  document.getElementById("btnCaricaDocIdentita").addEventListener("click", function () {
+// ... existing code ... -->
+    renderCassa();
+    showMessage("Uscite registrate in Cassa per un totale di € " + fmtEuro(calc.sommaTotale) + ".");
+    programmaAutoSync("liquidazione_docente");
+  });
+
+  // --- CASSA EDITABILE + EXPORT EXCEL ---
+// ... existing code ... -->
+    document.getElementById("cassaDesc").value = "";
+    document.getElementById("cassaEnt").value = "";
+    document.getElementById("cassaUsc").value = "";
+    renderCassa();
+    programmaAutoSync("nuovo_movimento_cassa");
+  });
+
+  function renderCassa() {
+// ... existing code ... -->
+        editingCassaIdx = null;
+        renderCassa();
+        showMessage("Voce di Cassa aggiornata.");
+        programmaAutoSync("modifica_movimento_cassa");
+      });
+    });
+
+    document.querySelectorAll(".btn-del-cassa").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var i = parseInt(this.getAttribute("data-idx"), 10);
+        movimentiCassa.splice(i, 1);
+        if (editingCassaIdx === i) editingCassaIdx = null;
+        renderCassa();
+        showMessage("Voce eliminata dalla Cassa.");
+        programmaAutoSync("elimina_movimento_cassa");
+      });
+    });
+
+    document.getElementById("totEntrateLbl").textContent = "Totale Entrate: € " + fmtEuro(totE);
+// ... existing code ... -->
+    renderAssociati();
+    caricaScheda(nuovo);
+    document.getElementById("inpAssociato").focus();
+    showMessage("Creata nuova scheda con Numero Iscrizione " + nextNum);
+    programmaAutoSync("nuovo_associato");
+  });
+
+  // --- CONTROLLO ACCESSO CON PASSWORD SEGRETERIA ---
+  var PASSWORD_SEGRETERIA = "Violoncello89";
+  var lockScreen = document.getElementById("lockScreen");
+  var lockForm = document.getElementById("lockForm");
+  var inpPasswordSegreteria = document.getElementById("inpPasswordSegreteria");
+  var lockError = document.getElementById("lockError");
+
+  function bloccaGestionale() {
+    if (lockScreen) {
+      lockScreen.classList.remove("unlocked");
+      lockScreen.style.display = "flex";
+    }
+    if (lockError) {
+      lockError.style.display = "none";
+    }
+    if (inpPasswordSegreteria) {
+      inpPasswordSegreteria.value = "";
+      setTimeout(function () { inpPasswordSegreteria.focus(); }, 60);
+    }
+  }
+
+  function sbloccaGestionale() {
+    if (lockScreen) {
+      lockScreen.classList.add("unlocked");
+      lockScreen.style.display = "none";
+    }
+    if (lockError) {
+      lockError.style.display = "none";
+    }
+    if (inpPasswordSegreteria) {
+      inpPasswordSegreteria.value = "";
+    }
+    showMessage("Accesso segreteria effettuato. Sincronizzazione cloud...");
+    caricaDatiDalCloud(false);
+  }
+
+  if (lockForm) {
+    lockForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var val = inpPasswordSegreteria ? inpPasswordSegreteria.value.trim() : "";
+      if (val === PASSWORD_SEGRETERIA) {
+        sbloccaGestionale();
+      } else {
+        if (lockError) {
+          lockError.style.display = "block";
+        }
+        if (inpPasswordSegreteria) {
+          inpPasswordSegreteria.select();
+        }
+      }
+    });
+  }
+
+  var btnBloccaGestionale = document.getElementById("btnBloccaGestionale");
+  if (btnBloccaGestionale) {
+    btnBloccaGestionale.addEventListener("click", bloccaGestionale);
+  }
+
+  // --- INIZIALIZZAZIONE ---
+  popolaSelectAnni();
+  renderAssociati();
+  if (associati[0]) caricaScheda(associati[0]);
+  renderNuoviContatti();
+  renderDocenti();
+  caricaSchedaDocente(0);
+  renderCassa();
+  renderDocumentiModulistica();
+  attivaAreaPrincipale("docenti");
+  bloccaGestionale();
+  caricaDatiDalCloud(true);
+});
+</script>
+</body>
+</html>
