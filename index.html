@@ -889,7 +889,7 @@
       <button class="close-x" type="button" id="btnCloseCloudX" title="Chiudi">×</button>
     </div>
     <div class="alert-box alert-blue">
-      <strong>Account Associativo Target:</strong> <code>sicilymusicacademy@gmail.com</code> — Cartella Drive: <code>Contratti Originali</code>.
+      <strong>Account Associativo Target:</strong> <code>sicilymusicacademy@gmail.com</code> — Destinazione Drive: <code>FILE CREATI</code>.
     </div>
 
     <div class="form-grid" style="margin-bottom:10px;">
@@ -910,7 +910,7 @@
     <div class="scan-box" style="margin-top:6px;">
       <div>
         <strong style="font-size:12.5px;">Stato Connessione:</strong>
-        <span id="cloudDettaglioStato" style="font-size:12px; color:#15803d;">Collegato a sicilymusicacademy@gmail.com (Drive: Contratti Originali)</span>
+        <span id="cloudDettaglioStato" style="font-size:12px; color:#15803d;">Collegato a sicilymusicacademy@gmail.com (Drive: FILE CREATI)</span>
       </div>
       <div class="inline-row">
         <button class="btn btn-outline" type="button" id="btnScaricaDalCloud">Scarica dal Cloud</button>
@@ -1097,7 +1097,8 @@
           <div>
             <strong style="font-size:12.5px;">Contratto Firmato:</strong>
             <span id="nomeFileContratto" style="color:var(--green); font-size:12.5px;">Contratto_SMA-1_Mario_Rossi.pdf</span>
-            <span class="drive-pill" id="driveDestContratto">Drive: Contratti Originali</span>
+            <span class="drive-pill" id="driveDestContratto">Drive: FILE CREATI / Contratti Originali</span>
+            <a id="linkDriveContratto" href="#" target="_blank" rel="noopener" style="display:none; margin-left:8px; font-size:11.5px; font-weight:700; color:var(--blue);">Apri su Drive</a>
             <div style="margin-top:4px; font-size:11.5px; color:#334155;">
               <strong>Logo Originale (.png / .jpg):</strong>
               <span id="nomeLogoOriginale" style="color:var(--navy); font-weight:600;">Nessun file caricato (clicca "Carica Logo Originale")</span>
@@ -1105,6 +1106,7 @@
           </div>
           <div class="inline-row">
             <input type="file" id="inpFileContratto" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" style="display:none;" />
+            <input type="file" id="inpFileScanContratto" accept=".pdf,.jpg,.jpeg,image/*,application/pdf" capture="environment" style="display:none;" />
             <input type="file" id="inpFileLogoOriginale" accept=".png,.jpg,.jpeg,image/png,image/jpeg" style="display:none;" />
             <button class="btn btn-outline" type="button" id="btnCaricaLogoOriginale">Carica Logo Originale</button>
             <button class="btn btn-red" type="button" id="btnCreaComunicazioneDocx">Crea Comunicazione Insoluto (.docx)</button>
@@ -1178,6 +1180,7 @@
           </div>
           <div class="form-group" id="boxProva" style="display:none;">
             <label>Prova Pagamento P2P / Bonifico (PDF o JPG)</label>
+            <input type="file" id="inpFileProvaPagamento" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" style="display:none;" />
             <button class="btn btn-outline" type="button" id="btnAllegaProva">Carica Ricevuta PDF / JPG</button>
             <span id="statoProva" style="font-size:11.5px; color:var(--red); margin-left:6px;">Nessun file caricato</span>
           </div>
@@ -1410,6 +1413,7 @@ Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
               <button class="btn btn-outline" type="button" id="btnCaricaDocIdentita">Carica Copia Documento</button>
               <button class="btn btn-blue" type="button" id="btnScaricaDocIdentita">Scarica Documento</button>
               <span id="docNomeDocumento" style="color:var(--green); font-size:12px;">Documento_Marco_Bianchi.pdf</span>
+              <a id="linkDriveDocIdentita" href="#" target="_blank" rel="noopener" style="display:none; font-size:11.5px; font-weight:700; color:var(--blue);">Apri su Drive</a>
             </div>
           </div>
         </div>
@@ -1599,9 +1603,9 @@ Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
 <!-- ==================== DOCUMENTI E MODULISTICA ==================== -->
 <div class="area" id="area-documenti">
   <div class="card">
-    <h3>Documenti e modulistica — Cartella Unica (PDF, DOCX, JPG)</h3>
+    <h3>Documenti e modulistica — Cartella Unica (PDF, DOCX, JPG) — Salvataggio su Drive: FILE CREATI</h3>
     <p style="margin:0 0 10px; font-size:12.5px; color:#334155;">
-      Carica qui regolamenti, moduli di iscrizione, disdette, liberatorie o documenti dell'associazione nei formati <strong>PDF</strong>, <strong>DOCX</strong> e <strong>JPG</strong>. Tutti i file restano raccolti in un'unica cartella comune.
+      Carica qui regolamenti, moduli di iscrizione, disdette, liberatorie o documenti dell'associazione nei formati <strong>PDF</strong>, <strong>DOCX</strong> e <strong>JPG</strong>. Ogni file viene inviato automaticamente su Google Drive dentro <strong>FILE CREATI</strong>.
     </p>
 
     <div style="display:grid; grid-template-columns: 1fr 1fr auto; gap:10px; margin-bottom:12px; align-items:end; background:#f8fafc; padding:10px; border:1px solid var(--border); border-radius:8px;">
@@ -1628,7 +1632,7 @@ Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
           <th style="width:90px;">Formato</th>
           <th style="width:105px;">Data</th>
           <th style="width:95px;">Dimensione</th>
-          <th class="center" style="width:175px;">Azioni</th>
+          <th class="center" style="width:225px;">Azioni</th>
         </tr>
       </thead>
       <tbody id="tbodyDocMod"></tbody>
@@ -1648,20 +1652,84 @@ document.addEventListener("DOMContentLoaded", function () {
     clearTimeout(banner._t);
     banner._t = setTimeout(function () {
       banner.style.display = "none";
-    }, 3400);
+    }, 3800);
   }
 
   function fmtEuro(val) {
     return Number(val || 0).toFixed(2).replace(".", ",");
   }
 
+  function arrayBufferToBase64(buffer) {
+    var bytes = new Uint8Array(buffer);
+    var chunkSize = 0x8000;
+    var binary = "";
+    for (var i = 0; i < bytes.length; i += chunkSize) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+    }
+    return btoa(binary);
+  }
+
+  function getEndpointUrl() {
+    var inp = document.getElementById("cloudSyncEndpoint");
+    return ((inp && inp.value) || DEFAULT_SYNC_ENDPOINT).trim();
+  }
+
+  /**
+   * Invia qualunque File o Blob su Google Drive dentro FILE CREATI
+   * tramite il tuo Google Apps Script (Codice.gs).
+   */
+  async function caricaFileSuDriveFileCreati(fileOrBlob, nomeFile, sottocartella) {
+    var endpoint = getEndpointUrl();
+    if (!endpoint) {
+      throw new Error("Endpoint Google Apps Script non configurato.");
+    }
+    var buffer = await fileOrBlob.arrayBuffer();
+    var base64Data = arrayBufferToBase64(buffer);
+    var safeName = String(nomeFile || fileOrBlob.name || ("file_" + Date.now()))
+      .trim()
+      .replace(/[\\/:*?"<>|]+/g, "_");
+    var mimeType = fileOrBlob.type || "application/octet-stream";
+
+    var res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "upload_file",
+        fileName: safeName,
+        nomeFile: safeName,
+        mimeType: mimeType,
+        sottocartella: sottocartella || "",
+        subfolder: sottocartella || "",
+        fileBase64: base64Data,
+        base64Data: base64Data
+      })
+    });
+
+    var data = await res.json();
+    if (!data || !data.ok) {
+      throw new Error((data && data.error) || "Errore durante il caricamento su Drive.");
+    }
+    return data;
+  }
+
+  function aggiornaLinkDriveVisivo(elId, url) {
+    var a = document.getElementById(elId);
+    if (!a) return;
+    if (url) {
+      a.href = url;
+      a.style.display = "inline";
+    } else {
+      a.style.display = "none";
+    }
+  }
+
   var anniAccademici = ["A.A 2026-2027"];
   var cartelleAperte = { "A.A 2026-2027": true, "Ritirati/non iscritti": true };
 
   var associati = [
-    { id: 1, numIscr: "SMA-1", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Mario Rossi", corsista: "Giulia Rossi", luogoNascita: "Palermo", dataNascita: "01/01/1980", indirizzo: "Via Roma 10, Misilmeri", sede: "Misilmeri", tel: "329 0000000", tel2: "338 1122334", email: "mario.rossi@email.it", cf: "RSSMRA80A01G273X", scad: "14/10/2027", tipo: "Strumentale", quota: 120.00, trinity: true, firma: "14/10/2026", prima: "19/10/2026", prova: false, contrattoNome: "Contratto_SMA-1_Mario_Rossi.pdf", contrattoUrl: "" },
-    { id: 2, numIscr: "SMA-2", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Lucia Verdi", corsista: "Matteo Verdi", luogoNascita: "Monreale", dataNascita: "12/02/1984", indirizzo: "Via Umberto 22, Monreale", sede: "Monreale", tel: "333 4455667", tel2: "320 9988776", email: "lucia.verdi@email.it", cf: "VRDLCU84B45G273Y", scad: "15/10/2027", tipo: "Principale", quota: 135.00, trinity: false, firma: "15/10/2026", prima: "20/10/2026", prova: false, contrattoNome: "Contratto_SMA-2_Lucia_Verdi.pdf", contrattoUrl: "" },
-    { id: 3, numIscr: "SMA-3", statoIscr: "Neo Iscritto", annoAcc: "A.A 2026-2027", nome: "Rosetta Bonanno", corsista: "Sofia Bonanno", luogoNascita: "Misilmeri", dataNascita: "03/03/1988", indirizzo: "Corso V. Emanuele 50, Misilmeri", sede: "Misilmeri", tel: "347 7788990", tel2: "", email: "rosetta.bonanno@email.it", cf: "BNNRTT88C50G273Z", scad: "01/12/2027", tipo: "Light", quota: 75.00, trinity: false, firma: "01/12/2026", prima: "04/12/2026", prova: true, contrattoNome: "Contratto_SMA-3_Rosetta_Bonanno.pdf", contrattoUrl: "" }
+    { id: 1, numIscr: "SMA-1", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Mario Rossi", corsista: "Giulia Rossi", luogoNascita: "Palermo", dataNascita: "01/01/1980", indirizzo: "Via Roma 10, Misilmeri", sede: "Misilmeri", tel: "329 0000000", tel2: "338 1122334", email: "mario.rossi@email.it", cf: "RSSMRA80A01G273X", scad: "14/10/2027", tipo: "Strumentale", quota: 120.00, trinity: true, firma: "14/10/2026", prima: "19/10/2026", prova: false, contrattoNome: "Contratto_SMA-1_Mario_Rossi.pdf", contrattoUrl: "", contrattoDriveUrl: "" },
+    { id: 2, numIscr: "SMA-2", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Lucia Verdi", corsista: "Matteo Verdi", luogoNascita: "Monreale", dataNascita: "12/02/1984", indirizzo: "Via Umberto 22, Monreale", sede: "Monreale", tel: "333 4455667", tel2: "320 9988776", email: "lucia.verdi@email.it", cf: "VRDLCU84B45G273Y", scad: "15/10/2027", tipo: "Principale", quota: 135.00, trinity: false, firma: "15/10/2026", prima: "20/10/2026", prova: false, contrattoNome: "Contratto_SMA-2_Lucia_Verdi.pdf", contrattoUrl: "", contrattoDriveUrl: "" },
+    { id: 3, numIscr: "SMA-3", statoIscr: "Neo Iscritto", annoAcc: "A.A 2026-2027", nome: "Rosetta Bonanno", corsista: "Sofia Bonanno", luogoNascita: "Misilmeri", dataNascita: "03/03/1988", indirizzo: "Corso V. Emanuele 50, Misilmeri", sede: "Misilmeri", tel: "347 7788990", tel2: "", email: "rosetta.bonanno@email.it", cf: "BNNRTT88C50G273Z", scad: "01/12/2027", tipo: "Light", quota: 75.00, trinity: false, firma: "01/12/2026", prima: "04/12/2026", prova: true, contrattoNome: "Contratto_SMA-3_Rosetta_Bonanno.pdf", contrattoUrl: "", contrattoDriveUrl: "" }
   ];
 
   var nuoviContatti = [
@@ -1670,9 +1738,9 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   var docenti = [
-    { id: 1, nome: "M° Marco Bianchi", materia: "Pianoforte / Teoria", sede: "Misilmeri", tel: "333 9876543", email: "marco.bianchi@email.it", cf: "BNCMRC85C12G273L", iban: "IT60X0542811101000000123456", indirizzo: "Via Cavour 15, Misilmeri (PA)", tariffa: 25, docNome: "Documento_Marco_Bianchi.pdf", docUrl: "", registroGiorni: [{ giorno: "04/11/2026", ore: 4, note: "Lezioni pomeridiane pianoforte" }, { giorno: "11/11/2026", ore: 4, note: "Lezioni pianoforte e solfeggio" }, { giorno: "18/11/2026", ore: 4, note: "Preparazione saggio / esami" }] },
-    { id: 2, nome: "Prof.ssa Elena Russo", materia: "Canto Moderno / Coro", sede: "Monreale", tel: "340 1122334", email: "elena.russo@email.it", cf: "RSSLNE90D52G273K", iban: "IT45Y0200804600000105544332", indirizzo: "Corso Pietro Novelli 40, Monreale (PA)", tariffa: 25, docNome: "Documento_Elena_Russo.pdf", docUrl: "", registroGiorni: [{ giorno: "05/11/2026", ore: 3, note: "Canto moderno e coro" }, { giorno: "12/11/2026", ore: 3, note: "Tecnica vocale" }] },
-    { id: 3, nome: "M° Luca Conti", materia: "Chitarra Classica / Moderna", sede: "Entrambe (Misilmeri / Monreale)", tel: "328 5544332", email: "luca.conti@email.it", cf: "CNTLCU88E10G273W", iban: "IT12Z0760104600001044332211", indirizzo: "Via Roma 88, Misilmeri (PA)", tariffa: 22, docNome: "Documento_Luca_Conti.pdf", docUrl: "", registroGiorni: [{ giorno: "06/11/2026", ore: 3, note: "Chitarra classica e moderna" }] }
+    { id: 1, nome: "M° Marco Bianchi", materia: "Pianoforte / Teoria", sede: "Misilmeri", tel: "333 9876543", email: "marco.bianchi@email.it", cf: "BNCMRC85C12G273L", iban: "IT60X0542811101000000123456", indirizzo: "Via Cavour 15, Misilmeri (PA)", tariffa: 25, docNome: "Documento_Marco_Bianchi.pdf", docUrl: "", docDriveUrl: "", registroGiorni: [{ giorno: "04/11/2026", ore: 4, note: "Lezioni pomeridiane pianoforte" }, { giorno: "11/11/2026", ore: 4, note: "Lezioni pianoforte e solfeggio" }, { giorno: "18/11/2026", ore: 4, note: "Preparazione saggio / esami" }] },
+    { id: 2, nome: "Prof.ssa Elena Russo", materia: "Canto Moderno / Coro", sede: "Monreale", tel: "340 1122334", email: "elena.russo@email.it", cf: "RSSLNE90D52G273K", iban: "IT45Y0200804600000105544332", indirizzo: "Corso Pietro Novelli 40, Monreale (PA)", tariffa: 25, docNome: "Documento_Elena_Russo.pdf", docUrl: "", docDriveUrl: "", registroGiorni: [{ giorno: "05/11/2026", ore: 3, note: "Canto moderno e coro" }, { giorno: "12/11/2026", ore: 3, note: "Tecnica vocale" }] },
+    { id: 3, nome: "M° Luca Conti", materia: "Chitarra Classica / Moderna", sede: "Entrambe (Misilmeri / Monreale)", tel: "328 5544332", email: "luca.conti@email.it", cf: "CNTLCU88E10G273W", iban: "IT12Z0760104600001044332211", indirizzo: "Via Roma 88, Misilmeri (PA)", tariffa: 22, docNome: "Documento_Luca_Conti.pdf", docUrl: "", docDriveUrl: "", registroGiorni: [{ giorno: "06/11/2026", ore: 3, note: "Chitarra classica e moderna" }] }
   ];
 
   var movimentiCassa = [
@@ -1681,12 +1749,13 @@ document.addEventListener("DOMContentLoaded", function () {
   ];
 
   var documentiModulistica = [
-    { titolo: "Statuto e Regolamento Interno Sicily Music Academy APS", nomeFile: "Regolamento_SMA_APS.pdf", formato: "PDF", data: "01/09/2026", size: "420 KB", url: "" },
-    { titolo: "Modulo Iscrizione e Consenso Trattamento Dati", nomeFile: "Modulo_Iscrizione_SMA.docx", formato: "DOCX", data: "01/09/2026", size: "185 KB", url: "" }
+    { titolo: "Statuto e Regolamento Interno Sicily Music Academy APS", nomeFile: "Regolamento_SMA_APS.pdf", formato: "PDF", data: "01/09/2026", size: "420 KB", url: "", driveUrl: "" },
+    { titolo: "Modulo Iscrizione e Consenso Trattamento Dati", nomeFile: "Modulo_Iscrizione_SMA.docx", formato: "DOCX", data: "01/09/2026", size: "185 KB", url: "", driveUrl: "" }
   ];
 
   var editingCassaIdx = null;
   var provaCaricata = false;
+  var provaFileObj = null;
   var progGen = 543;
   var selectedAssocIdx = 0;
   var selectedDocIdx = 0;
@@ -1699,7 +1768,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 1200);
   }
 
-  // Logo originale caricato dall'utente (senza alcuna alterazione grafica)
   var logoOriginaleData = {
     arrayBuffer: null,
     ext: "png",
@@ -1964,22 +2032,33 @@ document.addEventListener("DOMContentLoaded", function () {
         wordFolder.folder("media").file("logo_originale." + imgExt, logoOriginaleData.arrayBuffer);
       }
 
-      var blob = await zip.generateAsync({ type: "blob" });
+      var blob = await zip.generateAsync({
+        type: "blob",
+        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      });
+      var fileName = "Comunicazione_Insoluto_" + numIscr + "_" + associato.replace(/\s+/g, "_") + ".docx";
+
       var url = URL.createObjectURL(blob);
       var a = document.createElement("a");
       a.href = url;
-      a.download = "Comunicazione_Insoluto_" + numIscr + "_" + associato.replace(/\s+/g, "_") + ".docx";
+      a.download = fileName;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
       setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-      showMessage("File modificabile .docx generato per " + associato + ".");
+
+      try {
+        var salvato = await caricaFileSuDriveFileCreati(blob, fileName, "Comunicazioni Insoluto");
+        showMessage("Salvato su Drive (FILE CREATI) e scaricato: " + salvato.name);
+      } catch (driveErr) {
+        showMessage("File .docx scaricato. Caricamento Drive: " + driveErr.message);
+      }
     } catch (err) {
       showMessage("Errore nella generazione del file .docx: " + err.message);
     }
   }
 
-  function generaEScaricaPdfRicevutaAssociativa(dati) {
+  async function generaEScaricaPdfRicevutaAssociativa(dati) {
     try {
       var jspdfLib = window.jspdf;
       if (!jspdfLib || !jspdfLib.jsPDF) {
@@ -2053,6 +2132,13 @@ document.addEventListener("DOMContentLoaded", function () {
       doc.line(130, 162, 192, 162);
 
       doc.save(dati.fileName);
+
+      try {
+        var pdfBlob = doc.output("blob");
+        await caricaFileSuDriveFileCreati(pdfBlob, dati.fileName, dati.sottocartella || "Ricevute");
+      } catch (driveErr) {
+        console.warn("Invio PDF ricevuta su Drive:", driveErr);
+      }
     } catch (err) {
       showMessage("Errore nella generazione della Ricevuta Associativa PDF: " + err.message);
     }
@@ -2135,7 +2221,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function caricaDatiDalCloud(silenzioso) {
     var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
-    var endpoint = (document.getElementById("cloudSyncEndpoint").value || DEFAULT_SYNC_ENDPOINT).trim();
+    var endpoint = getEndpointUrl();
     if (!endpoint) return;
 
     try {
@@ -2198,12 +2284,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function inviaSincronizzazioneCloud(azione, silenzioso) {
     var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
-    var endpoint = (document.getElementById("cloudSyncEndpoint").value || DEFAULT_SYNC_ENDPOINT).trim();
+    var endpoint = getEndpointUrl();
     var payload = {
       azione: azione,
       account: emailAccount,
       timestamp: new Date().toISOString(),
-      cartellaDrive: "Contratti Originali",
+      cartellaDrive: "FILE CREATI",
       anniAccademici: anniAccademici,
       associati: associati,
       nuoviContatti: nuoviContatti,
@@ -2256,7 +2342,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (resp && resp.access_token) {
               aggiornaBadgeCloud(
                 "Account: " + emailAccount + " (Connesso Google)",
-                "Connesso a Google Drive con " + emailAccount + " (cartella: Contratti Originali).",
+                "Connesso a Google Drive con " + emailAccount + " (cartella: FILE CREATI).",
                 true
               );
               showMessage("Accesso Google completato per " + emailAccount);
@@ -2271,7 +2357,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     aggiornaBadgeCloud(
       "Account: " + emailAccount + " (Configurato)",
-      "Account associativo impostato su " + emailAccount + " (Drive: Contratti Originali).",
+      "Account associativo impostato su " + emailAccount + " (Drive: FILE CREATI).",
       true
     );
     showMessage("Account associativo impostato su " + emailAccount);
@@ -2497,9 +2583,10 @@ document.addEventListener("DOMContentLoaded", function () {
       dettaglio: dettaglioPerTipoCorso(tipoProva),
       importo: imp,
       note: "Quota associativa mese di prova dal " + document.getElementById("provaPrimaLezione").value + " al " + document.getElementById("provaChiusura").value,
+      sottocartella: "Ricevute",
       fileName: "Ricevuta_Associativa_Prova_" + numIscr + "_" + assoc.replace(/\s+/g, "_") + ".pdf"
     });
-    showMessage("Ricevuta Associativa Prova PDF emessa e registrata in Cassa.");
+    showMessage("Ricevuta Associativa Prova PDF emessa, inviata su FILE CREATI e registrata in Cassa.");
   });
 
   // --- WHATSAPP ---
@@ -2632,7 +2719,6 @@ document.addEventListener("DOMContentLoaded", function () {
       container.appendChild(block);
     });
 
-    // Cartella dedicata Ritirati / Non iscritti
     var ritirati = associati
       .map(function (a, idx) { return { a: a, idx: idx }; })
       .filter(function (item) {
@@ -2695,6 +2781,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("prevAssoc").textContent = a.nome;
     document.getElementById("prevCors").textContent = a.corsista;
     document.getElementById("nomeFileContratto").textContent = a.contrattoNome || ("Contratto_" + a.numIscr + "_" + a.nome.replace(/\s+/g, "_") + ".pdf");
+    aggiornaLinkDriveVisivo("linkDriveContratto", a.contrattoDriveUrl || "");
 
     aggiornaRiferimentiWhatsApp();
     aggiornaDescrizioneCorso();
@@ -2829,12 +2916,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("bilancioResiduo").textContent = "€ " + fmtEuro(totResiduo);
   }
 
-  // Allega / Scansiona / Scarica Contratto Firmato
+  // Allega / Scansiona / Scarica Contratto Firmato -> Drive FILE CREATI
   document.getElementById("btnAllegaContratto").addEventListener("click", function () {
     document.getElementById("inpFileContratto").click();
   });
 
-  document.getElementById("inpFileContratto").addEventListener("change", function () {
+  document.getElementById("inpFileContratto").addEventListener("change", async function () {
     var file = this.files && this.files[0];
     if (!file) return;
     var assoc = associati[selectedAssocIdx];
@@ -2844,21 +2931,55 @@ document.addEventListener("DOMContentLoaded", function () {
       assoc.contrattoUrl = objectUrl;
     }
     document.getElementById("nomeFileContratto").textContent = file.name;
-    document.getElementById("driveDestContratto").textContent = "Drive: Contratti Originali";
-    programmaSyncAutomatico("allega_contratto");
-    showMessage("Salvato in Google Drive / Contratti Originali: " + file.name);
+    document.getElementById("driveDestContratto").textContent = "Drive: FILE CREATI / Contratti Originali";
+
+    try {
+      showMessage("Caricamento contratto su Google Drive (FILE CREATI)...");
+      var salvato = await caricaFileSuDriveFileCreati(file, file.name, "Contratti Originali");
+      if (assoc && salvato.url) {
+        assoc.contrattoDriveUrl = salvato.url;
+        aggiornaLinkDriveVisivo("linkDriveContratto", salvato.url);
+      }
+      programmaSyncAutomatico("allega_contratto");
+      showMessage("Salvato in Google Drive / FILE CREATI / Contratti Originali: " + salvato.name);
+    } catch (err) {
+      showMessage("Allegato locale pronto. Errore Drive: " + err.message);
+    }
+    this.value = "";
   });
 
   document.getElementById("btnScanContratto").addEventListener("click", function () {
+    document.getElementById("inpFileScanContratto").click();
+  });
+
+  document.getElementById("inpFileScanContratto").addEventListener("change", async function () {
+    var file = this.files && this.files[0];
+    if (!file) return;
     var assoc = associati[selectedAssocIdx];
     var nomeDefault = assoc
-      ? "Scansione_Contratto_" + assoc.numIscr + "_" + assoc.nome.replace(/\s+/g, "_") + ".pdf"
-      : "Scansione_Contratto.pdf";
-    if (assoc) assoc.contrattoNome = nomeDefault;
+      ? "Scansione_Contratto_" + assoc.numIscr + "_" + assoc.nome.replace(/\s+/g, "_") + "_" + file.name
+      : "Scansione_Contratto_" + file.name;
+    var objectUrl = URL.createObjectURL(file);
+    if (assoc) {
+      assoc.contrattoNome = nomeDefault;
+      assoc.contrattoUrl = objectUrl;
+    }
     document.getElementById("nomeFileContratto").textContent = nomeDefault;
-    document.getElementById("driveDestContratto").textContent = "Drive: Contratti Originali";
-    programmaSyncAutomatico("scansione_contratto");
-    showMessage("Acquisizione scanner registrata in Google Drive / Contratti Originali: " + nomeDefault);
+    document.getElementById("driveDestContratto").textContent = "Drive: FILE CREATI / Contratti Originali";
+
+    try {
+      showMessage("Invio scansione contratto a Google Drive (FILE CREATI)...");
+      var salvato = await caricaFileSuDriveFileCreati(file, nomeDefault, "Contratti Originali");
+      if (assoc && salvato.url) {
+        assoc.contrattoDriveUrl = salvato.url;
+        aggiornaLinkDriveVisivo("linkDriveContratto", salvato.url);
+      }
+      programmaSyncAutomatico("scansione_contratto");
+      showMessage("Scansione salvata in Google Drive / FILE CREATI: " + salvato.name);
+    } catch (err) {
+      showMessage("Scansione acquisita in locale. Errore Drive: " + err.message);
+    }
+    this.value = "";
   });
 
   document.getElementById("btnScaricaContratto").addEventListener("click", function () {
@@ -2872,8 +2993,10 @@ document.addEventListener("DOMContentLoaded", function () {
       a.click();
       document.body.removeChild(a);
       showMessage("Download avviato: " + nomeFile);
+    } else if (assoc && assoc.contrattoDriveUrl) {
+      window.open(assoc.contrattoDriveUrl, "_blank");
     } else {
-      showMessage("Contratto '" + nomeFile + "' presente in Google Drive / Contratti Originali (allega un file reale per scaricarlo dal browser).");
+      showMessage("Allega o scansiona un file per scaricarlo o inviarlo in FILE CREATI.");
     }
   });
 
@@ -2883,11 +3006,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("inpFileLogoOriginale").click();
   });
 
-  document.getElementById("inpFileLogoOriginale").addEventListener("change", function () {
+  document.getElementById("inpFileLogoOriginale").addEventListener("change", async function () {
     var file = this.files && this.files[0];
     if (!file) return;
     var reader = new FileReader();
-    reader.onload = function (ev) {
+    reader.onload = async function (ev) {
       var lower = file.name.toLowerCase();
       var ext = (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) ? "jpeg" : "png";
       logoOriginaleData = {
@@ -2900,9 +3023,15 @@ document.addEventListener("DOMContentLoaded", function () {
         lbl.textContent = file.name + " (incorporato tal quale nel .docx)";
         lbl.style.color = "#15803d";
       }
-      showMessage("Logo originale caricato senza modifiche: " + file.name);
+      try {
+        await caricaFileSuDriveFileCreati(file, file.name, "Loghi");
+        showMessage("Logo caricato in FILE CREATI e incorporato senza modifiche: " + file.name);
+      } catch (err) {
+        showMessage("Logo caricato per .docx. Errore Drive: " + err.message);
+      }
     };
     reader.readAsArrayBuffer(file);
+    this.value = "";
   });
 
   // --- MESSAGGI WHATSAPP ---
@@ -2983,7 +3112,8 @@ document.addEventListener("DOMContentLoaded", function () {
           prima: oggi,
           prova: false,
           contrattoNome: "Contratto_" + nextNum + "_" + (contatto.nome + "_" + contatto.cognome).replace(/\s+/g, "_") + ".pdf",
-          contrattoUrl: ""
+          contrattoUrl: "",
+          contrattoDriveUrl: ""
         };
 
         associati.push(nuovoAssoc);
@@ -3041,10 +3171,24 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.getElementById("btnAllegaProva").addEventListener("click", function () {
+    document.getElementById("inpFileProvaPagamento").click();
+  });
+
+  document.getElementById("inpFileProvaPagamento").addEventListener("change", async function () {
+    var file = this.files && this.files[0];
+    if (!file) return;
     provaCaricata = true;
+    provaFileObj = file;
     var st = document.getElementById("statoProva");
     st.style.color = "#15803d";
-    st.textContent = "Prova_Quota_Associativa_543.pdf allegato";
+    st.textContent = file.name + " allegato";
+    try {
+      await caricaFileSuDriveFileCreati(file, file.name, "Prove Pagamento");
+      showMessage("Prova di pagamento salvata su Drive (FILE CREATI): " + file.name);
+    } catch (err) {
+      showMessage("Prova allegata. Errore Drive: " + err.message);
+    }
+    this.value = "";
   });
 
   document.getElementById("btnEmettiRic").addEventListener("click", function () {
@@ -3087,15 +3231,17 @@ document.addEventListener("DOMContentLoaded", function () {
       dettaglio: document.getElementById("prevDett").textContent,
       importo: imp,
       note: note,
+      sottocartella: "Ricevute",
       fileName: "Ricevuta_Associativa_" + numRic.replace("/", "-") + "_" + assoc.replace(/\s+/g, "_") + ".pdf"
     });
 
     progGen++;
     document.getElementById("ricCodice").value = progGen + "/3 del 26/11/2026";
     provaCaricata = false;
+    provaFileObj = null;
     renderCassa();
     programmaSyncAutomatico("emissione_ricevuta");
-    showMessage("Ricevuta Associativa PDF emessa e registrata in Cassa.");
+    showMessage("Ricevuta Associativa PDF emessa, inviata su FILE CREATI e registrata in Cassa.");
   });
 
   document.getElementById("btnInviaRicWa").addEventListener("click", function () {
@@ -3213,6 +3359,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("docIndirizzo").value = d.indirizzo || "";
     document.getElementById("docTariffa").value = d.tariffa || 25;
     document.getElementById("docNomeDocumento").textContent = d.docNome || "Nessun documento caricato";
+    aggiornaLinkDriveVisivo("linkDriveDocIdentita", d.docDriveUrl || "");
 
     var selTendina = document.getElementById("selDocenteTendina");
     if (selTendina) selTendina.value = String(idx);
@@ -3259,7 +3406,6 @@ document.addEventListener("DOMContentLoaded", function () {
     caricaSchedaDocente(parseInt(this.value, 10) || 0);
   });
 
-  // Sincronizzazione modifiche dati sensibili docente
   ["docNome", "docMateria", "docSede", "docTel", "docEmail", "docCF", "docIban", "docIndirizzo", "docTariffa"].forEach(function (fieldId) {
     var el = document.getElementById(fieldId);
     if (!el) return;
@@ -3297,6 +3443,7 @@ document.addEventListener("DOMContentLoaded", function () {
       tariffa: 25,
       docNome: "Nessun documento caricato",
       docUrl: "",
+      docDriveUrl: "",
       registroGiorni: []
     };
     docenti.push(nuovo);
@@ -3312,7 +3459,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("inpFileDocIdentita").click();
   });
 
-  document.getElementById("inpFileDocIdentita").addEventListener("change", function () {
+  document.getElementById("inpFileDocIdentita").addEventListener("change", async function () {
     var file = this.files && this.files[0];
     if (!file) return;
     var d = docenti[selectedDocIdx];
@@ -3322,8 +3469,19 @@ document.addEventListener("DOMContentLoaded", function () {
       d.docUrl = url;
     }
     document.getElementById("docNomeDocumento").textContent = file.name;
-    programmaSyncAutomatico("carica_doc_identita");
-    showMessage("Copia documento caricata per " + (d ? d.nome : "il docente") + ": " + file.name);
+    try {
+      showMessage("Invio documento docente su Drive (FILE CREATI)...");
+      var salvato = await caricaFileSuDriveFileCreati(file, file.name, "Documenti Docenti");
+      if (d && salvato.url) {
+        d.docDriveUrl = salvato.url;
+        aggiornaLinkDriveVisivo("linkDriveDocIdentita", salvato.url);
+      }
+      programmaSyncAutomatico("carica_doc_identita");
+      showMessage("Documento salvato in Drive (FILE CREATI / Documenti Docenti): " + salvato.name);
+    } catch (err) {
+      showMessage("Documento caricato in locale. Errore Drive: " + err.message);
+    }
+    this.value = "";
   });
 
   document.getElementById("btnScaricaDocIdentita").addEventListener("click", function () {
@@ -3337,6 +3495,8 @@ document.addEventListener("DOMContentLoaded", function () {
       a.click();
       document.body.removeChild(a);
       showMessage("Download documento avviato: " + nomeFile);
+    } else if (d && d.docDriveUrl) {
+      window.open(d.docDriveUrl, "_blank");
     } else {
       showMessage("Nessun file reale allegato per '" + nomeFile + "' (carica prima un documento con 'Carica Copia Documento').");
     }
@@ -3371,7 +3531,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("docTariffa").addEventListener("input", calcolaDocente);
   document.getElementById("docTotale").addEventListener("input", calcolaDocente);
 
-  function generaEScaricaPdfRiepilogoMensileDocente() {
+  async function generaEScaricaPdfRiepilogoMensileDocente() {
     try {
       var jspdfLib = window.jspdf;
       if (!jspdfLib || !jspdfLib.jsPDF) {
@@ -3432,12 +3592,19 @@ document.addEventListener("DOMContentLoaded", function () {
       var fileName = "Riepilogo_Mensile_" + nomeDoc.replace(/\s+/g, "_") + "_2026-11.pdf";
       doc.save(fileName);
 
+      try {
+        var pdfBlob = doc.output("blob");
+        await caricaFileSuDriveFileCreati(pdfBlob, fileName, "Riepiloghi Docenti");
+      } catch (driveErr) {
+        console.warn("Invio PDF riepilogo docente su Drive:", driveErr);
+      }
+
       var lbl = document.getElementById("docRiepilogoStato");
       if (lbl) {
         lbl.style.color = "#15803d";
-        lbl.textContent = "Generato: " + fileName + " (Totale: € " + fmtEuro(calc.sommaTotale) + ")";
+        lbl.textContent = "Generato e inviato in FILE CREATI: " + fileName + " (Totale: € " + fmtEuro(calc.sommaTotale) + ")";
       }
-      showMessage("Riepilogo mensile (PDF) generato per " + nomeDoc + ".");
+      showMessage("Riepilogo mensile (PDF) generato e inviato in FILE CREATI per " + nomeDoc + ".");
     } catch (err) {
       showMessage("Errore nella generazione del Riepilogo mensile (PDF): " + err.message);
     }
@@ -3624,7 +3791,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("saldoNettoLbl").textContent = "Saldo Netto: € " + fmtEuro(saldo);
   }
 
-  document.getElementById("btnExportExcelCassa").addEventListener("click", function () {
+  document.getElementById("btnExportExcelCassa").addEventListener("click", async function () {
     try {
       if (!window.XLSX) {
         showMessage("Libreria Excel non disponibile offline.");
@@ -3647,8 +3814,19 @@ document.addEventListener("DOMContentLoaded", function () {
       var ws = window.XLSX.utils.aoa_to_sheet(rows);
       var wb = window.XLSX.utils.book_new();
       window.XLSX.utils.book_append_sheet(wb, ws, "Cassa SMA APS");
-      window.XLSX.writeFile(wb, "Cassa_Sicily_Music_Academy_26-11-2026.xlsx");
-      showMessage("File Excel (.xlsx) scaricato correttamente.");
+      var fileName = "Cassa_Sicily_Music_Academy_26-11-2026.xlsx";
+      window.XLSX.writeFile(wb, fileName);
+
+      try {
+        var wbOut = window.XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        var xlsxBlob = new Blob([wbOut], {
+          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        });
+        await caricaFileSuDriveFileCreati(xlsxBlob, fileName, "Esportazioni Cassa");
+        showMessage("File Excel (.xlsx) scaricato e inviato in FILE CREATI.");
+      } catch (driveErr) {
+        showMessage("File Excel (.xlsx) scaricato. Errore Drive: " + driveErr.message);
+      }
     } catch (err) {
       showMessage("Errore durante l'esportazione Excel: " + err.message);
     }
@@ -3697,6 +3875,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     filtrati.forEach(function (item, i) {
       var d = item.d;
+      var driveBtn = d.driveUrl
+        ? " <a class='btn btn-green btn-sm' href='" + d.driveUrl + "' target='_blank' rel='noopener'>Drive</a>"
+        : "";
       var tr = document.createElement("tr");
       tr.innerHTML =
         "<td class='center'>" + (i + 1) + "</td>" +
@@ -3704,7 +3885,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "<td><span class='badge badge-info'>" + d.formato + "</span></td>" +
         "<td>" + d.data + "</td>" +
         "<td>" + d.size + "</td>" +
-        "<td class='center'><button class='btn btn-blue btn-sm btn-dl-doc' type='button' data-idx='" + item.idx + "'>Scarica</button> <button class='btn btn-red btn-sm btn-rm-doc' type='button' data-idx='" + item.idx + "'>Elimina</button></td>";
+        "<td class='center'><button class='btn btn-blue btn-sm btn-dl-doc' type='button' data-idx='" + item.idx + "'>Scarica</button>" + driveBtn + " <button class='btn btn-red btn-sm btn-rm-doc' type='button' data-idx='" + item.idx + "'>Elimina</button></td>";
       tbody.appendChild(tr);
     });
 
@@ -3720,6 +3901,8 @@ document.addEventListener("DOMContentLoaded", function () {
           a.click();
           document.body.removeChild(a);
           showMessage("Download avviato: " + docItem.nomeFile);
+        } else if (docItem.driveUrl) {
+          window.open(docItem.driveUrl, "_blank");
         } else {
           showMessage("File modello '" + docItem.nomeFile + "' pronto in cartella (carica un file reale dal computer per scaricarlo).");
         }
@@ -3736,7 +3919,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  document.getElementById("btnAddDocMod").addEventListener("click", function () {
+  document.getElementById("btnAddDocMod").addEventListener("click", async function () {
     var inpFile = document.getElementById("docModFile");
     var file = inpFile.files && inpFile.files[0];
     if (!file) {
@@ -3749,19 +3932,30 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
     var titolo = document.getElementById("docModTitolo").value.trim() || file.name;
+    var driveUrl = "";
+
+    try {
+      showMessage("Invio documento su Google Drive (FILE CREATI)...");
+      var salvato = await caricaFileSuDriveFileCreati(file, file.name, "Documenti e Modulistica");
+      driveUrl = salvato.url || "";
+    } catch (err) {
+      showMessage("Salvato in locale. Errore Drive: " + err.message);
+    }
+
     documentiModulistica.push({
       titolo: titolo,
       nomeFile: file.name,
       formato: formato,
       data: "26/11/2026",
       size: formattaDimensione(file.size),
-      url: URL.createObjectURL(file)
+      url: URL.createObjectURL(file),
+      driveUrl: driveUrl
     });
     document.getElementById("docModTitolo").value = "";
     inpFile.value = "";
     renderDocumentiModulistica();
     programmaSyncAutomatico("nuovo_documento");
-    showMessage("File caricato in Documenti e modulistica: " + file.name);
+    showMessage("File caricato in Documenti e modulistica e inviato in FILE CREATI: " + file.name);
   });
 
   document.getElementById("searchDocMod").addEventListener("keyup", renderDocumentiModulistica);
@@ -3793,7 +3987,8 @@ document.addEventListener("DOMContentLoaded", function () {
       prima: "26/11/2026",
       prova: false,
       contrattoNome: "Contratto_" + nextNum + "_Nuovo_Associato.pdf",
-      contrattoUrl: ""
+      contrattoUrl: "",
+      contrattoDriveUrl: ""
     };
     associati.push(nuovo);
     selectedAssocIdx = associati.length - 1;
