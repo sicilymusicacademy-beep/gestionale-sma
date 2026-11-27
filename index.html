@@ -89,7 +89,7 @@
   .area { display: none; padding: 20px 24px 32px; max-width: 1480px; margin: 0 auto; }
   .area.active { display: block; }
 
-  .split { display: grid; grid-template-columns: 330px 1fr; gap: 18px; align-items: start; }
+  .split { display: grid; grid-template-columns: 340px 1fr; gap: 18px; align-items: start; }
   @media (max-width: 960px) {
     .split { grid-template-columns: 1fr; }
     .topbar, .main-tabs, .area { padding-left: 14px; padding-right: 14px; }
@@ -105,9 +105,13 @@
 
   .folder-block { margin-top: 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-alt); overflow: hidden; }
   .folder-header { padding: 9px 12px; background: #eef2f6; font-weight: 700; font-size: 12.5px; color: var(--navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-  .folder-header.ritirati { background: #fef2f2; color: #991b1b; }
   .folder-body { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
   .folder-body.collapsed { display: none; }
+
+  .subfolder-block { margin-top: 6px; border: 1px solid #fecaca; border-radius: 8px; background: #fff; overflow: hidden; }
+  .subfolder-header { padding: 7px 10px; background: #fef2f2; font-weight: 700; font-size: 11.5px; color: #991b1b; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+  .subfolder-body { padding: 6px; display: flex; flex-direction: column; gap: 5px; background: #fffafa; }
+  .subfolder-body.collapsed { display: none; }
 
   .assoc-item { padding: 9px 11px; border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; background: var(--surface); display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; gap: 8px; }
   .assoc-item.active { background: var(--gold-soft); border-color: var(--gold); font-weight: 700; }
@@ -460,6 +464,11 @@
         <div style="margin-top:6px; font-size:11.5px; color:var(--muted);">
           Logo per .docx: <span id="nomeLogoOriginale">Nessun logo caricato</span>
         </div>
+
+        <div style="margin-top:14px; padding-top:12px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+          <span style="font-size:12px; color:var(--muted);">Gestione scheda associato selezionato</span>
+          <button class="btn btn-red btn-sm" type="button" id="btnEliminaAssociato">Elimina Associato</button>
+        </div>
       </div>
 
       <!-- SUB: RIEPILOGO QUOTE -->
@@ -628,6 +637,7 @@
           <strong id="lblDocTendinaNome">Nessun docente</strong><br/>
           <span id="lblDocTendinaDettagli" style="color:var(--muted);">Aggiungi il primo docente</span>
         </div>
+        <button class="btn btn-red btn-sm" type="button" id="btnEliminaDocente">Elimina Docente</button>
       </div>
 
       <div class="sub-tabs" id="docSubTabs">
@@ -765,9 +775,9 @@ document.addEventListener("DOMContentLoaded", function () {
   try { localStorage.removeItem("sma_gestionale_stato_v1"); } catch (e) {}
 
   var anniAccademici = ["A.A 2026-2027"];
-  var cartelleAperte = { "A.A 2026-2027": true, "Ritirati/non iscritti": true };
+  var cartelleAperte = { "A.A 2026-2027": true };
+  var sottocartelleRitiratiAperte = { "A.A 2026-2027": true };
 
-  // Archivi completamente vuoti al reset
   var associati = [];
   var nuoviContatti = [];
   var docenti = [];
@@ -782,7 +792,6 @@ document.addEventListener("DOMContentLoaded", function () {
   var autoSyncTimer = null;
   var logoOriginaleData = { arrayBuffer: null, ext: "png", nome: "" };
 
-  // --- UTILITY & CLOUD ---
   function showMessage(msg) {
     var banner = document.getElementById("toastBanner");
     if (!banner) return;
@@ -842,10 +851,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function salvaStatoLocale() {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        anniAccademici: anniAccademici, cartelleAperte: cartelleAperte, associati: associati,
-        nuoviContatti: nuoviContatti, docenti: docenti, movimentiCassa: movimentiCassa,
-        documentiModulistica: documentiModulistica, progGen: progGen,
-        selectedAssocIdx: selectedAssocIdx, selectedDocIdx: selectedDocIdx
+        anniAccademici: anniAccademici, cartelleAperte: cartelleAperte,
+        sottocartelleRitiratiAperte: sottocartelleRitiratiAperte,
+        associati: associati, nuoviContatti: nuoviContatti, docenti: docenti,
+        movimentiCassa: movimentiCassa, documentiModulistica: documentiModulistica,
+        progGen: progGen, selectedAssocIdx: selectedAssocIdx, selectedDocIdx: selectedDocIdx
       }));
     } catch (e) {}
   }
@@ -857,6 +867,7 @@ document.addEventListener("DOMContentLoaded", function () {
       var s = JSON.parse(grezzo);
       if (Array.isArray(s.anniAccademici) && s.anniAccademici.length) anniAccademici = s.anniAccademici;
       if (s.cartelleAperte && typeof s.cartelleAperte === "object") cartelleAperte = s.cartelleAperte;
+      if (s.sottocartelleRitiratiAperte && typeof s.sottocartelleRitiratiAperte === "object") sottocartelleRitiratiAperte = s.sottocartelleRitiratiAperte;
       if (Array.isArray(s.associati)) associati = s.associati;
       if (Array.isArray(s.nuoviContatti)) nuoviContatti = s.nuoviContatti;
       if (Array.isArray(s.docenti)) docenti = s.docenti;
@@ -886,6 +897,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (remote && !remote.empty && (Array.isArray(remote.associati) || Array.isArray(remote.docenti) || Array.isArray(remote.movimentiCassa))) {
         if (Array.isArray(remote.anniAccademici) && remote.anniAccademici.length) anniAccademici = remote.anniAccademici;
         if (remote.cartelleAperte && typeof remote.cartelleAperte === "object") cartelleAperte = remote.cartelleAperte;
+        if (remote.sottocartelleRitiratiAperte && typeof remote.sottocartelleRitiratiAperte === "object") sottocartelleRitiratiAperte = remote.sottocartelleRitiratiAperte;
         if (Array.isArray(remote.associati)) { associati = remote.associati; if (selectedAssocIdx >= associati.length) selectedAssocIdx = 0; }
         if (Array.isArray(remote.nuoviContatti)) nuoviContatti = remote.nuoviContatti;
         if (Array.isArray(remote.docenti)) { docenti = remote.docenti; if (selectedDocIdx >= docenti.length) selectedDocIdx = 0; }
@@ -914,9 +926,10 @@ document.addEventListener("DOMContentLoaded", function () {
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify({
           azione: azione, account: emailAccount, timestamp: new Date().toISOString(),
-          anniAccademici: anniAccademici, cartelleAperte: cartelleAperte, associati: associati,
-          nuoviContatti: nuoviContatti, docenti: docenti, movimentiCassa: movimentiCassa,
-          documentiModulistica: documentiModulistica, progGen: progGen
+          anniAccademici: anniAccademici, cartelleAperte: cartelleAperte,
+          sottocartelleRitiratiAperte: sottocartelleRitiratiAperte,
+          associati: associati, nuoviContatti: nuoviContatti, docenti: docenti,
+          movimentiCassa: movimentiCassa, documentiModulistica: documentiModulistica, progGen: progGen
         })
       });
       aggiornaBadgeCloud("Account: " + emailAccount + " (Sincronizzato)", "Salvato (" + new Date().toLocaleTimeString("it-IT") + ")", true);
@@ -926,7 +939,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // --- GENERATORI PDF & DOCX ---
   async function generaEScaricaPdfRicevutaAssociativa(dati) {
     var jspdfLib = window.jspdf;
     if (!jspdfLib || !jspdfLib.jsPDF) { showMessage("Libreria PDF non disponibile."); return; }
@@ -985,10 +997,11 @@ document.addEventListener("DOMContentLoaded", function () {
     var totaleMese = (parseFloat(document.getElementById("inpQuotaMensile").value) || 0) + (document.getElementById("chkTrinity").checked ? 25 : 0);
 
     var mesi = ["Settembre", "Ottobre", "Novembre", "Dicembre", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno"];
-    var insolute = mesi.map(function (m) { return "Quota Associativa Mensile del Mese di " + m + ": € " + fmtEuro(totaleMese); });
+    var insolute = ["Quota d'Iscrizione Annuale: € 50,00"];
+    mesi.forEach(function (m) { insolute.push("Quota Associativa Mensile del Mese di " + m + ": € " + fmtEuro(totaleMese)); });
     insolute.push("Quota Concerto di Natale (entro il 30 novembre): € 40,00");
     insolute.push("Quota Saggio di Fine Anno Accademico (entro il 30 maggio): € 60,00");
-    var totInsoluto = (mesi.length * totaleMese) + 40.00 + 60.00;
+    var totInsoluto = 50.00 + (mesi.length * totaleMese) + 40.00 + 60.00;
     var totRidotto = Number((totInsoluto * 0.5).toFixed(2));
 
     function pXml(t) {
@@ -1023,7 +1036,6 @@ document.addEventListener("DOMContentLoaded", function () {
     catch (e) { showMessage("File .docx scaricato."); }
   }
 
-  // --- NAVIGAZIONE & MODALI ---
   function attivaAreaPrincipale(areaName) {
     document.querySelectorAll(".area").forEach(function (a) { a.classList.remove("active"); });
     document.querySelectorAll(".main-tab").forEach(function (b) { b.classList.remove("active"); });
@@ -1084,7 +1096,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // --- ASSOCIATI & QUOTE ---
   function prezzoPerTipoCorso(t) {
     if (t === "Strumentale") return 120.00;
     if (t === "Principale") return 135.00;
@@ -1163,34 +1174,96 @@ document.addEventListener("DOMContentLoaded", function () {
     var parti = (anniAccademici[anniAccademici.length - 1] || "A.A 2026-2027").replace("A.A", "").trim().split("-");
     var inizio = (parseInt(parti[0], 10) || 2026) + 1;
     var nuovoAA = "A.A " + inizio + "-" + (inizio + 1);
-    anniAccademici.push(nuovoAA); cartelleAperte[nuovoAA] = true;
+    anniAccademici.push(nuovoAA); cartelleAperte[nuovoAA] = true; sottocartelleRitiratiAperte[nuovoAA] = true;
     popolaSelectAnni(); document.getElementById("inpAnnoAccademico").value = nuovoAA;
-    if (associati[selectedAssocIdx] && associati[selectedAssocIdx].statoIscr !== "Non attivo/Scaduto") associati[selectedAssocIdx].annoAcc = nuovoAA;
+    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].annoAcc = nuovoAA;
     renderAssociati(); programmaSyncAutomatico("nuovo_anno_accademico");
   });
 
+  function creaElementoAssociato(it) {
+    var d = document.createElement("div");
+    d.className = "assoc-item" + (it.idx === selectedAssocIdx ? " active" : "");
+    var b = it.a.statoIscr === "Neo Iscritto"
+      ? "<span class='badge-neo'>NEO</span>"
+      : (it.a.statoIscr === "Non attivo/Scaduto" ? "<span class='badge-scad'>SCAD</span>" : "");
+    d.innerHTML = "<span><span class='badge-iscr'>" + it.a.numIscr + "</span>" + it.a.nome + b + "</span><span class='date'>" + (it.a.scad || "-") + "</span>";
+    d.addEventListener("click", function () {
+      selectedAssocIdx = it.idx;
+      caricaScheda(it.a);
+      renderAssociati();
+      salvaStatoLocale();
+    });
+    return d;
+  }
+
   function renderAssociati() {
     var q = (document.getElementById("searchAssoc").value || "").toLowerCase().trim();
-    var container = document.getElementById("assocFoldersContainer"); container.innerHTML = "";
+    var container = document.getElementById("assocFoldersContainer");
+    container.innerHTML = "";
+
     anniAccademici.forEach(function (aa) {
-      var membri = associati.map(function (a, idx) { return { a: a, idx: idx }; }).filter(function (it) {
-        return it.a.statoIscr !== "Non attivo/Scaduto" && (it.a.annoAcc || "A.A 2026-2027") === aa && (!q || it.a.nome.toLowerCase().indexOf(q) !== -1 || it.a.numIscr.toLowerCase().indexOf(q) !== -1);
+      var attivi = associati.map(function (a, idx) { return { a: a, idx: idx }; }).filter(function (it) {
+        var aaAssoc = it.a.annoAcc || anniAccademici[0] || "A.A 2026-2027";
+        return it.a.statoIscr !== "Non attivo/Scaduto" && aaAssoc === aa &&
+          (!q || it.a.nome.toLowerCase().indexOf(q) !== -1 || it.a.numIscr.toLowerCase().indexOf(q) !== -1);
       });
-      var block = document.createElement("div"); block.className = "folder-block";
-      var isOpen = q ? true : !!cartelleAperte[aa];
-      var hdr = document.createElement("div"); hdr.className = "folder-header";
-      hdr.innerHTML = "<span>" + (isOpen ? "📂" : "📁") + " " + aa + " (" + membri.length + ")</span><span>" + (isOpen ? "▾" : "▸") + "</span>";
-      hdr.addEventListener("click", function () { cartelleAperte[aa] = !cartelleAperte[aa]; renderAssociati(); salvaStatoLocale(); });
-      var body = document.createElement("div"); body.className = "folder-body" + (isOpen ? "" : " collapsed");
-      if (!membri.length) body.innerHTML = "<div style='font-size:11.5px; color:var(--muted); padding:4px 6px;'>Nessun associato</div>";
-      else membri.forEach(function (it) {
-        var d = document.createElement("div"); d.className = "assoc-item" + (it.idx === selectedAssocIdx ? " active" : "");
-        var b = it.a.statoIscr === "Neo Iscritto" ? "<span class='badge-neo'>NEO</span>" : "";
-        d.innerHTML = "<span><span class='badge-iscr'>" + it.a.numIscr + "</span>" + it.a.nome + b + "</span><span class='date'>" + it.a.scad + "</span>";
-        d.addEventListener("click", function () { selectedAssocIdx = it.idx; caricaScheda(it.a); renderAssociati(); salvaStatoLocale(); });
-        body.appendChild(d);
+
+      var ritirati = associati.map(function (a, idx) { return { a: a, idx: idx }; }).filter(function (it) {
+        var aaAssoc = it.a.annoAcc || anniAccademici[0] || "A.A 2026-2027";
+        return it.a.statoIscr === "Non attivo/Scaduto" && aaAssoc === aa &&
+          (!q || it.a.nome.toLowerCase().indexOf(q) !== -1 || it.a.numIscr.toLowerCase().indexOf(q) !== -1);
       });
-      block.appendChild(hdr); block.appendChild(body); container.appendChild(block);
+
+      var block = document.createElement("div");
+      block.className = "folder-block";
+      var isOpen = q ? true : (cartelleAperte[aa] !== false);
+      var hdr = document.createElement("div");
+      hdr.className = "folder-header";
+      hdr.innerHTML = "<span>" + (isOpen ? "📂" : "📁") + " " + aa + " (" + attivi.length + " attivi • " + ritirati.length + " ritirati/scaduti)</span><span>" + (isOpen ? "▾" : "▸") + "</span>";
+      hdr.addEventListener("click", function () {
+        cartelleAperte[aa] = !isOpen;
+        renderAssociati();
+        salvaStatoLocale();
+      });
+
+      var body = document.createElement("div");
+      body.className = "folder-body" + (isOpen ? "" : " collapsed");
+
+      if (!attivi.length) {
+        body.innerHTML += "<div style='font-size:11.5px; color:var(--muted); padding:4px 6px;'>Nessun associato attivo</div>";
+      } else {
+        attivi.forEach(function (it) { body.appendChild(creaElementoAssociato(it)); });
+      }
+
+      // Sottocartella RITIRATI/SCADUTI dentro l'anno accademico
+      var subBlock = document.createElement("div");
+      subBlock.className = "subfolder-block";
+      var isSubOpen = q ? true : (sottocartelleRitiratiAperte[aa] !== false);
+      var subHdr = document.createElement("div");
+      subHdr.className = "subfolder-header";
+      subHdr.innerHTML = "<span>" + (isSubOpen ? "📂" : "📁") + " " + aa + " — RITIRATI/SCADUTI (" + ritirati.length + ")</span><span>" + (isSubOpen ? "▾" : "▸") + "</span>";
+      subHdr.addEventListener("click", function (ev) {
+        ev.stopPropagation();
+        sottocartelleRitiratiAperte[aa] = !isSubOpen;
+        renderAssociati();
+        salvaStatoLocale();
+      });
+
+      var subBody = document.createElement("div");
+      subBody.className = "subfolder-body" + (isSubOpen ? "" : " collapsed");
+      if (!ritirati.length) {
+        subBody.innerHTML = "<div style='font-size:11px; color:var(--muted); padding:3px 5px;'>Nessun associato ritirato o scaduto</div>";
+      } else {
+        ritirati.forEach(function (it) { subBody.appendChild(creaElementoAssociato(it)); });
+      }
+
+      subBlock.appendChild(subHdr);
+      subBlock.appendChild(subBody);
+      body.appendChild(subBlock);
+
+      block.appendChild(hdr);
+      block.appendChild(body);
+      container.appendChild(block);
     });
   }
 
@@ -1225,7 +1298,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     document.getElementById("inpNumIscrizione").value = a.numIscr;
     document.getElementById("inpStatoIscrizione").value = a.statoIscr || "Attivo";
-    popolaSelectAnni(); document.getElementById("inpAnnoAccademico").value = a.annoAcc || "A.A 2026-2027";
+    popolaSelectAnni(); document.getElementById("inpAnnoAccademico").value = a.annoAcc || anniAccademici[0] || "A.A 2026-2027";
     document.getElementById("inpAssociato").value = a.nome; document.getElementById("inpCorsista").value = a.corsista || "";
     document.getElementById("inpSede").value = a.sede || "Misilmeri"; document.getElementById("inpTelefono").value = a.tel || "";
     document.getElementById("inpTelefono2").value = a.tel2 || ""; document.getElementById("inpEmail").value = a.email || "";
@@ -1247,6 +1320,47 @@ document.addEventListener("DOMContentLoaded", function () {
     aggiornaTabellaQuote();
   }
 
+  document.getElementById("inpStatoIscrizione").addEventListener("change", function () {
+    var nuovoStato = this.value;
+    var a = associati[selectedAssocIdx];
+    if (!a) return;
+    a.statoIscr = nuovoStato;
+    var aa = a.annoAcc || anniAccademici[0] || "A.A 2026-2027";
+    cartelleAperte[aa] = true;
+    if (nuovoStato === "Non attivo/Scaduto") {
+      sottocartelleRitiratiAperte[aa] = true;
+      showMessage("Spostato in " + aa + " — RITIRATI/SCADUTI");
+    } else {
+      showMessage("Stato aggiornato su " + nuovoStato + " in " + aa);
+    }
+    renderAssociati();
+    programmaSyncAutomatico("cambio_stato_associato");
+  });
+
+  document.getElementById("inpAnnoAccademico").addEventListener("change", function () {
+    var a = associati[selectedAssocIdx];
+    if (!a) return;
+    a.annoAcc = this.value;
+    cartelleAperte[this.value] = true;
+    renderAssociati();
+    programmaSyncAutomatico("cambio_anno_associato");
+  });
+
+  document.getElementById("btnEliminaAssociato").addEventListener("click", function () {
+    if (!associati.length || selectedAssocIdx < 0 || selectedAssocIdx >= associati.length) {
+      showMessage("Nessun associato selezionato da eliminare.");
+      return;
+    }
+    var target = associati[selectedAssocIdx];
+    if (!window.confirm("Eliminare definitivamente l'associato \"" + (target.nome || target.numIscr) + "\"?")) return;
+    associati.splice(selectedAssocIdx, 1);
+    if (selectedAssocIdx >= associati.length) selectedAssocIdx = Math.max(0, associati.length - 1);
+    renderAssociati();
+    caricaScheda(associati[selectedAssocIdx] || null);
+    programmaSyncAutomatico("elimina_associato");
+    showMessage("Associato eliminato.");
+  });
+
   document.getElementById("searchAssoc").addEventListener("keyup", renderAssociati);
   document.getElementById("inpAssociato").addEventListener("input", function () { if (associati[selectedAssocIdx]) associati[selectedAssocIdx].nome = this.value; document.getElementById("prevAssoc").textContent = this.value; renderAssociati(); programmaSyncAutomatico("modifica_associato"); });
   document.getElementById("inpCorsista").addEventListener("input", function () { if (associati[selectedAssocIdx]) associati[selectedAssocIdx].corsista = this.value; document.getElementById("prevCors").textContent = this.value; programmaSyncAutomatico("modifica_corsista"); });
@@ -1262,19 +1376,20 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("chkTrinity").addEventListener("change", function () { if (associati[selectedAssocIdx]) associati[selectedAssocIdx].trinity = this.checked; aggiornaTabellaQuote(); programmaSyncAutomatico("modifica_trinity"); });
 
   document.getElementById("btnNuovoAssoc").addEventListener("click", function () {
+    var aaCorr = document.getElementById("inpAnnoAccademico").value || anniAccademici[0] || "A.A 2026-2027";
     var nextNum = "SMA-" + (associati.length + 1);
     var nuovo = {
-      id: Date.now(), numIscr: nextNum, statoIscr: "Neo Iscritto", annoAcc: document.getElementById("inpAnnoAccademico").value || "A.A 2026-2027",
+      id: Date.now(), numIscr: nextNum, statoIscr: "Neo Iscritto", annoAcc: aaCorr,
       nome: "Nuovo Associato", corsista: "", sede: "Misilmeri", tel: "", tel2: "", email: "", cf: "",
       scad: "", tipo: "Strumentale", quota: 120.00, trinity: false, firma: "28/11/2026", prima: "28/11/2026", prova: false,
       contrattoNome: "Contratto_" + nextNum + ".pdf", contrattoUrl: "", contrattoDriveUrl: ""
     };
     associati.push(nuovo); selectedAssocIdx = associati.length - 1;
+    cartelleAperte[aaCorr] = true;
     renderAssociati(); caricaScheda(nuovo); document.getElementById("inpAssociato").focus();
     programmaSyncAutomatico("nuovo_associato"); showMessage("Creato associato " + nextNum);
   });
 
-  // --- RIEPILOGO QUOTE: 50€ iscrizione + 10 rette mensili + 40€ Natale (entro 30 nov) + 60€ Saggio Fine Anno (entro 30 mag) ---
   function aggiornaTabellaQuote() {
     var totMese = (parseFloat(document.getElementById("inpQuotaMensile").value) || 0) + (document.getElementById("chkTrinity").checked ? 25.00 : 0);
     var mesi = ["Settembre", "Ottobre", "Novembre", "Dicembre", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno"];
@@ -1316,7 +1431,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("bilancioResiduo").textContent = "€ " + fmtEuro(totR);
   }
 
-  // Upload / Scan / Scarica Contratto & Logo & DOCX
   document.getElementById("btnAllegaContratto").addEventListener("click", function () { document.getElementById("inpFileContratto").click(); });
   document.getElementById("btnScanContratto").addEventListener("click", function () { document.getElementById("inpFileScanContratto").click(); });
 
@@ -1360,7 +1474,6 @@ document.addEventListener("DOMContentLoaded", function () {
     this.value = "";
   });
 
-  // --- RICEVUTE ---
   document.getElementById("ricMetodo").addEventListener("change", function () {
     document.getElementById("boxProva").style.display = this.value === "Contanti" ? "none" : "block";
     document.getElementById("prevMetodo").textContent = this.value;
@@ -1411,7 +1524,6 @@ document.addEventListener("DOMContentLoaded", function () {
     window.open("https://wa.me/" + raw + "?text=" + encodeURIComponent(txt), "_blank");
   });
 
-  // --- NUOVI CONTATTI ---
   function renderNuoviContatti() {
     var tbody = document.getElementById("tbodyNuoviContatti"); tbody.innerHTML = "";
     document.getElementById("countNuoviContatti").textContent = nuoviContatti.length;
@@ -1426,8 +1538,9 @@ document.addEventListener("DOMContentLoaded", function () {
       btn.addEventListener("click", function () {
         var i = parseInt(this.getAttribute("data-idx"), 10); var c = nuoviContatti[i];
         var nextNum = "SMA-" + (associati.length + 1);
+        var aaCorr = anniAccademici[anniAccademici.length - 1] || "A.A 2026-2027";
         associati.push({
-          id: Date.now(), numIscr: nextNum, statoIscr: "Neo Iscritto", annoAcc: anniAccademici[anniAccademici.length - 1],
+          id: Date.now(), numIscr: nextNum, statoIscr: "Neo Iscritto", annoAcc: aaCorr,
           nome: c.nome + " " + c.cognome, corsista: c.nome + " " + c.cognome, sede: c.sede, tel: c.cell,
           scad: "", tipo: c.corso, quota: prezzoPerTipoCorso(c.corso), trinity: false, firma: "28/11/2026", prima: "28/11/2026"
         });
@@ -1446,7 +1559,6 @@ document.addEventListener("DOMContentLoaded", function () {
     renderNuoviContatti(); programmaSyncAutomatico("nuovo_contatto");
   });
 
-  // --- DOCENTI ---
   function renderDocenti() {
     var box = document.getElementById("docentiList"); var sel = document.getElementById("selDocenteTendina");
     box.innerHTML = ""; sel.innerHTML = "";
@@ -1480,6 +1592,7 @@ document.addEventListener("DOMContentLoaded", function () {
       document.getElementById("lblDocTendinaNome").textContent = "Nessun docente";
       document.getElementById("lblDocTendinaDettagli").textContent = "Clicca su + Nuovo Docente per iniziare";
       document.getElementById("tbodyRegistroOreDoc").innerHTML = "";
+      document.getElementById("lblTotOreRegistro").textContent = "Totale Giorni: 0 • Ore Registrate: 0,0 h";
       return;
     }
     selectedDocIdx = idx; var d = docenti[idx];
@@ -1495,6 +1608,21 @@ document.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll("#docentiList .assoc-item").forEach(function (el, i) { el.classList.toggle("active", i === idx); });
     renderRegistroOreDocente(); calcolaDocente();
   }
+
+  document.getElementById("btnEliminaDocente").addEventListener("click", function () {
+    if (!docenti.length || selectedDocIdx < 0 || selectedDocIdx >= docenti.length) {
+      showMessage("Nessun docente selezionato da eliminare.");
+      return;
+    }
+    var target = docenti[selectedDocIdx];
+    if (!window.confirm("Eliminare definitivamente il docente \"" + (target.nome || "Docente") + "\"?")) return;
+    docenti.splice(selectedDocIdx, 1);
+    if (selectedDocIdx >= docenti.length) selectedDocIdx = Math.max(0, docenti.length - 1);
+    renderDocenti();
+    caricaSchedaDocente(docenti.length ? selectedDocIdx : -1);
+    programmaSyncAutomatico("elimina_docente");
+    showMessage("Docente eliminato.");
+  });
 
   function renderRegistroOreDocente() {
     var d = docenti[selectedDocIdx]; var tbody = document.getElementById("tbodyRegistroOreDoc");
@@ -1589,7 +1717,6 @@ document.addEventListener("DOMContentLoaded", function () {
     renderCassa(); programmaSyncAutomatico("liquidazione_docente"); showMessage("Uscita registrata in Cassa.");
   });
 
-  // --- CASSA ---
   function getMovimentiFiltrati() {
     var fS = document.getElementById("filtroCassaSede").value, fM = document.getElementById("filtroCassaMet").value, fT = (document.getElementById("filtroCassaTesto").value || "").toLowerCase();
     return movimentiCassa.map(function (m, i) { return { m: m, realIdx: i }; }).filter(function (it) {
@@ -1658,7 +1785,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("filtroCassaSede").value = "Tutte"; document.getElementById("filtroCassaMet").value = "Tutti"; document.getElementById("filtroCassaTesto").value = ""; renderCassa();
   });
 
-  // --- DOCUMENTI E MODULISTICA ---
   function renderDocumentiModulistica() {
     var q = (document.getElementById("searchDocMod").value || "").toLowerCase().trim();
     var tbody = document.getElementById("tbodyDocMod"); tbody.innerHTML = "";
@@ -1701,7 +1827,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("searchDocMod").addEventListener("keyup", renderDocumentiModulistica);
 
-  // --- AVVIO ---
   function renderTutto() {
     popolaSelectAnni();
     renderAssociati();
