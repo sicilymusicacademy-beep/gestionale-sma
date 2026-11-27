@@ -17,7 +17,6 @@
     --gold: #c28e0e;
     --gold-hover: #a87909;
     --gold-soft: #fef9e7;
-    --gold-border: #eab308;
     --bg: #f4f6f9;
     --surface: #ffffff;
     --surface-alt: #f8fafc;
@@ -33,7 +32,6 @@
     --blue-bg: #e0f2fe;
     --wa: #16a34a;
     --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
-    --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
     --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.22);
     --radius: 12px;
     --radius-sm: 8px;
@@ -52,7 +50,6 @@
     line-height: 1.45;
   }
 
-  /* Notifica toast elegante */
   .toast-banner {
     position: fixed;
     bottom: 20px;
@@ -70,7 +67,6 @@
     display: none;
   }
 
-  /* Header principale */
   .topbar {
     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
     color: #fff;
@@ -98,14 +94,12 @@
     border-radius: 10px;
     letter-spacing: 0.6px;
     font-size: 13px;
-    box-shadow: 0 2px 8px rgba(194, 142, 14, 0.35);
   }
 
   .brand h1 {
     margin: 0;
     font-size: 17px;
     font-weight: 800;
-    letter-spacing: -0.01em;
   }
 
   .brand small {
@@ -115,7 +109,6 @@
     margin-top: 2px;
   }
 
-  /* Pulsanti */
   .btn {
     border: 1px solid transparent;
     border-radius: var(--radius-sm);
@@ -132,65 +125,17 @@
     white-space: nowrap;
   }
 
-  .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-sm);
-  }
-
-  .btn:active {
-    transform: translateY(0);
-  }
-
-  .btn-gold {
-    background: var(--gold);
-    color: var(--navy);
-    font-weight: 700;
-  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-gold { background: var(--gold); color: var(--navy); font-weight: 700; }
   .btn-gold:hover { background: var(--gold-hover); color: #fff; }
+  .btn-navy { background: var(--navy); color: #fff; }
+  .btn-green { background: var(--green); color: #fff; }
+  .btn-wa { background: var(--wa); color: #fff; }
+  .btn-red { background: var(--red); color: #fff; }
+  .btn-blue { background: var(--blue); color: #fff; }
+  .btn-outline { background: var(--surface); border-color: var(--border-strong); color: var(--text); }
+  .btn-sm { padding: 5px 10px; font-size: 11.5px; border-radius: 6px; }
 
-  .btn-navy {
-    background: var(--navy);
-    color: #fff;
-  }
-  .btn-navy:hover { background: var(--navy-soft); }
-
-  .btn-green {
-    background: var(--green);
-    color: #fff;
-  }
-
-  .btn-wa {
-    background: var(--wa);
-    color: #fff;
-  }
-
-  .btn-red {
-    background: var(--red);
-    color: #fff;
-  }
-
-  .btn-blue {
-    background: var(--blue);
-    color: #fff;
-  }
-
-  .btn-outline {
-    background: var(--surface);
-    border-color: var(--border-strong);
-    color: var(--text);
-  }
-  .btn-outline:hover {
-    background: var(--surface-alt);
-    border-color: #94a3b8;
-  }
-
-  .btn-sm {
-    padding: 5px 10px;
-    font-size: 11.5px;
-    border-radius: 6px;
-  }
-
-  /* Barra navigazione sezioni */
   .main-tabs {
     display: flex;
     gap: 6px;
@@ -210,12 +155,6 @@
     font-size: 13px;
     cursor: pointer;
     color: #475569;
-    transition: all 0.15s ease;
-  }
-
-  .main-tab:hover {
-    color: var(--navy);
-    background: rgba(255, 255, 255, 0.55);
   }
 
   .main-tab.active {
@@ -227,25 +166,10 @@
     top: 1px;
   }
 
-  .area {
-    display: none;
-    padding: 20px 24px 32px;
-    max-width: 1480px;
-    margin: 0 auto;
-  }
+  .area { display: none; padding: 20px 24px 32px; max-width: 1480px; margin: 0 auto; }
+  .area.active { display: block; }
 
-  .area.active {
-    display: block;
-  }
-
-  /* Griglia a due colonne */
-  .split {
-    display: grid;
-    grid-template-columns: 330px 1fr;
-    gap: 18px;
-    align-items: start;
-  }
-
+  .split { display: grid; grid-template-columns: 330px 1fr; gap: 18px; align-items: start; }
   @media (max-width: 960px) {
     .split { grid-template-columns: 1fr; }
     .topbar, .main-tabs, .area { padding-left: 14px; padding-right: 14px; }
@@ -259,15 +183,8 @@
     box-shadow: var(--shadow-sm);
   }
 
-  .card h3 {
-    margin: 0 0 14px;
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--navy);
-    letter-spacing: -0.01em;
-  }
+  .card h3 { margin: 0 0 14px; font-size: 15px; font-weight: 700; color: var(--navy); }
 
-  /* Controlli form */
   .search-input, input, select, textarea {
     width: 100%;
     padding: 8px 11px;
@@ -276,16 +193,8 @@
     font-size: 13px;
     color: var(--text);
     background: var(--surface);
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--gold);
-    box-shadow: 0 0 0 3px rgba(194, 142, 14, 0.15);
-  }
-
-  /* Cartelle Anno Accademico */
   .folder-block {
     margin-top: 10px;
     border: 1px solid var(--border);
@@ -304,24 +213,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    user-select: none;
   }
 
-  .folder-header.ritirati {
-    background: #fef2f2;
-    color: #991b1b;
-  }
-
-  .folder-body {
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .folder-body.collapsed {
-    display: none;
-  }
+  .folder-header.ritirati { background: #fef2f2; color: #991b1b; }
+  .folder-body { padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+  .folder-body.collapsed { display: none; }
 
   .assoc-item {
     padding: 9px 11px;
@@ -334,27 +230,15 @@
     align-items: center;
     font-size: 12.5px;
     gap: 8px;
-    transition: all 0.14s ease;
-  }
-
-  .assoc-item:hover {
-    border-color: #94a3b8;
-    background: #f8fafc;
   }
 
   .assoc-item.active {
     background: var(--gold-soft);
     border-color: var(--gold);
     font-weight: 700;
-    box-shadow: 0 0 0 1px rgba(194, 142, 14, 0.25);
   }
 
-  .assoc-item span.date {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 500;
-    white-space: nowrap;
-  }
+  .assoc-item span.date { font-size: 11px; color: var(--muted); white-space: nowrap; }
 
   .badge-neo {
     background: var(--green-bg);
@@ -388,7 +272,6 @@
     margin-right: 6px;
   }
 
-  /* Sotto-schede */
   .sub-tabs {
     display: flex;
     gap: 8px;
@@ -407,53 +290,18 @@
     font-weight: 600;
     color: #334155;
     cursor: pointer;
-    transition: all 0.14s ease;
   }
 
-  .sub-tab:hover {
-    background: #f1f5f9;
-  }
-
-  .sub-tab.active {
-    background: var(--navy);
-    color: #fff;
-    border-color: var(--navy);
-  }
-
+  .sub-tab.active { background: var(--navy); color: #fff; border-color: var(--navy); }
   .sub-panel { display: none; }
   .sub-panel.active { display: block; }
 
-  .form-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px 16px;
-  }
+  .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px 16px; }
+  .form-grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 16px; }
+  @media (max-width: 760px) { .form-grid, .form-grid-3 { grid-template-columns: 1fr; } }
 
-  .form-grid-3 {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px 16px;
-  }
-
-  @media (max-width: 760px) {
-    .form-grid, .form-grid-3 { grid-template-columns: 1fr; }
-  }
-
-  .form-group label {
-    display: block;
-    font-size: 11.5px;
-    font-weight: 700;
-    margin-bottom: 5px;
-    color: #334155;
-    letter-spacing: 0.01em;
-  }
-
-  .inline-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-  }
+  .form-group label { display: block; font-size: 11.5px; font-weight: 700; margin-bottom: 5px; color: #334155; }
+  .inline-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
   .dates-box {
     margin-top: 14px;
@@ -466,18 +314,9 @@
     gap: 12px;
     align-items: end;
   }
+  @media (max-width: 820px) { .dates-box { grid-template-columns: 1fr; } }
 
-  @media (max-width: 820px) {
-    .dates-box { grid-template-columns: 1fr; }
-  }
-
-  .calc-feedback {
-    grid-column: 1 / -1;
-    font-size: 12px;
-    color: var(--green);
-    font-weight: 600;
-    margin-top: 2px;
-  }
+  .calc-feedback { grid-column: 1 / -1; font-size: 12px; color: var(--green); font-weight: 600; }
 
   .trial-box {
     margin-top: 14px;
@@ -487,14 +326,7 @@
     border-radius: 10px;
   }
 
-  .trial-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
+  .trial-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
   .trial-fields {
     margin-top: 12px;
     padding-top: 12px;
@@ -503,11 +335,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 12px 16px;
   }
-
-  .trial-fields.disabled {
-    opacity: 0.45;
-    pointer-events: none;
-  }
+  .trial-fields.disabled { opacity: 0.45; pointer-events: none; }
 
   .scan-box {
     margin-top: 14px;
@@ -522,82 +350,19 @@
     gap: 12px;
   }
 
-  .wa-card {
-    border: 1px solid #bbf7d0;
-    background: #f0fdf4;
-    border-radius: 10px;
-    padding: 14px;
-    margin-bottom: 12px;
-  }
+  .wa-card { border: 1px solid #bbf7d0; background: #f0fdf4; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+  .wa-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 8px; flex-wrap: wrap; }
+  .wa-card-header strong { color: #166534; font-size: 13px; }
+  .wa-text { width: 100%; background: var(--surface); border: 1px solid #86efac; border-radius: var(--radius-sm); padding: 10px 12px; font-size: 12.5px; }
+  .copy-toast { font-size: 12px; font-weight: 700; color: var(--green); display: none; }
 
-  .wa-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 8px;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .wa-card-header strong {
-    color: #166534;
-    font-size: 13px;
-  }
-
-  .wa-text {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid #86efac;
-    border-radius: var(--radius-sm);
-    padding: 10px 12px;
-    font-size: 12.5px;
-    color: var(--text);
-    resize: vertical;
-    min-height: 70px;
-  }
-
-  .copy-toast {
-    font-size: 12px;
-    font-weight: 700;
-    color: var(--green);
-    display: none;
-  }
-
-  /* Tabelle */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12.5px;
-    background: var(--surface);
-  }
-
-  th, td {
-    border: 1px solid var(--border);
-    padding: 8px 10px;
-    text-align: left;
-  }
-
-  th {
-    background: var(--surface-alt);
-    font-weight: 700;
-    color: var(--navy);
-  }
-
-  tbody tr:hover {
-    background: #f8fafc;
-  }
-
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; background: var(--surface); }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+  th { background: var(--surface-alt); font-weight: 700; color: var(--navy); }
   .right { text-align: right; }
   .center { text-align: center; }
 
-  .badge {
-    padding: 3px 9px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    display: inline-block;
-  }
-
+  .badge { padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; display: inline-block; }
   .badge-ok { background: var(--green-bg); color: var(--green); }
   .badge-warn { background: #fef3c7; color: #b45309; }
   .badge-info { background: var(--blue-bg); color: var(--blue); }
@@ -616,15 +381,8 @@
     gap: 14px;
   }
 
-  .bilancio-item small {
-    display: block;
-    font-size: 11px;
-    color: #cbd5e1;
-  }
-
-  .bilancio-item strong {
-    font-size: 16px;
-  }
+  .bilancio-item small { display: block; font-size: 11px; color: #cbd5e1; }
+  .bilancio-item strong { font-size: 16px; }
 
   .cassa-summary {
     margin-top: 12px;
@@ -652,12 +410,8 @@
     margin-bottom: 12px;
     align-items: center;
   }
+  @media (max-width: 820px) { .filter-bar { grid-template-columns: 1fr; } }
 
-  @media (max-width: 820px) {
-    .filter-bar { grid-template-columns: 1fr; }
-  }
-
-  /* Modali */
   .modal-backdrop {
     position: fixed;
     inset: 0;
@@ -669,10 +423,7 @@
     z-index: 60;
     padding: 16px;
   }
-
-  .modal-backdrop.hidden {
-    display: none !important;
-  }
+  .modal-backdrop.hidden { display: none !important; }
 
   .modal {
     background: var(--surface);
@@ -685,117 +436,34 @@
     box-shadow: var(--shadow-lg);
   }
 
-  .modal-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-  }
+  .modal-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+  .modal h2 { margin: 0; font-size: 17px; font-weight: 800; color: var(--navy); }
+  .close-x { background: transparent; border: none; font-size: 22px; font-weight: 700; cursor: pointer; color: var(--muted); }
 
-  .modal h2 {
-    margin: 0;
-    font-size: 17px;
-    font-weight: 800;
-    color: var(--navy);
-  }
-
-  .close-x {
-    background: transparent;
-    border: none;
-    font-size: 22px;
-    font-weight: 700;
-    cursor: pointer;
-    color: var(--muted);
-    line-height: 1;
-    padding: 2px 6px;
-  }
-
-  .close-x:hover {
-    color: var(--navy);
-  }
-
-  .alert-box {
-    padding: 11px 14px;
-    border-radius: var(--radius-sm);
-    margin-bottom: 10px;
-    font-size: 12.5px;
-  }
-
+  .alert-box { padding: 11px 14px; border-radius: var(--radius-sm); margin-bottom: 10px; font-size: 12.5px; }
   .alert-red { background: var(--red-bg); border-left: 4px solid var(--red); color: #7f1d1d; }
   .alert-amber { background: #fef3c7; border-left: 4px solid var(--gold); color: #78350f; }
   .alert-blue { background: var(--blue-bg); border-left: 4px solid var(--blue); color: #0c4a6e; }
 
-  .pdf-preview {
-    border: 1px solid var(--border-strong);
-    background: var(--surface);
-    padding: 18px;
-    border-radius: 10px;
-    margin-top: 14px;
-  }
-
-  .pdf-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid var(--gold);
-    padding-bottom: 10px;
-    margin-bottom: 12px;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .note-pill {
-    display: inline-block;
-    background: var(--blue-bg);
-    color: var(--blue);
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 12px;
-    font-weight: 600;
-    margin-top: 6px;
-  }
-
-  .drive-pill {
-    display: inline-block;
-    background: var(--green-bg);
-    color: var(--green);
-    padding: 3px 9px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    margin-left: 6px;
-  }
+  .pdf-preview { border: 1px solid var(--border-strong); background: var(--surface); padding: 18px; border-radius: 10px; margin-top: 14px; }
+  .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--gold); padding-bottom: 10px; margin-bottom: 12px; gap: 10px; flex-wrap: wrap; }
+  .note-pill { display: inline-block; background: var(--blue-bg); color: var(--blue); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; margin-top: 6px; }
+  .drive-pill { display: inline-block; background: var(--green-bg); color: var(--green); padding: 3px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; margin-left: 6px; }
 </style>
 </head>
 <body>
 
-<!-- SCHERMATA ACCESSO SEGRETERIA -->
 <div id="loginOverlay" style="position:fixed;inset:0;background:rgba(15,23,42,0.95);backdrop-filter:blur(6px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;">
   <div style="background:#ffffff;width:100%;max-width:400px;border-radius:16px;padding:32px 28px;box-shadow:0 24px 48px rgba(0,0,0,0.35);text-align:center;">
-    <div style="width:54px;height:54px;border-radius:12px;background:#0f172a;color:#c28e0e;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 14px;letter-spacing:0.5px;">
-      SMA
-    </div>
+    <div style="width:54px;height:54px;border-radius:12px;background:#0f172a;color:#c28e0e;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin:0 auto 14px;">SMA</div>
     <h2 style="margin:0 0 6px;font-size:20px;font-weight:800;color:#0f172a;">Accesso Segreteria</h2>
     <p style="margin:0 0 22px;font-size:13px;color:#64748b;">Sicily Music Academy APS</p>
-
     <div style="text-align:left;margin-bottom:14px;">
       <label for="inputPasswordSegreteria" style="display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:#334155;">Password</label>
-      <input
-        id="inputPasswordSegreteria"
-        type="password"
-        placeholder="Inserisci password"
-        autocomplete="current-password"
-        onkeydown="if(event.key==='Enter'){event.preventDefault();verificaAccessoSegreteria();}"
-      />
+      <input id="inputPasswordSegreteria" type="password" placeholder="Inserisci password" autocomplete="current-password" onkeydown="if(event.key==='Enter'){event.preventDefault();verificaAccessoSegreteria();}" />
     </div>
-
-    <div id="erroreLoginMsg" style="display:none;color:#b91c1c;font-size:12px;font-weight:600;margin-bottom:12px;">
-      Password non corretta. Riprova.
-    </div>
-
-    <button type="button" class="btn btn-navy" style="width:100%;padding:11px;font-size:13.5px;" onclick="verificaAccessoSegreteria()">
-      Entra nel Gestionale
-    </button>
+    <div id="erroreLoginMsg" style="display:none;color:#b91c1c;font-size:12px;font-weight:600;margin-bottom:12px;">Password non corretta. Riprova.</div>
+    <button type="button" class="btn btn-navy" style="width:100%;padding:11px;font-size:13.5px;" onclick="verificaAccessoSegreteria()">Entra nel Gestionale</button>
   </div>
 </div>
 
@@ -805,7 +473,6 @@
     var err = document.getElementById("erroreLoginMsg");
     var overlay = document.getElementById("loginOverlay");
     if (!input || !overlay) return;
-
     if (input.value.trim() === "Violoncello89") {
       sessionStorage.setItem("sma_auth_ok", "1");
       overlay.style.display = "none";
@@ -834,7 +501,6 @@
 
 <div class="toast-banner" id="toastBanner"></div>
 
-<!-- POPUP AVVISI ALL'APERTURA -->
 <div class="modal-backdrop hidden" id="startupModal" style="display:none;">
   <div class="modal">
     <div class="modal-top">
@@ -844,18 +510,10 @@
     <div class="alert-box alert-amber">
       <strong>Scadenza Contratti:</strong> Tra 12 giorni scade il contratto dell'associato <strong>Mario Rossi</strong> (#SMA-1), Corsista: <strong>Giulia Rossi</strong> (Scad. 14/10/2027).
     </div>
-    <div class="alert-box alert-amber">
-      <strong>Scadenza Mese di Prova (Esterno al Contratto):</strong> Tra 3 giorni termina il mese di prova dell'associato <strong>Rosetta Bonanno</strong> (#SMA-3 — Corsista: <strong>Sofia Bonanno</strong>) — Chiusura prova: 28/11/2026.
-    </div>
-    <div class="alert-box alert-red">
-      <strong>Promemoria Completamento Pagamento:</strong> Associato <strong>Rosetta Bonanno</strong> (#SMA-3) — Ric. <code>542/1</code>: versato acconto € 60,00, residuo da saldare € 60,00.
-    </div>
     <div class="alert-box alert-blue">
       <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-        <div>
-          <strong>Promemoria Ritardo Oltre Giorno 5 (Solo Informativo):</strong> Quota mensile Novembre di <strong>Lucia Verdi</strong> (#SMA-2 — € 135,00) non saldata entro il 5. <em>Nota contrattuale: eventuale maggiorazione 30% non applicata automaticamente.</em>
-        </div>
-        <button class="btn btn-wa" type="button" id="btnCopiaRitardoPopup" style="white-space:nowrap;">Copia Messaggio Ritardatari</button>
+        <div><strong>Promemoria Ritardo Oltre Giorno 5:</strong> Controlla le quote mensili in sospeso nell'Area Associati.</div>
+        <button class="btn btn-wa" type="button" id="btnCopiaRitardoPopup">Copia Messaggio Ritardatari</button>
       </div>
     </div>
     <div style="text-align:right; margin-top:12px;">
@@ -864,7 +522,6 @@
   </div>
 </div>
 
-<!-- TOPBAR -->
 <div class="topbar">
   <div class="brand">
     <div class="brand-badge">SMA APS</div>
@@ -876,12 +533,11 @@
   <div class="inline-row">
     <span class="badge badge-ok" id="cloudStatusBadge" style="padding:5px 10px; font-size:11.5px;">Account: sicilymusicacademy@gmail.com (Sincronizzazione Attiva)</span>
     <button class="btn btn-blue" type="button" id="btnApriCloudModal">Account &amp; Cloud</button>
-    <button class="btn btn-gold" type="button" id="btnApriModal">Avvisi Scadenze / Pagamenti</button>
+    <button class="btn btn-gold" type="button" id="btnApriModal">Avvisi Scadenze</button>
     <button class="btn btn-red" type="button" onclick="bloccaGestionale()">Blocca</button>
   </div>
 </div>
 
-<!-- MODALE COLLEGAMENTO ACCOUNT ASSOCIATIVO & SINCRONIZZAZIONE MULTI-PC -->
 <div class="modal-backdrop hidden" id="cloudModal" style="display:none;">
   <div class="modal">
     <div class="modal-top">
@@ -891,22 +547,20 @@
     <div class="alert-box alert-blue">
       <strong>Account Associativo Target:</strong> <code>sicilymusicacademy@gmail.com</code> — Destinazione Drive: <code>FILE CREATI</code>.
     </div>
-
     <div class="form-grid" style="margin-bottom:10px;">
       <div class="form-group">
         <label>Email Account Associativo</label>
         <input type="email" id="cloudAccountEmail" value="sicilymusicacademy@gmail.com" />
       </div>
       <div class="form-group">
-        <label>Google OAuth Client ID (per login &amp; Drive API)</label>
+        <label>Google OAuth Client ID (opzionale)</label>
         <input type="text" id="cloudClientId" placeholder="Es. 1234567890-xxx.apps.googleusercontent.com" />
       </div>
       <div class="form-group" style="grid-column: span 2;">
-        <label>Endpoint Sincronizzazione Cloud / Webhook (Sincronizzazione Multi-PC attiva)</label>
+        <label>Endpoint Sincronizzazione Cloud (Web App Google Apps Script)</label>
         <input type="text" id="cloudSyncEndpoint" value="https://script.google.com/macros/s/AKfycbwhavQvRy6fM4tU6ShimwSzy_2_KjuCKSI5hthM_h5Wuw50QIy65QbYtM9b-Talo8Iz/exec" />
       </div>
     </div>
-
     <div class="scan-box" style="margin-top:6px;">
       <div>
         <strong style="font-size:12.5px;">Stato Connessione:</strong>
@@ -918,24 +572,22 @@
         <button class="btn btn-navy" type="button" id="btnSincronizzaOra">Sincronizza Dati Ora</button>
       </div>
     </div>
-
     <div style="text-align:right; margin-top:12px;">
       <button class="btn btn-outline" type="button" id="btnChiudiCloudModal">Chiudi</button>
     </div>
   </div>
 </div>
 
-<!-- SCHEDE PRINCIPALI -->
 <div class="main-tabs">
-  <button class="main-tab" type="button" data-area="associati">Area Associati</button>
+  <button class="main-tab active" type="button" data-area="associati">Area Associati</button>
   <button class="main-tab" type="button" data-area="nuovicontatti">Nuovi Contatti / Richieste <span class="badge-neo" id="countNuoviContatti">2</span></button>
-  <button class="main-tab active" type="button" data-area="docenti">Area Docenti</button>
+  <button class="main-tab" type="button" data-area="docenti">Area Docenti</button>
   <button class="main-tab" type="button" data-area="cassa">Cassa (Entrate / Uscite)</button>
   <button class="main-tab" type="button" data-area="documenti">Documenti e modulistica</button>
 </div>
 
-<!-- ==================== AREA ASSOCIATI ==================== -->
-<div class="area" id="area-associati">
+<!-- AREA ASSOCIATI -->
+<div class="area active" id="area-associati">
   <div class="split">
     <div class="card">
       <div style="display:flex; justify-content:space-between; align-items:center; gap:6px; margin-bottom:8px;">
@@ -955,7 +607,6 @@
         <button class="sub-tab" type="button" data-sub="messaggi">Messaggi WhatsApp</button>
       </div>
 
-      <!-- SOTTO-AREA: SCHEDA & CONTRATTO -->
       <div class="sub-panel active" id="sub-scheda">
         <div class="form-grid-3" style="margin-bottom:10px;">
           <div class="form-group">
@@ -997,12 +648,12 @@
             <input type="text" id="inpTelefono" value="329 0000000" />
           </div>
           <div class="form-group">
-            <label>Secondo Telefono (Altro Genitore / Parente)</label>
-            <input type="text" id="inpTelefono2" value="338 1122334" placeholder="Cellulare secondo genitore/parente" />
+            <label>Secondo Telefono</label>
+            <input type="text" id="inpTelefono2" value="338 1122334" />
           </div>
           <div class="form-group">
             <label>Email Associato</label>
-            <input type="email" id="inpEmail" value="mario.rossi@email.it" placeholder="esempio@email.it" />
+            <input type="email" id="inpEmail" value="mario.rossi@email.it" />
           </div>
           <div class="form-group">
             <label>Codice Fiscale Associato</label>
@@ -1013,14 +664,14 @@
             <select id="inpTipoCorso">
               <option value="Strumentale">Corso Strumentale (€ 120,00 - 4 lezioni)</option>
               <option value="Principale">Corso Principale (€ 135,00 - 4 strum. + 4 solfeggio)</option>
-              <option value="Principale+secondo">Principale+secondo (€ 195,00 - 4 solf. + 4 strum. princ. + 4 sec. strum.)</option>
-              <option value="Strumentale+secondo">Strumentale+secondo (€ 180,00 - 4 strum. princ. + 4 sec. strum.)</option>
+              <option value="Principale+secondo">Principale+secondo (€ 195,00)</option>
+              <option value="Strumentale+secondo">Strumentale+secondo (€ 180,00)</option>
               <option value="Light">Strumentale (Light) bambini 3/5 anni (€ 75,00 - 2 lezioni)</option>
             </select>
             <div class="note-pill" id="descCorsoPill">4 lezioni di strumento al mese</div>
           </div>
           <div class="form-group">
-            <label>Quota Mensile Contrattuale (€) — Determina il Riepilogo Quote</label>
+            <label>Quota Mensile Contrattuale (€)</label>
             <input type="number" step="0.01" id="inpQuotaMensile" value="120.00" />
             <div class="inline-row" style="margin-top:5px;">
               <input type="checkbox" id="chkTrinity" style="width:auto;" checked />
@@ -1029,65 +680,55 @@
           </div>
         </div>
 
-        <!-- RIQUADRO DATE CONTRATTO -->
         <div class="dates-box">
           <div class="form-group">
-            <label style="color:var(--blue);">Data Firma Contratto (Comanda)*</label>
-            <input type="text" id="inpDataFirma" value="14/10/2026" placeholder="GG/MM/AAAA" />
+            <label style="color:var(--blue);">Data Firma Contratto*</label>
+            <input type="text" id="inpDataFirma" value="14/10/2026" />
           </div>
           <div class="form-group">
             <label>Data Prima Lezione</label>
-            <input type="text" id="inpPrimaLezione" value="19/10/2026" placeholder="GG/MM/AAAA" />
+            <input type="text" id="inpPrimaLezione" value="19/10/2026" />
           </div>
           <div class="form-group">
             <label>Data Scadenza Contratto</label>
-            <input type="text" id="inpScadenza" value="14/10/2027" placeholder="GG/MM/AAAA" />
+            <input type="text" id="inpScadenza" value="14/10/2027" />
           </div>
           <button class="btn btn-navy" type="button" id="btnCalcola10Mesi">Calcola +10 Mesi da Firma</button>
           <div class="calc-feedback" id="calcFeedback">Calcolo attivo: Data Firma 14/10/2026 + 10 mesi accademici (esclusi Lug-Ago) = 14/10/2027</div>
         </div>
 
-        <!-- RIQUADRO MESE DI PROVA -->
         <div class="trial-box">
           <div class="trial-header">
             <label style="font-size:13px; font-weight:800; color:#92400e; display:flex; align-items:center; gap:8px; cursor:pointer;">
-              <input type="checkbox" id="chkMeseProva" style="width:auto; transform:scale(1.15);" />
+              <input type="checkbox" id="chkMeseProva" style="width:auto;" />
               Attiva Mese di Prova (esterno al contratto annuale)
             </label>
-            <span style="font-size:11.5px; color:#78350f; font-weight:600;">Non incide sulla scadenza del contratto principale</span>
           </div>
-
           <div class="trial-fields disabled" id="trialFieldsBox">
             <div class="form-group">
               <label>Tipo di Contratto / Corso in Prova</label>
               <select id="provaTipoCorso">
-                <option value="Strumentale">Corso Strumentale (€ 120,00 - 4 lezioni)</option>
-                <option value="Principale">Corso Principale (€ 135,00 - 4 strum. + 4 solfeggio)</option>
+                <option value="Strumentale">Corso Strumentale (€ 120,00)</option>
+                <option value="Principale">Corso Principale (€ 135,00)</option>
                 <option value="Principale+secondo">Principale+secondo (€ 195,00)</option>
                 <option value="Strumentale+secondo">Strumentale+secondo (€ 180,00)</option>
-                <option value="Light">Strumentale (Light) bambini 3/5 anni (€ 75,00 - 2 lezioni)</option>
+                <option value="Light">Strumentale Light (€ 75,00)</option>
               </select>
             </div>
             <div class="form-group">
               <label>Quota Mese di Prova (€)</label>
               <div class="inline-row">
                 <input type="number" step="0.01" id="provaQuota" value="120.00" />
-                <button class="btn btn-gold" type="button" id="btnRicProva" style="white-space:nowrap;">Emetti Ric. Associativa Prova (PDF)</button>
+                <button class="btn btn-gold" type="button" id="btnRicProva">Emetti Ric. Associativa Prova (PDF)</button>
               </div>
             </div>
-            <div class="form-group">
-              <label>Data Firma (Mese di Prova)</label>
-              <input type="text" id="provaDataFirma" value="01/11/2026" />
-            </div>
-            <div class="form-group">
-              <label>Data Prima Lezione (Prova)</label>
-              <input type="text" id="provaPrimaLezione" value="03/11/2026" />
-            </div>
+            <div class="form-group"><label>Data Firma (Prova)</label><input type="text" id="provaDataFirma" value="01/11/2026" /></div>
+            <div class="form-group"><label>Data Prima Lezione (Prova)</label><input type="text" id="provaPrimaLezione" value="03/11/2026" /></div>
             <div class="form-group" style="grid-column: span 2;">
-              <label>Data Chiusura Prova / Ultima Lezione (Modificabile)</label>
+              <label>Data Chiusura Prova</label>
               <div class="inline-row">
                 <input type="text" id="provaChiusura" value="03/12/2026" />
-                <button class="btn btn-outline" type="button" id="btnCalcolaProva" style="white-space:nowrap;">Calcola +1 Mese Prova</button>
+                <button class="btn btn-outline" type="button" id="btnCalcolaProva">Calcola +1 Mese Prova</button>
               </div>
             </div>
           </div>
@@ -1097,18 +738,12 @@
           <div>
             <strong style="font-size:12.5px;">Contratto Firmato:</strong>
             <span id="nomeFileContratto" style="color:var(--green); font-size:12.5px;">Contratto_SMA-1_Mario_Rossi.pdf</span>
-            <span class="drive-pill" id="driveDestContratto">Drive: FILE CREATI / Contratti Originali</span>
+            <span class="drive-pill">Drive: FILE CREATI / Contratti Originali</span>
             <a id="linkDriveContratto" href="#" target="_blank" rel="noopener" style="display:none; margin-left:8px; font-size:11.5px; font-weight:700; color:var(--blue);">Apri su Drive</a>
-            <div style="margin-top:4px; font-size:11.5px; color:#334155;">
-              <strong>Logo Originale (.png / .jpg):</strong>
-              <span id="nomeLogoOriginale" style="color:var(--navy); font-weight:600;">Nessun file caricato (clicca "Carica Logo Originale")</span>
-            </div>
           </div>
           <div class="inline-row">
             <input type="file" id="inpFileContratto" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" style="display:none;" />
             <input type="file" id="inpFileScanContratto" accept=".pdf,.jpg,.jpeg,image/*,application/pdf" capture="environment" style="display:none;" />
-            <input type="file" id="inpFileLogoOriginale" accept=".png,.jpg,.jpeg,image/png,image/jpeg" style="display:none;" />
-            <button class="btn btn-outline" type="button" id="btnCaricaLogoOriginale">Carica Logo Originale</button>
             <button class="btn btn-red" type="button" id="btnCreaComunicazioneDocx">Crea Comunicazione Insoluto (.docx)</button>
             <button class="btn btn-navy" type="button" id="btnScanContratto">Scansiona da Stampante (PDF)</button>
             <button class="btn btn-outline" type="button" id="btnAllegaContratto">Allega PDF / JPG</button>
@@ -1117,11 +752,7 @@
         </div>
       </div>
 
-      <!-- SOTTO-AREA: RIEPILOGO QUOTE -->
       <div class="sub-panel" id="sub-quote">
-        <p style="margin:0 0 8px; font-size:12.5px; color:#334155;">
-          L'importo mensile è stabilito <strong>esclusivamente dalla Scheda &amp; Contratto</strong> (non viene mai sovrascritto dall'importo delle ricevute emesse). Quota Associativa Annuale (€ 50,00), Concerto di Capodanno (€ 40,00) e Concerto di Fine Anno (€ 60,00) restano invariate.
-        </p>
         <table>
           <thead>
             <tr>
@@ -1134,36 +765,25 @@
           </thead>
           <tbody id="tbodyQuote"></tbody>
         </table>
-
         <div class="bilancio-bar">
-          <div class="bilancio-item">
-            <small>Totale Annuo a Bilancio Associato</small>
-            <strong style="color:#fbbf24;" id="bilancioTotale">€ 0,00</strong>
-          </div>
-          <div class="bilancio-item">
-            <small>Già Versato / Saldato</small>
-            <strong style="color:#4ade80;" id="bilancioSaldato">€ 0,00</strong>
-          </div>
-          <div class="bilancio-item">
-            <small>Residuo da Saldare a Bilancio</small>
-            <strong style="color:#f87171;" id="bilancioResiduo">€ 0,00</strong>
-          </div>
+          <div class="bilancio-item"><small>Totale Annuo a Bilancio</small><strong style="color:#fbbf24;" id="bilancioTotale">€ 0,00</strong></div>
+          <div class="bilancio-item"><small>Già Versato / Saldato</small><strong style="color:#4ade80;" id="bilancioSaldato">€ 0,00</strong></div>
+          <div class="bilancio-item"><small>Residuo da Saldare</small><strong style="color:#f87171;" id="bilancioResiduo">€ 0,00</strong></div>
         </div>
       </div>
 
-      <!-- SOTTO-AREA: NUOVA RICEVUTA ASSOCIATIVA -->
       <div class="sub-panel" id="sub-ricevute">
         <div class="form-grid">
           <div class="form-group">
-            <label>Numerazione Automatica (N° Generale / N° Associato)</label>
-            <input type="text" id="ricCodice" value="543/2 del 26/11/2026" readonly style="background:#f8fafc; font-weight:700;" />
+            <label>Numerazione Automatica</label>
+            <input type="text" id="ricCodice" value="543/2 del 27/11/2026" readonly style="background:#f8fafc; font-weight:700;" />
           </div>
           <div class="form-group">
             <label>Metodo di Pagamento</label>
             <select id="ricMetodo">
               <option value="Contanti">Contanti</option>
-              <option value="P2P (Postepay)">P2P (Postepay) — richiede prova PDF/JPG</option>
-              <option value="Bonifico Bancario">Bonifico Bancario — richiede prova PDF/JPG</option>
+              <option value="P2P (Postepay)">P2P (Postepay)</option>
+              <option value="Bonifico Bancario">Bonifico Bancario</option>
             </select>
           </div>
           <div class="form-group">
@@ -1174,26 +794,15 @@
             <label>Importo Ricevuta Versato (€)</label>
             <input type="number" step="0.01" id="ricImporto" value="145.00" />
           </div>
-          <div class="form-group">
-            <label>Note / Acconto / Residuo Quota Associativa</label>
-            <input type="text" id="ricNote" placeholder="Es. Saldo quota associativa mensile Novembre" />
-          </div>
-          <div class="form-group" id="boxProva" style="display:none;">
-            <label>Prova Pagamento P2P / Bonifico (PDF o JPG)</label>
-            <input type="file" id="inpFileProvaPagamento" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" style="display:none;" />
-            <button class="btn btn-outline" type="button" id="btnAllegaProva">Carica Ricevuta PDF / JPG</button>
-            <span id="statoProva" style="font-size:11.5px; color:var(--red); margin-left:6px;">Nessun file caricato</span>
+          <div class="form-group" style="grid-column: span 2;">
+            <label>Note</label>
+            <input type="text" id="ricNote" placeholder="Note aggiuntive..." />
           </div>
         </div>
 
-        <div class="inline-row" style="margin-top:10px; justify-content:space-between;">
-          <label style="font-size:12px; font-weight:600;">
-            <input type="checkbox" style="width:auto;" /> Attiva promemoria completamento pagamento all'apertura
-          </label>
-          <div class="inline-row">
-            <button class="btn btn-green" type="button" id="btnEmettiRic">Emetti Ricevuta Associativa PDF &amp; Registra in Cassa</button>
-            <button class="btn btn-wa" type="button" id="btnInviaRicWa">Invia su WhatsApp (<span id="lblWaRicIscr">Iscr. #SMA-1</span>)</button>
-          </div>
+        <div class="inline-row" style="margin-top:12px; justify-content:flex-end;">
+          <button class="btn btn-green" type="button" id="btnEmettiRic">Emetti Ricevuta Associativa PDF &amp; Registra in Cassa</button>
+          <button class="btn btn-wa" type="button" id="btnInviaRicWa">Invia su WhatsApp (<span id="lblWaRicIscr">Iscr. #SMA-1</span>)</button>
         </div>
 
         <div class="pdf-preview">
@@ -1204,7 +813,7 @@
             </div>
             <div style="text-align:right; font-size:11.5px;">
               <strong>RICEVUTA ASSOCIATIVA N. <span id="prevRicNum">543/2</span></strong><br/>
-              <span>Data: 26/11/2026</span>
+              <span>Data: 27/11/2026</span>
             </div>
           </div>
           <div style="font-size:12px; margin-bottom:8px;">
@@ -1215,11 +824,7 @@
           </div>
           <table>
             <thead>
-              <tr>
-                <th>Quota Associativa / Causale</th>
-                <th>Dettaglio Quota Associativa</th>
-                <th class="right">Versato</th>
-              </tr>
+              <tr><th>Quota Associativa / Causale</th><th>Dettaglio</th><th class="right">Versato</th></tr>
             </thead>
             <tbody>
               <tr>
@@ -1229,115 +834,39 @@
               </tr>
             </tbody>
           </table>
-          <div style="margin-top:8px; font-size:10.5px; color:var(--muted);">
-            Ricevuta associativa per versamento quota associativa / contributo istituzionale riservato ai soci (art. 148 TUIR / D.Lgs. 117/2017) — Non costituisce fattura commerciale.
-          </div>
         </div>
       </div>
 
-      <!-- SOTTO-AREA: MESSAGGI PREIMPOSTATI WHATSAPP -->
       <div class="sub-panel" id="sub-messaggi">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-          <p style="margin:0; font-size:12.5px; color:#334155;">
-            Clicca su <strong>Copia Messaggio</strong> per copiarlo negli appunti oppure su <strong>Apri WhatsApp</strong> per avviare direttamente la chat con l'associato selezionato.
-          </p>
+          <p style="margin:0; font-size:12.5px;">Copia o invia su WhatsApp all'associato selezionato.</p>
           <span class="badge badge-info" id="waTargetBadge">Collegato a: Iscr. #SMA-1 — Mario Rossi (329 0000000)</span>
         </div>
-
         <div class="wa-card">
           <div class="wa-card-header">
-            <strong>1. MESSAGGIO PER NEO ISCRITTI</strong>
+            <strong>MESSAGGIO PER I RITARDATARI</strong>
             <div class="inline-row">
-              <span class="copy-toast" id="toast-neo">Copiato negli appunti!</span>
-              <button class="btn btn-navy" type="button" data-copy="msg-neo" data-toast="toast-neo">Copia Messaggio</button>
-              <button class="btn btn-wa btn-open-wa" type="button" data-msg="msg-neo">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-1</span>)</button>
-            </div>
-          </div>
-          <textarea class="wa-text" id="msg-neo" readonly>Benvenuti nella nostra grande famiglia! Sicily Music Academy ®, Questo è il numero della segreteria. Per qualunque cosa non esiti a contattarmi.</textarea>
-        </div>
-
-        <div class="wa-card">
-          <div class="wa-card-header">
-            <strong>2. MESSAGGIO PER RICORDO SCADENZA MENSILE (Entro giorno 5)</strong>
-            <div class="inline-row">
-              <span class="copy-toast" id="toast-scad">Copiato negli appunti!</span>
-              <button class="btn btn-navy" type="button" data-copy="msg-scad" data-toast="toast-scad">Copia Messaggio</button>
-              <button class="btn btn-wa btn-open-wa" type="button" data-msg="msg-scad">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-1</span>)</button>
-            </div>
-          </div>
-          <textarea class="wa-text" id="msg-scad" readonly>Caro Associato, Buon Pomeriggio! Le ricordiamo di saldare entro giorno 5 c.m la quota mensile del corso accademico. Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
-        </div>
-
-        <div class="wa-card">
-          <div class="wa-card-header">
-            <strong>3. MESSAGGIO PER I RITARDATARI (Oltre giorno 5)</strong>
-            <div class="inline-row">
-              <span class="copy-toast" id="toast-rit">Copiato negli appunti!</span>
+              <span class="copy-toast" id="toast-rit">Copiato!</span>
               <button class="btn btn-navy" type="button" data-copy="msg-rit" data-toast="toast-rit">Copia Messaggio</button>
               <button class="btn btn-wa btn-open-wa" type="button" data-msg="msg-rit">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-1</span>)</button>
             </div>
           </div>
-          <textarea class="wa-text" id="msg-rit" readonly>Caro Associato, Buon Pomeriggio! Dal controllo amministrativo risulta ancora in sospeso l’ultima quota mensile del corso accademico (scadenza giorno 5 c.m.). La invitiamo a regolarizzare il pagamento appena possibile. Qualora avesse già provveduto, la preghiamo di ignorare questo messaggio e di inviarci la ricevuta di pagamento. Cordiali Saluti, La segreteria Sicily Music Academy ®.</textarea>
-        </div>
-
-        <div class="wa-card">
-          <div class="wa-card-header">
-            <strong>4. COORDINATE PAGAMENTO (Bonifico Bancario &amp; P2P Postepay)</strong>
-            <div class="inline-row">
-              <span class="copy-toast" id="toast-coord">Copiato negli appunti!</span>
-              <button class="btn btn-navy" type="button" data-copy="msg-coord" data-toast="toast-coord">Copia Messaggio</button>
-              <button class="btn btn-wa btn-open-wa" type="button" data-msg="msg-coord">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-1</span>)</button>
-            </div>
-          </div>
-          <textarea class="wa-text" id="msg-coord" readonly style="min-height:145px;">Caro Associato, Buon Pomeriggio! Di seguito indichiamo le coordinate e le modalità per il saldo della quota associativa:
-
-🔹 BONIFICO BANCARIO
-Intestatario: Sicily Music Academy A.P.S.
-IBAN: IT20C0103004604000004330514
-Banca / Filiale: Monte dei Paschi
-Causale: Quota associativa [NOME ASSOCIATO] - mese di [MESE]
-
-🔹 P2P / RICARICA POSTEPAY
-Intestatario carta: Davide Cutrona - CTRDVD89C06G273R
-Numero carta Postepay: 4023601364872879
-Causale / Nota: Quota associativa [NOME ASSOCIATO] - [MESE]
-
-Una volta effettuato il pagamento, la preghiamo di inviarci gentile conferma allegando o indicando la ricevuta.
-Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
+          <textarea class="wa-text" id="msg-rit" readonly>Caro Associato, Buon Pomeriggio! Dal controllo amministrativo risulta ancora in sospeso l'ultima quota mensile del corso accademico. La invitiamo a regolarizzare appena possibile. Cordiali Saluti, La segreteria Sicily Music Academy ®.</textarea>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ==================== AREA NUOVI CONTATTI / RICHIESTE ==================== -->
+<!-- NUOVI CONTATTI -->
 <div class="area" id="area-nuovicontatti">
   <div class="card">
-    <h3>Database Nuovi Contatti / Richieste &amp; Prove Gratuite</h3>
-    <p style="margin:0 0 10px; font-size:12.5px; color:#334155;">
-      Registra qui i nuovi contatti che chiedono informazioni o prenotano una <strong>prova gratuita</strong>. Quando il contatto si iscrive ufficialmente, clicca su <strong>Iscritta → Passa ad Associati</strong>: verrà spostato nell'Area Associati come <strong>Neo Iscritto</strong> con nuovo Numero d'Iscrizione progressivo (<code>SMA-4</code>, <code>SMA-5</code>...).
-    </p>
-
+    <h3>Database Nuovi Contatti / Richieste</h3>
     <div style="display:grid; grid-template-columns: 1fr 1fr 130px 120px 180px 130px auto; gap:8px; margin-bottom:12px; align-items:end; background:#f8fafc; padding:10px; border:1px solid var(--border); border-radius:8px;">
-      <div class="form-group">
-        <label>Nome *</label>
-        <input type="text" id="ncNome" placeholder="Es. Chiara" />
-      </div>
-      <div class="form-group">
-        <label>Cognome *</label>
-        <input type="text" id="ncCognome" placeholder="Es. Esposito" />
-      </div>
-      <div class="form-group">
-        <label>Cellulare *</label>
-        <input type="text" id="ncCell" placeholder="333 1234567" />
-      </div>
-      <div class="form-group">
-        <label>Sede</label>
-        <select id="ncSede">
-          <option>Misilmeri</option>
-          <option>Monreale</option>
-        </select>
-      </div>
+      <div class="form-group"><label>Nome *</label><input type="text" id="ncNome" placeholder="Es. Chiara" /></div>
+      <div class="form-group"><label>Cognome *</label><input type="text" id="ncCognome" placeholder="Es. Esposito" /></div>
+      <div class="form-group"><label>Cellulare *</label><input type="text" id="ncCell" placeholder="333 1234567" /></div>
+      <div class="form-group"><label>Sede</label><select id="ncSede"><option>Misilmeri</option><option>Monreale</option></select></div>
       <div class="form-group">
         <label>Corso / Strumento</label>
         <select id="ncCorso">
@@ -1345,250 +874,66 @@ Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
           <option value="Principale">Corso Principale (€ 135)</option>
           <option value="Principale+secondo">Principale+secondo (€ 195)</option>
           <option value="Strumentale+secondo">Strumentale+secondo (€ 180)</option>
-          <option value="Light">Strumentale Light 3/5 anni (€ 75)</option>
+          <option value="Light">Strumentale Light (€ 75)</option>
         </select>
       </div>
-      <div class="form-group">
-        <label>Data Prova Gratuita</label>
-        <input type="text" id="ncDataProva" placeholder="GG/MM/AAAA" />
-      </div>
+      <div class="form-group"><label>Data Prova</label><input type="text" id="ncDataProva" placeholder="GG/MM/AAAA" /></div>
       <button class="btn btn-navy" type="button" id="btnAddNuovoContatto">+ Salva Contatto</button>
     </div>
-
     <table>
       <thead>
-        <tr>
-          <th class="center" style="width:45px;">#</th>
-          <th>Nome e Cognome</th>
-          <th style="width:130px;">Cellulare</th>
-          <th style="width:100px;">Sede</th>
-          <th>Corso / Strumento</th>
-          <th style="width:150px;">Data Prova Gratuita</th>
-          <th class="center" style="width:240px;">Azioni</th>
-        </tr>
+        <tr><th>#</th><th>Nome e Cognome</th><th>Cellulare</th><th>Sede</th><th>Corso</th><th>Data Prova</th><th class="center">Azioni</th></tr>
       </thead>
       <tbody id="tbodyNuoviContatti"></tbody>
     </table>
   </div>
 </div>
 
-<!-- ==================== AREA DOCENTI ==================== -->
-<div class="area active" id="area-docenti">
+<!-- AREA DOCENTI -->
+<div class="area" id="area-docenti">
   <div class="split">
     <div class="card">
       <h3>Elenco Docenti</h3>
-      <div class="assoc-list" id="docentiList"></div>
+      <div id="docentiList"></div>
       <button class="btn btn-gold" type="button" style="width:100%; margin-top:10px;" id="btnNuovoDocente">+ Nuovo Docente</button>
     </div>
-
     <div class="card">
-      <div class="sub-tabs" id="docSubTabs">
-        <button class="sub-tab active" type="button" data-doc-sub="scheda-docente">Scheda Docente (Dati &amp; Documento)</button>
-        <button class="sub-tab" type="button" data-doc-sub="area-operativa-docente">Area Operativa Docente</button>
-      </div>
-
-      <!-- SOTTO-AREA 1: SCHEDA DOCENTE (DATI SENSIBILI & COPIA DOCUMENTO) -->
-      <div class="sub-panel active" id="doc-sub-scheda-docente">
-        <h3>Scheda Docente — Dati Sensibili &amp; Copia Documento</h3>
-        <div class="form-grid">
-          <div class="form-group"><label>Docente (Nome e Cognome)</label><input type="text" id="docNome" value="M° Marco Bianchi" /></div>
-          <div class="form-group"><label>Strumento / Materia</label><input type="text" id="docMateria" value="Pianoforte / Teoria" /></div>
-          <div class="form-group">
-            <label>Sede di Insegnamento</label>
-            <select id="docSede">
-              <option>Misilmeri</option>
-              <option>Monreale</option>
-              <option>Entrambe (Misilmeri / Monreale)</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Cellulare</label><input type="text" id="docTel" value="333 9876543" placeholder="Cellulare docente" /></div>
-          <div class="form-group"><label>Email</label><input type="email" id="docEmail" value="marco.bianchi@email.it" placeholder="Email docente" /></div>
-          <div class="form-group"><label>Codice Fiscale / P.IVA</label><input type="text" id="docCF" value="BNCMRC85C12G273L" /></div>
-          <div class="form-group"><label>IBAN</label><input type="text" id="docIban" value="IT60X0542811101000000123456" /></div>
-          <div class="form-group"><label>Residenza / Indirizzo</label><input type="text" id="docIndirizzo" value="Via Cavour 15, Misilmeri (PA)" placeholder="Indirizzo completo" /></div>
-          <div class="form-group" style="grid-column: span 2;">
-            <label>Copia Documento d'Identità Docente</label>
-            <div class="inline-row">
-              <input type="file" id="inpFileDocIdentita" accept=".pdf,.jpg,.jpeg,application/pdf,image/jpeg" style="display:none;" />
-              <button class="btn btn-outline" type="button" id="btnCaricaDocIdentita">Carica Copia Documento</button>
-              <button class="btn btn-blue" type="button" id="btnScaricaDocIdentita">Scarica Documento</button>
-              <span id="docNomeDocumento" style="color:var(--green); font-size:12px;">Documento_Marco_Bianchi.pdf</span>
-              <a id="linkDriveDocIdentita" href="#" target="_blank" rel="noopener" style="display:none; font-size:11.5px; font-weight:700; color:var(--blue);">Apri su Drive</a>
-            </div>
-          </div>
-        </div>
-
-        <h3 style="margin-top:14px;">Storico Liquidazioni Docente</h3>
-        <table>
-          <thead>
-            <tr>
-              <th style="width:95px;">Data</th>
-              <th>Descrizione / Periodo</th>
-              <th style="width:140px;">Metodo</th>
-              <th class="right" style="width:110px;">Importo (€)</th>
-            </tr>
-          </thead>
-          <tbody id="tbodyStoricoDoc">
-            <tr>
-              <td>31/10/2026</td>
-              <td>Compenso Ottobre 2026 (10h Pianoforte)</td>
-              <td>Bonifico Bancario</td>
-              <td class="right"><strong>€ 250,00</strong></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <!-- SOTTO-AREA 2: SELETTORE DOCENTE A TENDINA & AREA IN PREPARAZIONE -->
-      <div class="sub-panel" id="doc-sub-area-operativa-docente">
-        <div class="form-grid" style="margin-bottom:12px;">
-          <div class="form-group" style="grid-column: span 2;">
-            <label>Seleziona Docente</label>
-            <select id="selDocenteTendina"></select>
-          </div>
-        </div>
-
-        <div class="alert-box alert-blue" id="boxRiepilogoDocenteSelezionato">
-          <strong>Docente selezionato:</strong> <span id="lblDocTendinaNome">M° Marco Bianchi</span> —
-          <span id="lblDocTendinaDettagli">Pianoforte / Teoria • Tel: 333 9876543</span>
-        </div>
-
-        <!-- REGISTRO GIORNALIERO ORE SVOLTE (SOSTITUISCE REGISTRO CARTACEO) -->
-        <div style="margin-bottom:14px; padding:10px 12px; background:#f8fafc; border:1px solid var(--border); border-radius:8px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
-            <strong style="font-size:13px; color:var(--navy);">Registro Presenze &amp; Ore Giornaliere Docente</strong>
-            <span class="badge badge-info" id="lblTotOreRegistro">Totale Giorni: 0 • Ore Registrate: 12,0 h</span>
-          </div>
-
-          <div style="display:grid; grid-template-columns: 120px 95px 1fr auto; gap:8px; margin-bottom:8px; align-items:end;">
-            <div class="form-group">
-              <label>Giorno / Data</label>
-              <input type="text" id="regGiornoData" value="26/11/2026" placeholder="GG/MM/AAAA" />
-            </div>
-            <div class="form-group">
-              <label>Ore Svolte</label>
-              <input type="number" step="0.5" min="0" id="regGiornoOre" value="2" />
-            </div>
-            <div class="form-group">
-              <label>Note Lezione / Attività</label>
-              <input type="text" id="regGiornoNote" placeholder="Es. Lezioni individuali pianoforte / teoria" />
-            </div>
-            <button class="btn btn-navy" type="button" id="btnAddGiornoOre">+ Registra Giorno</button>
-          </div>
-
-          <table>
-            <thead>
-              <tr>
-                <th class="center" style="width:45px;">#</th>
-                <th style="width:110px;">Giorno</th>
-                <th class="right" style="width:90px;">Ore</th>
-                <th>Note / Attività</th>
-                <th class="center" style="width:85px;">Azioni</th>
-              </tr>
-            </thead>
-            <tbody id="tbodyRegistroOreDoc"></tbody>
-          </table>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-group"><label>Ore Svolte nel Periodo</label><input type="number" step="0.5" id="docOre" value="12" /></div>
-          <div class="form-group"><label>Rimborso spese (€)</label><input type="number" step="0.01" id="docTariffa" value="25.00" /></div>
-          <div class="form-group">
-            <label>Metodo Pagamento Rimborso Spese</label>
-            <select id="docMetodoRimborso">
-              <option value="Contanti">Contanti</option>
-              <option value="Bonifico Bancario">Bonifico Bancario</option>
-              <option value="P2P (Postepay)">P2P (Postepay)</option>
-            </select>
-          </div>
-          <div class="form-group"><label>Compenso P.O. (€)</label><input type="number" step="0.01" id="docTotale" value="300.00" /></div>
-          <div class="form-group">
-            <label>Metodo Pagamento Compenso P.O.</label>
-            <select id="docMetodoCompenso">
-              <option value="Bonifico Bancario">Bonifico Bancario</option>
-              <option value="Contanti">Contanti</option>
-              <option value="P2P (Postepay)">P2P (Postepay)</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Totale Complessivo (Rimborso spese + Compenso P.O.)</label>
-            <input type="text" id="docTotaleComplessivo" value="€ 325,00" readonly style="background:#f8fafc; font-weight:800; color:var(--navy);" />
-          </div>
-        </div>
-
-        <div class="scan-box">
-          <div>
-            <strong style="font-size:12.5px;">Riepilogo Mensile Docente:</strong>
-            <span id="docRiepilogoStato" style="color:var(--muted); font-size:12.5px;">Pronto per la generazione PDF</span>
-          </div>
-          <div class="inline-row">
-            <button class="btn btn-gold" type="button" id="btnCreaRiepilogoMensilePdf">Crea Riepilogo mensile (PDF)</button>
-            <button class="btn btn-red" type="button" id="btnLiquidaDoc">Registra Uscita in Cassa</button>
-          </div>
-        </div>
-
-        <div class="note-pill" style="margin-top:12px;">
-          Area pronta per le prossime istruzioni sul docente selezionato nel menu a tendina.
-        </div>
+      <h3>Scheda Docente</h3>
+      <div class="form-grid">
+        <div class="form-group"><label>Docente</label><input type="text" id="docNome" value="M° Marco Bianchi" /></div>
+        <div class="form-group"><label>Materia</label><input type="text" id="docMateria" value="Pianoforte / Teoria" /></div>
+        <div class="form-group"><label>Ore Svolte</label><input type="number" step="0.5" id="docOre" value="12" /></div>
+        <div class="form-group"><label>Tariffa / Rimborso (€)</label><input type="number" step="0.01" id="docTariffa" value="25.00" /></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ==================== CASSA (ENTRATE / USCITE) ==================== -->
+<!-- CASSA -->
 <div class="area" id="area-cassa">
   <div class="card">
-    <h3>Registro Giornaliero di Cassa (Entrate / Uscite)</h3>
-
+    <h3>Registro Giornaliero di Cassa</h3>
     <div class="filter-bar">
-      <select id="filtroCassaSede">
-        <option value="Tutte">Tutte le Sedi</option>
-        <option value="Misilmeri">Sede Misilmeri</option>
-        <option value="Monreale">Sede Monreale</option>
-      </select>
-      <select id="filtroCassaMet">
-        <option value="Tutti">Tutti i Metodi</option>
-        <option value="Contanti">Solo Contanti</option>
-        <option value="Tracciabili">Solo Tracciabili (P2P + Bonifici)</option>
-      </select>
-      <input type="text" id="filtroCassaTesto" placeholder="Filtra per descrizione o numero ricevuta..." />
+      <select id="filtroCassaSede"><option value="Tutte">Tutte le Sedi</option><option value="Misilmeri">Misilmeri</option><option value="Monreale">Monreale</option></select>
+      <select id="filtroCassaMet"><option value="Tutti">Tutti i Metodi</option><option value="Contanti">Solo Contanti</option><option value="Tracciabili">Solo Tracciabili</option></select>
+      <input type="text" id="filtroCassaTesto" placeholder="Filtra per descrizione..." />
       <button class="btn btn-outline" type="button" id="btnResetFiltriCassa">Reset Filtri</button>
     </div>
-
     <div style="display:grid; grid-template-columns: 105px 115px 1fr 150px 100px 100px auto; gap:8px; margin-bottom:10px;">
-      <input type="text" id="cassaData" value="26/11/2026" />
-      <select id="cassaSede">
-        <option>Misilmeri</option>
-        <option>Monreale</option>
-      </select>
+      <input type="text" id="cassaData" value="27/11/2026" />
+      <select id="cassaSede"><option>Misilmeri</option><option>Monreale</option></select>
       <input type="text" id="cassaDesc" placeholder="Descrizione entrata o uscita..." />
-      <select id="cassaMet">
-        <option>Contanti</option>
-        <option>P2P (Postepay)</option>
-        <option>Bonifico Bancario</option>
-      </select>
+      <select id="cassaMet"><option>Contanti</option><option>P2P (Postepay)</option><option>Bonifico Bancario</option></select>
       <input type="number" step="0.01" id="cassaEnt" placeholder="Entrata +€" />
       <input type="number" step="0.01" id="cassaUsc" placeholder="Uscita -€" />
       <button class="btn btn-navy" type="button" id="btnAddCassa">+ Aggiungi</button>
     </div>
-
     <table>
       <thead>
-        <tr>
-          <th class="center" style="width:45px;">Riga</th>
-          <th style="width:95px;">Data</th>
-          <th style="width:95px;">Sede</th>
-          <th>Descrizione Movimento</th>
-          <th style="width:135px;">Metodo</th>
-          <th class="right" style="width:100px;">Entrate (+€)</th>
-          <th class="right" style="width:100px;">Uscite (-€)</th>
-          <th class="right" style="width:105px;">Saldo (€)</th>
-          <th class="center" style="width:140px;">Azioni</th>
-        </tr>
+        <tr><th>Riga</th><th>Data</th><th>Sede</th><th>Descrizione</th><th>Metodo</th><th class="right">Entrate</th><th class="right">Uscite</th><th class="right">Saldo</th><th class="center">Azioni</th></tr>
       </thead>
       <tbody id="tbodyCassa"></tbody>
     </table>
-
     <div class="cassa-summary">
       <span style="color:var(--green);" id="totEntrateLbl">Totale Entrate: € 0,00</span>
       <span style="color:var(--red);" id="totUsciteLbl">Totale Uscite: € 0,00</span>
@@ -1600,40 +945,19 @@ Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
   </div>
 </div>
 
-<!-- ==================== DOCUMENTI E MODULISTICA ==================== -->
+<!-- DOCUMENTI E MODULISTICA -->
 <div class="area" id="area-documenti">
   <div class="card">
-    <h3>Documenti e modulistica — Cartella Unica (PDF, DOCX, JPG) — Salvataggio su Drive: FILE CREATI</h3>
-    <p style="margin:0 0 10px; font-size:12.5px; color:#334155;">
-      Carica qui regolamenti, moduli di iscrizione, disdette, liberatorie o documenti dell'associazione nei formati <strong>PDF</strong>, <strong>DOCX</strong> e <strong>JPG</strong>. Ogni file viene inviato automaticamente su Google Drive dentro <strong>FILE CREATI</strong>.
-    </p>
-
+    <h3>Documenti e modulistica (Drive: FILE CREATI)</h3>
     <div style="display:grid; grid-template-columns: 1fr 1fr auto; gap:10px; margin-bottom:12px; align-items:end; background:#f8fafc; padding:10px; border:1px solid var(--border); border-radius:8px;">
-      <div class="form-group">
-        <label>Titolo / Descrizione Documento</label>
-        <input type="text" id="docModTitolo" placeholder="Es. Modulo Disdetta Associativa" />
-      </div>
-      <div class="form-group">
-        <label>Seleziona File (.pdf, .docx, .jpg)</label>
-        <input type="file" id="docModFile" accept=".pdf,.docx,.jpg,.jpeg,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg" />
-      </div>
-      <button class="btn btn-navy" type="button" id="btnAddDocMod">+ Carica nella Cartella</button>
+      <div class="form-group"><label>Titolo Documento</label><input type="text" id="docModTitolo" placeholder="Es. Modulo Disdetta" /></div>
+      <div class="form-group"><label>File (.pdf, .docx, .jpg)</label><input type="file" id="docModFile" accept=".pdf,.docx,.jpg,.jpeg" /></div>
+      <button class="btn btn-navy" type="button" id="btnAddDocMod">+ Carica</button>
     </div>
-
-    <div style="margin-bottom:10px;">
-      <input type="text" class="search-input" id="searchDocMod" placeholder="Cerca documento per nome o titolo..." />
-    </div>
-
+    <input type="text" class="search-input" id="searchDocMod" placeholder="Cerca documento..." style="margin-bottom:10px;" />
     <table>
       <thead>
-        <tr>
-          <th class="center" style="width:45px;">#</th>
-          <th>Titolo / Nome File</th>
-          <th style="width:90px;">Formato</th>
-          <th style="width:105px;">Data</th>
-          <th style="width:95px;">Dimensione</th>
-          <th class="center" style="width:225px;">Azioni</th>
-        </tr>
+        <tr><th>#</th><th>Titolo / File</th><th>Formato</th><th>Data</th><th>Dimensione</th><th class="center">Azioni</th></tr>
       </thead>
       <tbody id="tbodyDocMod"></tbody>
     </table>
@@ -1643,6 +967,35 @@ Cordiali Saluti, La segreteria Sicily Music Academy ®</textarea>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   var DEFAULT_SYNC_ENDPOINT = "https://script.google.com/macros/s/AKfycbwhavQvRy6fM4tU6ShimwSzy_2_KjuCKSI5hthM_h5Wuw50QIy65QbYtM9b-Talo8Iz/exec";
+  var STORAGE_KEY = "sma_gestionale_stato_v1";
+
+  var anniAccademici = ["A.A 2026-2027"];
+  var cartelleAperte = { "A.A 2026-2027": true, "Ritirati/non iscritti": true };
+  var associati = [
+    { id: 1, numIscr: "SMA-1", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Mario Rossi", corsista: "Giulia Rossi", sede: "Misilmeri", tel: "329 0000000", tel2: "338 1122334", email: "mario.rossi@email.it", cf: "RSSMRA80A01G273X", scad: "14/10/2027", tipo: "Strumentale", quota: 120.00, trinity: true, firma: "14/10/2026", prima: "19/10/2026", prova: false, contrattoNome: "Contratto_SMA-1_Mario_Rossi.pdf", contrattoUrl: "", contrattoDriveUrl: "" },
+    { id: 2, numIscr: "SMA-2", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Lucia Verdi", corsista: "Matteo Verdi", sede: "Monreale", tel: "333 4455667", tel2: "", email: "lucia.verdi@email.it", cf: "VRDLCU84B45G273Y", scad: "15/10/2027", tipo: "Principale", quota: 135.00, trinity: false, firma: "15/10/2026", prima: "20/10/2026", prova: false, contrattoNome: "Contratto_SMA-2_Lucia_Verdi.pdf", contrattoUrl: "", contrattoDriveUrl: "" },
+    { id: 3, numIscr: "SMA-3", statoIscr: "Neo Iscritto", annoAcc: "A.A 2026-2027", nome: "Rosetta Bonanno", corsista: "Sofia Bonanno", sede: "Misilmeri", tel: "347 7788990", tel2: "", email: "rosetta.bonanno@email.it", cf: "BNNRTT88C50G273Z", scad: "01/12/2027", tipo: "Light", quota: 75.00, trinity: false, firma: "01/12/2026", prima: "04/12/2026", prova: true, contrattoNome: "Contratto_SMA-3_Rosetta_Bonanno.pdf", contrattoUrl: "", contrattoDriveUrl: "" }
+  ];
+  var nuoviContatti = [
+    { id: 101, nome: "Chiara", cognome: "Esposito", cell: "331 5566778", sede: "Misilmeri", corso: "Strumentale", dataProva: "28/11/2026" },
+    { id: 102, nome: "Davide", cognome: "Russo", cell: "349 2233445", sede: "Monreale", corso: "Principale+secondo", dataProva: "02/12/2026" }
+  ];
+  var docenti = [
+    { id: 1, nome: "M° Marco Bianchi", materia: "Pianoforte / Teoria", tariffa: 25 },
+    { id: 2, nome: "Prof.ssa Elena Russo", materia: "Canto Moderno / Coro", tariffa: 25 }
+  ];
+  var movimentiCassa = [
+    { data: "24/11/2026", sede: "Misilmeri", desc: "Ric. Ass. 542/1 - Rosetta Bonanno (#SMA-3)", met: "Bonifico Bancario", ent: 125.00, usc: 0 }
+  ];
+  var documentiModulistica = [
+    { titolo: "Regolamento Sicily Music Academy APS", nomeFile: "Regolamento_SMA_APS.pdf", formato: "PDF", data: "01/09/2026", size: "420 KB", url: "", driveUrl: "" }
+  ];
+
+  var progGen = 543;
+  var selectedAssocIdx = 0;
+  var selectedDocIdx = 0;
+  var editingCassaIdx = null;
+  var autoSyncTimer = null;
 
   function showMessage(msg) {
     var banner = document.getElementById("toastBanner");
@@ -1650,561 +1003,17 @@ document.addEventListener("DOMContentLoaded", function () {
     banner.textContent = msg;
     banner.style.display = "block";
     clearTimeout(banner._t);
-    banner._t = setTimeout(function () {
-      banner.style.display = "none";
-    }, 3800);
+    banner._t = setTimeout(function () { banner.style.display = "none"; }, 3500);
   }
 
   function fmtEuro(val) {
     return Number(val || 0).toFixed(2).replace(".", ",");
   }
 
-  function arrayBufferToBase64(buffer) {
-    var bytes = new Uint8Array(buffer);
-    var chunkSize = 0x8000;
-    var binary = "";
-    for (var i = 0; i < bytes.length; i += chunkSize) {
-      binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
-    }
-    return btoa(binary);
-  }
-
   function getEndpointUrl() {
     var inp = document.getElementById("cloudSyncEndpoint");
     return ((inp && inp.value) || DEFAULT_SYNC_ENDPOINT).trim();
   }
-
-  /**
-   * Invia qualunque File o Blob su Google Drive dentro FILE CREATI
-   * tramite il tuo Google Apps Script (Codice.gs).
-   */
-  async function caricaFileSuDriveFileCreati(fileOrBlob, nomeFile, sottocartella) {
-    var endpoint = getEndpointUrl();
-    if (!endpoint) {
-      throw new Error("Endpoint Google Apps Script non configurato.");
-    }
-    var buffer = await fileOrBlob.arrayBuffer();
-    var base64Data = arrayBufferToBase64(buffer);
-    var safeName = String(nomeFile || fileOrBlob.name || ("file_" + Date.now()))
-      .trim()
-      .replace(/[\\/:*?"<>|]+/g, "_");
-    var mimeType = fileOrBlob.type || "application/octet-stream";
-
-    var res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({
-        action: "upload_file",
-        fileName: safeName,
-        nomeFile: safeName,
-        mimeType: mimeType,
-        sottocartella: sottocartella || "",
-        subfolder: sottocartella || "",
-        fileBase64: base64Data,
-        base64Data: base64Data
-      })
-    });
-
-    var data = await res.json();
-    if (!data || !data.ok) {
-      throw new Error((data && data.error) || "Errore durante il caricamento su Drive.");
-    }
-    return data;
-  }
-
-  function aggiornaLinkDriveVisivo(elId, url) {
-    var a = document.getElementById(elId);
-    if (!a) return;
-    if (url) {
-      a.href = url;
-      a.style.display = "inline";
-    } else {
-      a.style.display = "none";
-    }
-  }
-
-  var anniAccademici = ["A.A 2026-2027"];
-  var cartelleAperte = { "A.A 2026-2027": true, "Ritirati/non iscritti": true };
-
-  var associati = [
-    { id: 1, numIscr: "SMA-1", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Mario Rossi", corsista: "Giulia Rossi", luogoNascita: "Palermo", dataNascita: "01/01/1980", indirizzo: "Via Roma 10, Misilmeri", sede: "Misilmeri", tel: "329 0000000", tel2: "338 1122334", email: "mario.rossi@email.it", cf: "RSSMRA80A01G273X", scad: "14/10/2027", tipo: "Strumentale", quota: 120.00, trinity: true, firma: "14/10/2026", prima: "19/10/2026", prova: false, contrattoNome: "Contratto_SMA-1_Mario_Rossi.pdf", contrattoUrl: "", contrattoDriveUrl: "" },
-    { id: 2, numIscr: "SMA-2", statoIscr: "Attivo", annoAcc: "A.A 2026-2027", nome: "Lucia Verdi", corsista: "Matteo Verdi", luogoNascita: "Monreale", dataNascita: "12/02/1984", indirizzo: "Via Umberto 22, Monreale", sede: "Monreale", tel: "333 4455667", tel2: "320 9988776", email: "lucia.verdi@email.it", cf: "VRDLCU84B45G273Y", scad: "15/10/2027", tipo: "Principale", quota: 135.00, trinity: false, firma: "15/10/2026", prima: "20/10/2026", prova: false, contrattoNome: "Contratto_SMA-2_Lucia_Verdi.pdf", contrattoUrl: "", contrattoDriveUrl: "" },
-    { id: 3, numIscr: "SMA-3", statoIscr: "Neo Iscritto", annoAcc: "A.A 2026-2027", nome: "Rosetta Bonanno", corsista: "Sofia Bonanno", luogoNascita: "Misilmeri", dataNascita: "03/03/1988", indirizzo: "Corso V. Emanuele 50, Misilmeri", sede: "Misilmeri", tel: "347 7788990", tel2: "", email: "rosetta.bonanno@email.it", cf: "BNNRTT88C50G273Z", scad: "01/12/2027", tipo: "Light", quota: 75.00, trinity: false, firma: "01/12/2026", prima: "04/12/2026", prova: true, contrattoNome: "Contratto_SMA-3_Rosetta_Bonanno.pdf", contrattoUrl: "", contrattoDriveUrl: "" }
-  ];
-
-  var nuoviContatti = [
-    { id: 101, nome: "Chiara", cognome: "Esposito", cell: "331 5566778", sede: "Misilmeri", corso: "Strumentale", dataProva: "28/11/2026" },
-    { id: 102, nome: "Davide", cognome: "Russo", cell: "349 2233445", sede: "Monreale", corso: "Principale+secondo", dataProva: "02/12/2026" }
-  ];
-
-  var docenti = [
-    { id: 1, nome: "M° Marco Bianchi", materia: "Pianoforte / Teoria", sede: "Misilmeri", tel: "333 9876543", email: "marco.bianchi@email.it", cf: "BNCMRC85C12G273L", iban: "IT60X0542811101000000123456", indirizzo: "Via Cavour 15, Misilmeri (PA)", tariffa: 25, docNome: "Documento_Marco_Bianchi.pdf", docUrl: "", docDriveUrl: "", registroGiorni: [{ giorno: "04/11/2026", ore: 4, note: "Lezioni pomeridiane pianoforte" }, { giorno: "11/11/2026", ore: 4, note: "Lezioni pianoforte e solfeggio" }, { giorno: "18/11/2026", ore: 4, note: "Preparazione saggio / esami" }] },
-    { id: 2, nome: "Prof.ssa Elena Russo", materia: "Canto Moderno / Coro", sede: "Monreale", tel: "340 1122334", email: "elena.russo@email.it", cf: "RSSLNE90D52G273K", iban: "IT45Y0200804600000105544332", indirizzo: "Corso Pietro Novelli 40, Monreale (PA)", tariffa: 25, docNome: "Documento_Elena_Russo.pdf", docUrl: "", docDriveUrl: "", registroGiorni: [{ giorno: "05/11/2026", ore: 3, note: "Canto moderno e coro" }, { giorno: "12/11/2026", ore: 3, note: "Tecnica vocale" }] },
-    { id: 3, nome: "M° Luca Conti", materia: "Chitarra Classica / Moderna", sede: "Entrambe (Misilmeri / Monreale)", tel: "328 5544332", email: "luca.conti@email.it", cf: "CNTLCU88E10G273W", iban: "IT12Z0760104600001044332211", indirizzo: "Via Roma 88, Misilmeri (PA)", tariffa: 22, docNome: "Documento_Luca_Conti.pdf", docUrl: "", docDriveUrl: "", registroGiorni: [{ giorno: "06/11/2026", ore: 3, note: "Chitarra classica e moderna" }] }
-  ];
-
-  var movimentiCassa = [
-    { data: "24/11/2026", sede: "Misilmeri", desc: "Ric. Ass. 542/1 - Rosetta Bonanno (#SMA-3 Quota annuale + Mese 1)", met: "Bonifico Bancario", ent: 125.00, usc: 0 },
-    { data: "25/11/2026", sede: "Monreale", desc: "Acquisto cancelleria e materiali segreteria", met: "Contanti", ent: 0, usc: 28.50 }
-  ];
-
-  var documentiModulistica = [
-    { titolo: "Statuto e Regolamento Interno Sicily Music Academy APS", nomeFile: "Regolamento_SMA_APS.pdf", formato: "PDF", data: "01/09/2026", size: "420 KB", url: "", driveUrl: "" },
-    { titolo: "Modulo Iscrizione e Consenso Trattamento Dati", nomeFile: "Modulo_Iscrizione_SMA.docx", formato: "DOCX", data: "01/09/2026", size: "185 KB", url: "", driveUrl: "" }
-  ];
-
-  var editingCassaIdx = null;
-  var provaCaricata = false;
-  var provaFileObj = null;
-  var progGen = 543;
-  var selectedAssocIdx = 0;
-  var selectedDocIdx = 0;
-  var autoSyncTimer = null;
-
-  function programmaSyncAutomatico(motivo) {
-    clearTimeout(autoSyncTimer);
-    autoSyncTimer = setTimeout(function () {
-      inviaSincronizzazioneCloud(motivo || "auto_sync", true);
-    }, 1200);
-  }
-
-  var logoOriginaleData = {
-    arrayBuffer: null,
-    ext: "png",
-    nome: ""
-  };
-
-  function xmlEscape(str) {
-    return String(str || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&apos;");
-  }
-
-  function creaParagrafoWordXml(testo, opts) {
-    var o = opts || {};
-    var jc = o.align ? '<w:jc w:val="' + o.align + '"/>' : '';
-    var spacingBefore = o.spaceBefore || 0;
-    var spacingAfter = (o.spaceAfter !== undefined) ? o.spaceAfter : 120;
-    var lineSpacing = o.line || 276;
-    var rPrParts = [];
-    if (o.bold) rPrParts.push("<w:b/>");
-    if (o.italic) rPrParts.push("<w:i/>");
-    if (o.color) rPrParts.push('<w:color w:val="' + o.color + '"/>');
-    if (o.sizeHalfPt) {
-      rPrParts.push('<w:sz w:val="' + o.sizeHalfPt + '"/>');
-      rPrParts.push('<w:szCs w:val="' + o.sizeHalfPt + '"/>');
-    }
-    var rPr = rPrParts.length ? "<w:rPr>" + rPrParts.join("") + "</w:rPr>" : "";
-    return (
-      "<w:p>" +
-        "<w:pPr>" +
-          '<w:spacing w:before="' + spacingBefore + '" w:after="' + spacingAfter + '" w:line="' + lineSpacing + '" w:lineRule="auto"/>' +
-          jc +
-        "</w:pPr>" +
-        "<w:r>" +
-          rPr +
-          '<w:t xml:space="preserve">' + xmlEscape(testo) + "</w:t>" +
-        "</w:r>" +
-      "</w:p>"
-    );
-  }
-
-  function creaParagrafoLogoWordXml(hasLogo, ext) {
-    if (!hasLogo) {
-      return creaParagrafoWordXml("[Logo originale Sicily Music Academy non ancora caricato — clicca su 'Carica Logo Originale' per includerlo tal quale]", {
-        italic: true,
-        color: "B45309",
-        sizeHalfPt: 18,
-        spaceAfter: 140
-      });
-    }
-    var contentType = (ext === "jpg" || ext === "jpeg") ? "image/jpeg" : "image/png";
-    return (
-      "<w:p>" +
-        '<w:pPr><w:spacing w:before="0" w:after="120"/><w:jc w:val="left"/></w:pPr>' +
-        "<w:r>" +
-          "<w:drawing>" +
-            '<wp:inline distT="0" distB="0" distL="0" distR="0" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">' +
-              '<wp:extent cx="1600200" cy="868680"/>' +
-              '<wp:docPr id="1" name="Logo Originale" descr="' + contentType + '"/>' +
-              '<a:graphic xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">' +
-                '<a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/picture">' +
-                  '<pic:pic xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' +
-                    "<pic:nvPicPr>" +
-                      '<pic:cNvPr id="0" name="logo_originale"/>' +
-                      "<pic:cNvPicPr/>" +
-                    "</pic:nvPicPr>" +
-                    "<pic:blipFill>" +
-                      '<a:blip r:embed="rIdLogo1" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"/>' +
-                      "<a:stretch><a:fillRect/></a:stretch>" +
-                    "</pic:blipFill>" +
-                    "<pic:spPr>" +
-                      '<a:xfrm><a:off x="0" y="0"/><a:ext cx="1600200" cy="868680"/></a:xfrm>' +
-                      '<a:prstGeom prst="rect"><a:avLst/></a:prstGeom>' +
-                    "</pic:spPr>" +
-                  "</pic:pic>" +
-                "</a:graphicData>" +
-              "</a:graphic>" +
-            "</wp:inline>" +
-          "</w:drawing>" +
-        "</w:r>" +
-      "</w:p>"
-    );
-  }
-
-  async function generaEScaricaDocxComunicazioneInsoluto() {
-    try {
-      if (!window.JSZip) {
-        showMessage("Libreria DOCX (JSZip) non disponibile offline.");
-        return;
-      }
-
-      var assocObj = associati[selectedAssocIdx] || {};
-      var numIscr = document.getElementById("inpNumIscrizione").value || "SMA-1";
-      var sede = document.getElementById("inpSede").value || "Misilmeri";
-      var associato = document.getElementById("inpAssociato").value || "Associato";
-      var corsista = document.getElementById("inpCorsista").value || "";
-      var tipoCorso = document.getElementById("inpTipoCorso").value || "Strumentale";
-      var dataFirma = document.getElementById("inpDataFirma").value || "-";
-      var scadenza = document.getElementById("inpScadenza").value || "-";
-
-      var baseMensile = parseFloat(document.getElementById("inpQuotaMensile").value) || 0;
-      var trinityExtra = document.getElementById("chkTrinity").checked ? 25.00 : 0;
-      var totaleMese = baseMensile + trinityExtra;
-
-      var mesi = ["Settembre", "Ottobre", "Novembre", "Dicembre", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno"];
-      var vociAnnue = [{ voce: "Quota Annuale Associativa", imp: 50.00, stato: "Saldata" }];
-      mesi.forEach(function (m, i) {
-        vociAnnue.push({
-          voce: "Quota Associativa Mensile del Mese di " + m + " 2026",
-          imp: totaleMese,
-          stato: i < 2 ? "Saldata" : "Da pagare"
-        });
-      });
-      vociAnnue.push({ voce: "Quota Concerto di Capodanno", imp: 40.00, stato: "Da pagare" });
-      vociAnnue.push({ voce: "Quota Concerto di Fine Anno Accademico", imp: 60.00, stato: "Da pagare" });
-
-      var insolute = vociAnnue.filter(function (v) { return v.stato !== "Saldata"; });
-      var versate = vociAnnue.filter(function (v) { return v.stato === "Saldata"; });
-      var totInsoluto = insolute.reduce(function (acc, item) { return acc + item.imp; }, 0);
-      var totRidottoArt7 = Number((totInsoluto * 0.5).toFixed(2));
-
-      var bodyParts = [];
-      var hasLogo = !!logoOriginaleData.arrayBuffer;
-      var imgExt = (logoOriginaleData.ext === "jpg" || logoOriginaleData.ext === "jpeg") ? "jpeg" : "png";
-
-      bodyParts.push(creaParagrafoLogoWordXml(hasLogo, imgExt));
-      bodyParts.push(creaParagrafoWordXml('"SICILY MUSIC ACADEMY" APS', { bold: true, sizeHalfPt: 26, spaceAfter: 60 }));
-      bodyParts.push(creaParagrafoWordXml("CELL. 329.3715380 - EMAIL. direzione.sicilymusicacademy@gmail.com", { sizeHalfPt: 18, color: "475569", spaceAfter: 40 }));
-      bodyParts.push(creaParagrafoWordXml("C.F : 97332490826 - www.sicilymusicacademy.it | Iscr. #" + numIscr, { sizeHalfPt: 18, color: "475569", spaceAfter: 180 }));
-
-      bodyParts.push(creaParagrafoWordXml(
-        "Oggetto : Richiesta di Saldo delle quote Associative – Associata " + associato + (corsista ? " (Corsista: " + corsista + ")" : ""),
-        { bold: true, sizeHalfPt: 21, spaceAfter: 140 }
-      ));
-
-      bodyParts.push(creaParagrafoWordXml(
-        "La Sicily Music Academy ®APS, Ente di Formazione Musicale con sede legale in Corso Vittorio Emanuele ,334 – Misilmeri (PA) e in Salita San Cristoforo, 7, Monreale (PA),",
-        { align: "both", sizeHalfPt: 20, spaceAfter: 160, line: 288 }
-      ));
-
-      bodyParts.push(creaParagrafoWordXml("PREMESSO CHE", { align: "center", bold: true, sizeHalfPt: 21, spaceBefore: 80, spaceAfter: 140 }));
-
-      bodyParts.push(creaParagrafoWordXml(
-        "Con tutta la cordialità che ci lega alla nostra comunità associativa, ricordiamo che in data " + dataFirma +
-        " l'Associazione stipulava con l'Associato " + associato +
-        (assocObj.luogoNascita ? ", nato a " + assocObj.luogoNascita : "") +
-        (assocObj.dataNascita ? " il " + assocObj.dataNascita : "") +
-        (assocObj.indirizzo ? ", residente in " + assocObj.indirizzo : "") +
-        ', un contratto avente come oggetto "Contratto d\' Iscrizione al Corso ' + tipoCorso +
-        '" e che, in forza del predetto contratto, l\'Associato, non ha ancora provveduto a Saldare il qui elenco dettagliato di Quote Associative:',
-        { align: "both", sizeHalfPt: 20, spaceAfter: 140, line: 288 }
-      ));
-
-      insolute.forEach(function (item) {
-        bodyParts.push(creaParagrafoWordXml(
-          "• " + item.voce + " di € " + fmtEuro(item.imp) + ";",
-          { align: "both", sizeHalfPt: 19, spaceAfter: 80, line: 264 }
-        ));
-      });
-
-      bodyParts.push(creaParagrafoWordXml(
-        "Le Quote Associative Insolute Totali ammontano a € " + fmtEuro(totInsoluto),
-        { bold: true, color: "B91C1C", sizeHalfPt: 21, spaceBefore: 100, spaceAfter: 140 }
-      ));
-
-      bodyParts.push(creaParagrafoWordXml(
-        "Dai nostri archivi ci risultano versate tali quote :",
-        { sizeHalfPt: 20, spaceAfter: 100, line: 276 }
-      ));
-
-      versate.forEach(function (item) {
-        bodyParts.push(creaParagrafoWordXml(
-          "• " + item.voce + " € " + fmtEuro(item.imp) + ";",
-          { align: "both", sizeHalfPt: 19, color: "334155", spaceAfter: 80, line: 264 }
-        ));
-      });
-
-      bodyParts.push(creaParagrafoWordXml("Tutto ciò premesso, L'Associazione,", { sizeHalfPt: 20, spaceBefore: 120, spaceAfter: 100 }));
-      bodyParts.push(creaParagrafoWordXml("CHIEDE", { align: "center", bold: true, sizeHalfPt: 22, spaceBefore: 60, spaceAfter: 140 }));
-
-      bodyParts.push(creaParagrafoWordXml(
-        "Gentilmente all'Associato " + associato +
-        (assocObj.luogoNascita ? ", nato a " + assocObj.luogoNascita : "") +
-        (assocObj.dataNascita ? " il " + assocObj.dataNascita : "") +
-        (assocObj.indirizzo ? ", residente in " + assocObj.indirizzo : "") +
-        ", di adempiere alle proprie Obbligazioni Contrattuali Associative, quindi al Pagamento della Quota Associativa Complessiva di € " +
-        fmtEuro(totInsoluto) + " (alla data odierna) in questi termini e condizioni :",
-        { align: "both", sizeHalfPt: 20, spaceAfter: 140, line: 288 }
-      ));
-
-      bodyParts.push(creaParagrafoWordXml(
-        "• Pagamento in misura ridotta pari a € " + fmtEuro(totRidottoArt7) +
-        ", come previsto dall'Art. 7 del sopra citato Contratto, da effettuarsi entro e non oltre il " + scadenza +
-        " per la definizione e risoluzione integrale dell'insoluto e del relativo Contratto Associativo. Le ricordiamo con cortesia che, in considerazione della data di sottoscrizione del contratto (" +
-        dataFirma + "), questa rappresenta l'ultima possibilità di avvalersi dell'applicazione del suddetto Art. 7. In caso di mancato saldo entro il termine indicato, l'agevolazione non sarà più applicabile e l'intero ammontare dell'insoluto dovrà essere versato in un'unica soluzione, per un importo pari a € " +
-        fmtEuro(totInsoluto) + ".",
-        { align: "both", sizeHalfPt: 19, spaceAfter: 160, line: 288 }
-      ));
-
-      bodyParts.push(creaParagrafoWordXml("Il Pagamento dovrà pervenire tramite Bonifico Bancario alle seguenti Coordinate Bancarie ;", { align: "both", sizeHalfPt: 20, spaceAfter: 100, line: 276 }));
-      bodyParts.push(creaParagrafoWordXml("Conto : Monte dei Paschi di Siena", { sizeHalfPt: 19, spaceAfter: 60 }));
-      bodyParts.push(creaParagrafoWordXml("Intestato a : Sicily Music Academy APS.", { sizeHalfPt: 19, spaceAfter: 60 }));
-      bodyParts.push(creaParagrafoWordXml("IBAN : IT20C0103004604000004330514", { bold: true, sizeHalfPt: 19, spaceAfter: 60 }));
-      bodyParts.push(creaParagrafoWordXml("Causale : Quote Associative Insolute " + associato + (corsista ? " – " + corsista : "") + ".", { bold: true, sizeHalfPt: 19, spaceAfter: 160 }));
-
-      bodyParts.push(creaParagrafoWordXml(
-        "Una volta effettuato il Pagamento chiediamo gentilmente all'Associato di mandare la Ricevuta del Bonifico (se intende anche disdire il contratto allegare il Modulo di Disdetta Associativa, scaricabile da qui : https://bit.ly/3R49Qjv , compilato e firmato) nei formati PDF o JPG all' Email. Direzione.sicilymusicacademy@gmail.com;",
-        { align: "both", sizeHalfPt: 19, spaceAfter: 160, line: 288 }
-      ));
-
-      bodyParts.push(creaParagrafoWordXml("In Attesa di sue, La direzione,  SICILY MUSIC ACADEMY.", { bold: true, sizeHalfPt: 20, spaceAfter: 200 }));
-      bodyParts.push(creaParagrafoWordXml(sede + ", 26/11/2026                                                                                Firma Presidente", { sizeHalfPt: 19, spaceAfter: 120 }));
-
-      var documentXml =
-        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" ' +
-        'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
-        "<w:body>" +
-        bodyParts.join("") +
-        '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="900" w:right="1000" w:bottom="900" w:left="1000"/></w:sectPr>' +
-        "</w:body>" +
-        "</w:document>";
-
-      var contentTypesXml =
-        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-        '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
-        '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
-        '<Default Extension="xml" ContentType="application/xml"/>' +
-        '<Default Extension="png" ContentType="image/png"/>' +
-        '<Default Extension="jpeg" ContentType="image/jpeg"/>' +
-        '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/>' +
-        "</Types>";
-
-      var rootRelsXml =
-        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
-        '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
-        "</Relationships>";
-
-      var docRelsParts = [];
-      if (hasLogo) {
-        docRelsParts.push(
-          '<Relationship Id="rIdLogo1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/logo_originale.' + imgExt + '"/>'
-        );
-      }
-      var docRelsXml =
-        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
-        docRelsParts.join("") +
-        "</Relationships>";
-
-      var zip = new window.JSZip();
-      zip.file("[Content_Types].xml", contentTypesXml);
-      zip.folder("_rels").file(".rels", rootRelsXml);
-      var wordFolder = zip.folder("word");
-      wordFolder.file("document.xml", documentXml);
-      wordFolder.folder("_rels").file("document.xml.rels", docRelsXml);
-      if (hasLogo) {
-        wordFolder.folder("media").file("logo_originale." + imgExt, logoOriginaleData.arrayBuffer);
-      }
-
-      var blob = await zip.generateAsync({
-        type: "blob",
-        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-      });
-      var fileName = "Comunicazione_Insoluto_" + numIscr + "_" + associato.replace(/\s+/g, "_") + ".docx";
-
-      var url = URL.createObjectURL(blob);
-      var a = document.createElement("a");
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-
-      try {
-        var salvato = await caricaFileSuDriveFileCreati(blob, fileName, "Comunicazioni Insoluto");
-        showMessage("Salvato su Drive (FILE CREATI) e scaricato: " + salvato.name);
-      } catch (driveErr) {
-        showMessage("File .docx scaricato. Caricamento Drive: " + driveErr.message);
-      }
-    } catch (err) {
-      showMessage("Errore nella generazione del file .docx: " + err.message);
-    }
-  }
-
-  async function generaEScaricaPdfRicevutaAssociativa(dati) {
-    try {
-      var jspdfLib = window.jspdf;
-      if (!jspdfLib || !jspdfLib.jsPDF) {
-        showMessage("Libreria PDF non disponibile offline.");
-        return;
-      }
-      var doc = new jspdfLib.jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-      doc.setFillColor(15, 23, 42);
-      doc.rect(14, 14, 182, 24, "F");
-      doc.setTextColor(255, 255, 255);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(14);
-      doc.text("SICILY MUSIC ACADEMY APS — RICEVUTA ASSOCIATIVA", 20, 24);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
-      doc.text("C.so Vittorio Emanuele, 334 - Misilmeri (PA) | C.F. 97332490826", 20, 30);
-      doc.text("Registered Exam Centre 67642 - Trinity College London", 20, 35);
-
-      doc.setTextColor(15, 23, 42);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(11.5);
-      doc.text("RICEVUTA ASSOCIATIVA N. " + dati.numero, 14, 48);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.text("Data emissione: " + dati.data, 145, 48);
-
-      doc.setDrawColor(194, 142, 14);
-      doc.setLineWidth(0.8);
-      doc.line(14, 51, 196, 51);
-
-      doc.setFontSize(10);
-      doc.text("Numero Iscrizione: " + dati.numIscr, 14, 60);
-      doc.text("Sede: " + dati.sede, 145, 60);
-      doc.text("Associato (Contraente): " + dati.associato, 14, 67);
-      doc.text("Corsista (Allievo): " + dati.corsista, 14, 74);
-      doc.text("Metodo di Pagamento: " + dati.metodo, 14, 81);
-
-      doc.setFillColor(241, 245, 249);
-      doc.rect(14, 90, 182, 9, "F");
-      doc.setFont("helvetica", "bold");
-      doc.text("Quota Associativa / Causale", 17, 96);
-      doc.text("Dettaglio Quota Associativa", 95, 96);
-      doc.text("Importo", 175, 96);
-
-      doc.setFont("helvetica", "normal");
-      doc.rect(14, 99, 182, 18);
-      doc.text(String(dati.voce || "").substring(0, 40), 17, 107);
-      doc.text(String(dati.dettaglio || "").substring(0, 40), 95, 107);
-      doc.setFont("helvetica", "bold");
-      doc.text("EUR " + fmtEuro(dati.importo), 168, 107);
-
-      var yCur = 125;
-      if (dati.note) {
-        doc.setFont("helvetica", "italic");
-        doc.setFontSize(9);
-        doc.text("Note: " + dati.note, 14, yCur);
-        yCur += 8;
-      }
-
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(8.5);
-      doc.text(
-        "Ricevuta associativa per versamento quota associativa / contributo istituzionale riservato ai soci (art. 148 TUIR / D.Lgs. 117/2017) - Non costituisce fattura commerciale.",
-        14,
-        yCur,
-        { maxWidth: 182 }
-      );
-
-      doc.setFontSize(9.5);
-      doc.text("La Segreteria - Sicily Music Academy APS", 130, 152);
-      doc.line(130, 162, 192, 162);
-
-      doc.save(dati.fileName);
-
-      try {
-        var pdfBlob = doc.output("blob");
-        await caricaFileSuDriveFileCreati(pdfBlob, dati.fileName, dati.sottocartella || "Ricevute");
-      } catch (driveErr) {
-        console.warn("Invio PDF ricevuta su Drive:", driveErr);
-      }
-    } catch (err) {
-      showMessage("Errore nella generazione della Ricevuta Associativa PDF: " + err.message);
-    }
-  }
-
-  // --- POPUP AVVISI ---
-  var modal = document.getElementById("startupModal");
-  var cloudModal = document.getElementById("cloudModal");
-  var accountCollegato = true;
-
-  function chiudiModal() {
-    if (modal) {
-      modal.classList.add("hidden");
-      modal.style.display = "none";
-    }
-  }
-  function apriModal() {
-    if (modal) {
-      modal.classList.remove("hidden");
-      modal.style.display = "flex";
-    }
-  }
-  function chiudiCloudModal() {
-    if (cloudModal) {
-      cloudModal.classList.add("hidden");
-      cloudModal.style.display = "none";
-    }
-  }
-  function apriCloudModal() {
-    if (cloudModal) {
-      cloudModal.classList.remove("hidden");
-      cloudModal.style.display = "flex";
-    }
-  }
-
-  var btnChiudiModal = document.getElementById("btnChiudiModal");
-  var btnCloseX = document.getElementById("btnCloseX");
-  var btnApriModal = document.getElementById("btnApriModal");
-  var btnApriCloudModal = document.getElementById("btnApriCloudModal");
-  var btnCloseCloudX = document.getElementById("btnCloseCloudX");
-  var btnChiudiCloudModal = document.getElementById("btnChiudiCloudModal");
-
-  if (btnChiudiModal) btnChiudiModal.addEventListener("click", chiudiModal);
-  if (btnCloseX) btnCloseX.addEventListener("click", chiudiModal);
-  if (btnApriModal) btnApriModal.addEventListener("click", apriModal);
-  if (btnApriCloudModal) btnApriCloudModal.addEventListener("click", apriCloudModal);
-  if (btnCloseCloudX) btnCloseCloudX.addEventListener("click", chiudiCloudModal);
-  if (btnChiudiCloudModal) btnChiudiCloudModal.addEventListener("click", chiudiCloudModal);
-
-  if (modal) {
-    modal.addEventListener("click", function (e) {
-      if (e.target === modal) chiudiModal();
-    });
-  }
-  if (cloudModal) {
-    cloudModal.addEventListener("click", function (e) {
-      if (e.target === cloudModal) chiudiCloudModal();
-    });
-  }
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      chiudiModal();
-      chiudiCloudModal();
-    }
-  });
 
   function aggiornaBadgeCloud(testoBadge, dettaglio, ok) {
     var badge = document.getElementById("cloudStatusBadge");
@@ -2213,10 +1022,55 @@ document.addEventListener("DOMContentLoaded", function () {
       badge.textContent = testoBadge;
       badge.className = ok ? "badge badge-ok" : "badge badge-warn";
     }
-    if (dett) {
-      dett.textContent = dettaglio;
-      dett.style.color = ok ? "#15803d" : "#334155";
+    if (dett) dett.textContent = dettaglio;
+  }
+
+  function salvaStatoLocale() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        anniAccademici: anniAccademici,
+        cartelleAperte: cartelleAperte,
+        associati: associati,
+        nuoviContatti: nuoviContatti,
+        docenti: docenti,
+        movimentiCassa: movimentiCassa,
+        documentiModulistica: documentiModulistica,
+        progGen: progGen,
+        selectedAssocIdx: selectedAssocIdx,
+        selectedDocIdx: selectedDocIdx
+      }));
+    } catch (e) {
+      console.warn("Salvataggio locale non riuscito:", e);
     }
+  }
+
+  function caricaStatoLocale() {
+    try {
+      var grezzo = localStorage.getItem(STORAGE_KEY);
+      if (!grezzo) return false;
+      var s = JSON.parse(grezzo);
+      if (Array.isArray(s.anniAccademici) && s.anniAccademici.length) anniAccademici = s.anniAccademici;
+      if (s.cartelleAperte && typeof s.cartelleAperte === "object") cartelleAperte = s.cartelleAperte;
+      if (Array.isArray(s.associati) && s.associati.length) associati = s.associati;
+      if (Array.isArray(s.nuoviContatti)) nuoviContatti = s.nuoviContatti;
+      if (Array.isArray(s.docenti) && s.docenti.length) docenti = s.docenti;
+      if (Array.isArray(s.movimentiCassa)) movimentiCassa = s.movimentiCassa;
+      if (Array.isArray(s.documentiModulistica)) documentiModulistica = s.documentiModulistica;
+      if (typeof s.progGen === "number") progGen = s.progGen;
+      if (typeof s.selectedAssocIdx === "number" && s.selectedAssocIdx < associati.length) selectedAssocIdx = s.selectedAssocIdx;
+      if (typeof s.selectedDocIdx === "number" && s.selectedDocIdx < docenti.length) selectedDocIdx = s.selectedDocIdx;
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function programmaSyncAutomatico(motivo) {
+    salvaStatoLocale();
+    clearTimeout(autoSyncTimer);
+    autoSyncTimer = setTimeout(function () {
+      inviaSincronizzazioneCloud(motivo || "auto_sync", true);
+    }, 1200);
   }
 
   async function caricaDatiDalCloud(silenzioso) {
@@ -2225,38 +1079,26 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!endpoint) return;
 
     try {
-      aggiornaBadgeCloud(
-        "Account: " + emailAccount + " (Caricamento...)",
-        "Recupero ultimi dati da " + emailAccount + "...",
-        true
-      );
+      aggiornaBadgeCloud("Account: " + emailAccount + " (Caricamento...)", "Recupero ultimi dati da " + emailAccount + "...", true);
       var res = await fetch(endpoint);
       var remote = await res.json();
       if (remote && (Array.isArray(remote.associati) || Array.isArray(remote.docenti) || Array.isArray(remote.movimentiCassa))) {
-        if (Array.isArray(remote.anniAccademici) && remote.anniAccademici.length) {
-          anniAccademici = remote.anniAccademici;
-        }
+        if (Array.isArray(remote.anniAccademici) && remote.anniAccademici.length) anniAccademici = remote.anniAccademici;
+        if (remote.cartelleAperte && typeof remote.cartelleAperte === "object") cartelleAperte = remote.cartelleAperte;
         if (Array.isArray(remote.associati) && remote.associati.length) {
           associati = remote.associati;
           if (selectedAssocIdx >= associati.length) selectedAssocIdx = 0;
         }
-        if (Array.isArray(remote.nuoviContatti)) {
-          nuoviContatti = remote.nuoviContatti;
-        }
+        if (Array.isArray(remote.nuoviContatti)) nuoviContatti = remote.nuoviContatti;
         if (Array.isArray(remote.docenti) && remote.docenti.length) {
           docenti = remote.docenti;
           if (selectedDocIdx >= docenti.length) selectedDocIdx = 0;
         }
-        if (Array.isArray(remote.movimentiCassa)) {
-          movimentiCassa = remote.movimentiCassa;
-        }
-        if (Array.isArray(remote.documentiModulistica)) {
-          documentiModulistica = remote.documentiModulistica;
-        }
-        if (remote.progGen) {
-          progGen = remote.progGen;
-        }
+        if (Array.isArray(remote.movimentiCassa)) movimentiCassa = remote.movimentiCassa;
+        if (Array.isArray(remote.documentiModulistica)) documentiModulistica = remote.documentiModulistica;
+        if (typeof remote.progGen === "number") progGen = remote.progGen;
 
+        salvaStatoLocale();
         popolaSelectAnni();
         renderAssociati();
         if (associati[selectedAssocIdx]) caricaScheda(associati[selectedAssocIdx]);
@@ -2266,31 +1108,24 @@ document.addEventListener("DOMContentLoaded", function () {
         renderCassa();
         renderDocumentiModulistica();
       }
-      aggiornaBadgeCloud(
-        "Account: " + emailAccount + " (Sincronizzato)",
-        "Dati aggiornati da " + emailAccount + " (" + new Date().toLocaleTimeString("it-IT") + ")",
-        true
-      );
+      aggiornaBadgeCloud("Account: " + emailAccount + " (Sincronizzato)", "Dati aggiornati da " + emailAccount + " (" + new Date().toLocaleTimeString("it-IT") + ")", true);
       if (!silenzioso) showMessage("Dati scaricati e aggiornati da " + emailAccount + ".");
     } catch (err) {
-      aggiornaBadgeCloud(
-        "Account: " + emailAccount + " (Pronto / Offline)",
-        "Endpoint configurato per " + emailAccount + ".",
-        true
-      );
+      aggiornaBadgeCloud("Account: " + emailAccount + " (Locale)", "Uso copia locale.", true);
       if (!silenzioso) showMessage("Impossibile scaricare i dati remoti al momento.");
     }
   }
 
   async function inviaSincronizzazioneCloud(azione, silenzioso) {
+    salvaStatoLocale();
     var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
     var endpoint = getEndpointUrl();
     var payload = {
       azione: azione,
       account: emailAccount,
       timestamp: new Date().toISOString(),
-      cartellaDrive: "FILE CREATI",
       anniAccademici: anniAccademici,
+      cartelleAperte: cartelleAperte,
       associati: associati,
       nuoviContatti: nuoviContatti,
       docenti: docenti,
@@ -2307,114 +1142,26 @@ document.addEventListener("DOMContentLoaded", function () {
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify(payload)
         });
-        aggiornaBadgeCloud(
-          "Account: " + emailAccount + " (Sincronizzato)",
-          "Ultimo salvataggio verso " + emailAccount + " (" + new Date().toLocaleTimeString("it-IT") + ")",
-          true
-        );
+        aggiornaBadgeCloud("Account: " + emailAccount + " (Sincronizzato)", "Ultimo salvataggio verso " + emailAccount + " (" + new Date().toLocaleTimeString("it-IT") + ")", true);
         if (!silenzioso) showMessage("Dati sincronizzati con " + emailAccount + ".");
-        return;
       } catch (err) {
         if (!silenzioso) showMessage("Errore di rete nella sincronizzazione cloud: " + err.message);
       }
     }
-
-    accountCollegato = true;
-    aggiornaBadgeCloud(
-      "Account: " + emailAccount + " (Pronto)",
-      "Profilo " + emailAccount + " impostato.",
-      true
-    );
-    if (!silenzioso) showMessage("Profilo collegato a " + emailAccount + ".");
   }
 
-  document.getElementById("btnCollegaAccountGoogle").addEventListener("click", function () {
-    var emailAccount = (document.getElementById("cloudAccountEmail").value || "sicilymusicacademy@gmail.com").trim();
-    var clientId = (document.getElementById("cloudClientId").value || "").trim();
-    accountCollegato = true;
-    if (clientId && window.google && window.google.accounts && window.google.accounts.oauth2) {
-      try {
-        var tokenClient = window.google.accounts.oauth2.initTokenClient({
-          client_id: clientId,
-          scope: "https://www.googleapis.com/auth/drive.file openid email profile",
-          hint: emailAccount,
-          callback: function (resp) {
-            if (resp && resp.access_token) {
-              aggiornaBadgeCloud(
-                "Account: " + emailAccount + " (Connesso Google)",
-                "Connesso a Google Drive con " + emailAccount + " (cartella: FILE CREATI).",
-                true
-              );
-              showMessage("Accesso Google completato per " + emailAccount);
-            }
-          }
-        });
-        tokenClient.requestAccessToken({ prompt: "consent" });
-        return;
-      } catch (err) {
-        showMessage("Avvio OAuth Google non riuscito: " + err.message);
-      }
-    }
-    aggiornaBadgeCloud(
-      "Account: " + emailAccount + " (Configurato)",
-      "Account associativo impostato su " + emailAccount + " (Drive: FILE CREATI).",
-      true
-    );
-    showMessage("Account associativo impostato su " + emailAccount);
-  });
-
-  document.getElementById("btnSincronizzaOra").addEventListener("click", function () {
-    inviaSincronizzazioneCloud("sync_manuale", false);
-  });
-
-  document.getElementById("btnScaricaDalCloud").addEventListener("click", function () {
-    caricaDatiDalCloud(false);
-  });
-
-  function copiaTesto(testo, toastId) {
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(testo).catch(function () {});
-    } else {
-      var tmp = document.createElement("textarea");
-      tmp.value = testo;
-      document.body.appendChild(tmp);
-      tmp.select();
-      document.execCommand("copy");
-      document.body.removeChild(tmp);
-    }
-    if (toastId) {
-      var t = document.getElementById(toastId);
-      if (t) {
-        t.style.display = "inline";
-        setTimeout(function () { t.style.display = "none"; }, 2200);
-      }
-    }
-  }
-
-  var btnCopiaRitardoPopup = document.getElementById("btnCopiaRitardoPopup");
-  if (btnCopiaRitardoPopup) {
-    btnCopiaRitardoPopup.addEventListener("click", function () {
-      var testoRit = document.getElementById("msg-rit").value;
-      copiaTesto(testoRit, null);
-      var btn = this;
-      btn.textContent = "Copiato!";
-      setTimeout(function () { btn.textContent = "Copia Messaggio Ritardatari"; }, 2000);
-    });
-  }
-
-  // --- NAVIGAZIONE PRINCIPALE E SOTTO-SCHEDE ---
+  // Navigazione schede
   function attivaAreaPrincipale(areaName) {
     document.querySelectorAll(".area").forEach(function (a) { a.classList.remove("active"); });
     document.querySelectorAll(".main-tab").forEach(function (b) { b.classList.remove("active"); });
-    document.getElementById("area-" + areaName).classList.add("active");
+    var target = document.getElementById("area-" + areaName);
+    if (target) target.classList.add("active");
     var tab = document.querySelector('.main-tab[data-area="' + areaName + '"]');
     if (tab) tab.classList.add("active");
   }
 
   document.querySelectorAll(".main-tab").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      attivaAreaPrincipale(btn.getAttribute("data-area"));
-    });
+    btn.addEventListener("click", function () { attivaAreaPrincipale(btn.getAttribute("data-area")); });
   });
 
   document.querySelectorAll(".sub-tab").forEach(function (btn) {
@@ -2428,91 +1175,17 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // --- DATE & CALCOLO +10 MESI ---
-  function parseData(str) {
-    if (!str) return null;
-    var s = str.trim();
-    var mIt = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{4})$/);
-    if (mIt) {
-      var g = parseInt(mIt[1], 10);
-      var m = parseInt(mIt[2], 10);
-      var a = parseInt(mIt[3], 10);
-      if (m >= 1 && m <= 12 && g >= 1 && g <= 31) return { g: g, m: m, a: a };
-    }
-    var mIso = s.match(/^(\d{4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/);
-    if (mIso) {
-      var a2 = parseInt(mIso[1], 10);
-      var m2 = parseInt(mIso[2], 10);
-      var g2 = parseInt(mIso[3], 10);
-      if (m2 >= 1 && m2 <= 12 && g2 >= 1 && g2 <= 31) return { g: g2, m: m2, a: a2 };
-    }
-    return null;
-  }
-
-  function formatData(obj) {
-    return String(obj.g).padStart(2, "0") + "/" + String(obj.m).padStart(2, "0") + "/" + obj.a;
-  }
-
-  function aggiungiMesiAccademici(dataObj, numMesi) {
-    var g = dataObj.g;
-    var m = dataObj.m;
-    var a = dataObj.a;
-    var aggiunti = 0;
-    while (aggiunti < numMesi) {
-      m += 1;
-      if (m > 12) {
-        m = 1;
-        a += 1;
-      }
-      if (m !== 7 && m !== 8) {
-        aggiunti += 1;
-      }
-    }
-    var maxGiorni = new Date(a, m, 0).getDate();
-    return { g: Math.min(g, maxGiorni), m: m, a: a };
-  }
-
-  function eseguiCalcolo10MesiDaFirma(mostraAlertErrore) {
-    var fb = document.getElementById("calcFeedback");
-    var parsed = parseData(document.getElementById("inpDataFirma").value);
-    if (!parsed) {
-      fb.style.color = "#b91c1c";
-      fb.textContent = "Inserisci una Data Firma Contratto valida nel formato GG/MM/AAAA.";
-      if (mostraAlertErrore) showMessage("Inserisci una Data Firma Contratto valida nel formato GG/MM/AAAA.");
-      return;
-    }
-    var scadObj = aggiungiMesiAccademici(parsed, 10);
-    var scadStr = formatData(scadObj);
-    document.getElementById("inpScadenza").value = scadStr;
-    if (associati[selectedAssocIdx]) {
-      associati[selectedAssocIdx].firma = formatData(parsed);
-      associati[selectedAssocIdx].scad = scadStr;
-    }
-    fb.style.color = "#15803d";
-    fb.textContent = "Calcolo eseguito: Data Firma " + formatData(parsed) + " + 10 mesi accademici (esclusi Lug-Ago) = " + scadStr;
-    renderAssociati();
-    programmaSyncAutomatico("aggiornamento_scadenza");
-  }
-
-  document.getElementById("btnCalcola10Mesi").addEventListener("click", function () {
-    eseguiCalcolo10MesiDaFirma(true);
-  });
-  document.getElementById("inpDataFirma").addEventListener("change", function () {
-    eseguiCalcolo10MesiDaFirma(false);
-  });
-
-  // --- MESE DI PROVA ---
-  function toggleMeseProva() {
-    var attivo = document.getElementById("chkMeseProva").checked;
-    var box = document.getElementById("trialFieldsBox");
-    if (attivo) box.classList.remove("disabled");
-    else box.classList.add("disabled");
-  }
-  document.getElementById("chkMeseProva").addEventListener("change", function () {
-    toggleMeseProva();
-    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].prova = this.checked;
-    programmaSyncAutomatico("aggiornamento_prova");
-  });
+  // Modali
+  var modal = document.getElementById("startupModal");
+  var cloudModal = document.getElementById("cloudModal");
+  document.getElementById("btnApriModal").addEventListener("click", function () { modal.classList.remove("hidden"); modal.style.display = "flex"; });
+  document.getElementById("btnChiudiModal").addEventListener("click", function () { modal.classList.add("hidden"); modal.style.display = "none"; });
+  document.getElementById("btnCloseX").addEventListener("click", function () { modal.classList.add("hidden"); modal.style.display = "none"; });
+  document.getElementById("btnApriCloudModal").addEventListener("click", function () { cloudModal.classList.remove("hidden"); cloudModal.style.display = "flex"; });
+  document.getElementById("btnChiudiCloudModal").addEventListener("click", function () { cloudModal.classList.add("hidden"); cloudModal.style.display = "none"; });
+  document.getElementById("btnCloseCloudX").addEventListener("click", function () { cloudModal.classList.add("hidden"); cloudModal.style.display = "none"; });
+  document.getElementById("btnSincronizzaOra").addEventListener("click", function () { inviaSincronizzazioneCloud("sync_manuale", false); });
+  document.getElementById("btnScaricaDalCloud").addEventListener("click", function () { caricaDatiDalCloud(false); });
 
   function prezzoPerTipoCorso(t) {
     if (t === "Strumentale") return 120.00;
@@ -2525,106 +1198,11 @@ document.addEventListener("DOMContentLoaded", function () {
   function dettaglioPerTipoCorso(t) {
     if (t === "Strumentale") return "Quota Associativa — 4 lezioni di strumento al mese";
     if (t === "Principale") return "Quota Associativa — 4 lezioni di strumento + 4 lezioni di solfeggio/teoria";
-    if (t === "Principale+secondo") return "Quota Associativa — Principale+secondo (4 solfeggio + 4 strum. princ. + 4 sec. strum.)";
-    if (t === "Strumentale+secondo") return "Quota Associativa — Strumentale+secondo (4 strum. princ. + 4 sec. strum.)";
+    if (t === "Principale+secondo") return "Quota Associativa — Principale+secondo";
+    if (t === "Strumentale+secondo") return "Quota Associativa — Strumentale+secondo";
     return "Quota Associativa — 2 lezioni di strumento al mese (Light bambini 3/5 anni)";
   }
 
-  document.getElementById("provaTipoCorso").addEventListener("change", function () {
-    document.getElementById("provaQuota").value = prezzoPerTipoCorso(this.value).toFixed(2);
-  });
-
-  function calcolaChiusuraMeseProva() {
-    var p = parseData(document.getElementById("provaPrimaLezione").value) || parseData(document.getElementById("provaDataFirma").value);
-    if (!p) return;
-    var m = p.m + 1;
-    var a = p.a;
-    if (m > 12) { m = 1; a += 1; }
-    var maxG = new Date(a, m, 0).getDate();
-    document.getElementById("provaChiusura").value = formatData({ g: Math.min(p.g, maxG), m: m, a: a });
-  }
-  document.getElementById("btnCalcolaProva").addEventListener("click", calcolaChiusuraMeseProva);
-  document.getElementById("provaPrimaLezione").addEventListener("change", calcolaChiusuraMeseProva);
-
-  document.getElementById("btnRicProva").addEventListener("click", function () {
-    if (!document.getElementById("chkMeseProva").checked) {
-      showMessage("Spunta prima 'Attiva Mese di Prova (esterno al contratto annuale)'.");
-      return;
-    }
-    var numIscr = document.getElementById("inpNumIscrizione").value;
-    var assoc = document.getElementById("inpAssociato").value;
-    var corsista = document.getElementById("inpCorsista").value;
-    var sede = document.getElementById("inpSede").value;
-    var imp = parseFloat(document.getElementById("provaQuota").value) || 0;
-    var tipoProva = document.getElementById("provaTipoCorso").value;
-    var numRic = progGen + "/P";
-
-    movimentiCassa.push({
-      data: "26/11/2026",
-      sede: sede,
-      desc: "Ric. Ass. Prova " + numRic + " - " + assoc + " (#" + numIscr + " Quota Associativa Mese di Prova)",
-      met: "Contanti",
-      ent: imp,
-      usc: 0
-    });
-    progGen++;
-    renderCassa();
-    programmaSyncAutomatico("ricevuta_prova");
-
-    generaEScaricaPdfRicevutaAssociativa({
-      numero: numRic,
-      data: "26/11/2026",
-      numIscr: numIscr,
-      sede: sede,
-      associato: assoc,
-      corsista: corsista,
-      metodo: "Contanti",
-      voce: "Quota Associativa — Mese di Prova (Esterno al contratto)",
-      dettaglio: dettaglioPerTipoCorso(tipoProva),
-      importo: imp,
-      note: "Quota associativa mese di prova dal " + document.getElementById("provaPrimaLezione").value + " al " + document.getElementById("provaChiusura").value,
-      sottocartella: "Ricevute",
-      fileName: "Ricevuta_Associativa_Prova_" + numIscr + "_" + assoc.replace(/\s+/g, "_") + ".pdf"
-    });
-    showMessage("Ricevuta Associativa Prova PDF emessa, inviata su FILE CREATI e registrata in Cassa.");
-  });
-
-  // --- WHATSAPP ---
-  function aggiornaRiferimentiWhatsApp() {
-    var numIscr = document.getElementById("inpNumIscrizione").value || "SMA-1";
-    var nome = document.getElementById("inpAssociato").value || "Associato";
-    var tel = document.getElementById("inpTelefono").value || "";
-    var badge = document.getElementById("waTargetBadge");
-    if (badge) {
-      badge.textContent = "Collegato a: Iscr. #" + numIscr + " — " + nome + (tel ? " (" + tel + ")" : "");
-    }
-    document.querySelectorAll(".lbl-wa-iscr").forEach(function (el) {
-      el.textContent = "Iscr. #" + numIscr;
-    });
-    var lblRic = document.getElementById("lblWaRicIscr");
-    if (lblRic) lblRic.textContent = "Iscr. #" + numIscr;
-  }
-
-  function apriChatWhatsApp(testoMessaggio) {
-    var numIscr = document.getElementById("inpNumIscrizione").value;
-    var rawTel = (document.getElementById("inpTelefono").value || "").replace(/\D/g, "");
-    if (!rawTel) {
-      showMessage("Inserisci prima un numero di cellulare valido per #" + numIscr + ".");
-      return;
-    }
-    if (rawTel.length === 10 && rawTel.startsWith("3")) {
-      rawTel = "39" + rawTel;
-    }
-    window.open("https://wa.me/" + rawTel + "?text=" + encodeURIComponent(testoMessaggio), "_blank");
-  }
-
-  document.getElementById("inpTelefono").addEventListener("input", function () {
-    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].tel = this.value;
-    aggiornaRiferimentiWhatsApp();
-    programmaSyncAutomatico("modifica_telefono");
-  });
-
-  // --- ANNI ACCADEMICI & CARTELLE ASSOCIATI ---
   function popolaSelectAnni() {
     var sel = document.getElementById("inpAnnoAccademico");
     var currentVal = sel.value;
@@ -2635,45 +1213,20 @@ document.addEventListener("DOMContentLoaded", function () {
       opt.textContent = aa;
       sel.appendChild(opt);
     });
-    if (currentVal && anniAccademici.indexOf(currentVal) !== -1) {
-      sel.value = currentVal;
-    }
+    if (currentVal && anniAccademici.indexOf(currentVal) !== -1) sel.value = currentVal;
   }
-
-  document.getElementById("btnNuovoAnnoAccademico").addEventListener("click", function () {
-    var ultimo = anniAccademici[anniAccademici.length - 1] || "A.A 2026-2027";
-    var parti = ultimo.replace("A.A", "").trim().split("-");
-    var inizio = (parseInt(parti[0], 10) || 2026) + 1;
-    var fine = inizio + 1;
-    var nuovoAA = "A.A " + inizio + "-" + fine;
-    anniAccademici.push(nuovoAA);
-    cartelleAperte[nuovoAA] = true;
-    popolaSelectAnni();
-    document.getElementById("inpAnnoAccademico").value = nuovoAA;
-    if (associati[selectedAssocIdx] && associati[selectedAssocIdx].statoIscr !== "Non attivo/Scaduto") {
-      associati[selectedAssocIdx].annoAcc = nuovoAA;
-    }
-    renderAssociati();
-    programmaSyncAutomatico("nuovo_anno_accademico");
-    showMessage("Creata nuova cartella: " + nuovoAA);
-  });
 
   function creaElementoAssociato(a, idx) {
     var div = document.createElement("div");
     div.className = "assoc-item" + (idx === selectedAssocIdx ? " active" : "");
-    var statoBadge = "";
-    if (a.statoIscr === "Neo Iscritto") statoBadge = "<span class='badge-neo'>NEO</span>";
-    else if (a.statoIscr === "Non attivo/Scaduto") statoBadge = "<span class='badge-scad'>SCADUTO</span>";
-
-    div.innerHTML =
-      "<span><span class='badge-iscr'>" + a.numIscr + "</span>" + a.nome + statoBadge + "</span>" +
-      "<span class='date'>" + a.scad + "</span>";
-
+    var statoBadge = a.statoIscr === "Neo Iscritto" ? "<span class='badge-neo'>NEO</span>" : (a.statoIscr === "Non attivo/Scaduto" ? "<span class='badge-scad'>SCADUTO</span>" : "");
+    div.innerHTML = "<span><span class='badge-iscr'>" + a.numIscr + "</span>" + a.nome + statoBadge + "</span><span class='date'>" + a.scad + "</span>";
     div.addEventListener("click", function (e) {
       e.stopPropagation();
       selectedAssocIdx = idx;
       caricaScheda(a);
       renderAssociati();
+      salvaStatoLocale();
     });
     return div;
   }
@@ -2682,1285 +1235,69 @@ document.addEventListener("DOMContentLoaded", function () {
     var q = (document.getElementById("searchAssoc").value || "").toLowerCase().trim();
     var container = document.getElementById("assocFoldersContainer");
     container.innerHTML = "";
-
     anniAccademici.forEach(function (aa) {
       var membriAA = associati
         .map(function (a, idx) { return { a: a, idx: idx }; })
         .filter(function (item) {
           var inCartella = item.a.statoIscr !== "Non attivo/Scaduto" && (item.a.annoAcc || "A.A 2026-2027") === aa;
-          var matchRicerca = !q || item.a.nome.toLowerCase().indexOf(q) !== -1 || item.a.numIscr.toLowerCase().indexOf(q) !== -1;
-          return inCartella && matchRicerca;
+          var match = !q || item.a.nome.toLowerCase().indexOf(q) !== -1 || item.a.numIscr.toLowerCase().indexOf(q) !== -1;
+          return inCartella && match;
         });
-
       var block = document.createElement("div");
       block.className = "folder-block";
       var isOpen = q ? true : !!cartelleAperte[aa];
-
       var header = document.createElement("div");
       header.className = "folder-header";
       header.innerHTML = "<span>" + (isOpen ? "📂" : "📁") + " " + aa + " (" + membriAA.length + ")</span><span>" + (isOpen ? "▾" : "▸") + "</span>";
-      header.addEventListener("click", function () {
-        cartelleAperte[aa] = !cartelleAperte[aa];
-        renderAssociati();
-      });
-
+      header.addEventListener("click", function () { cartelleAperte[aa] = !cartelleAperte[aa]; renderAssociati(); salvaStatoLocale(); });
       var body = document.createElement("div");
       body.className = "folder-body" + (isOpen ? "" : " collapsed");
-      if (membriAA.length === 0) {
-        body.innerHTML = "<div style='font-size:11.5px; color:var(--muted); padding:4px 6px;'>Nessun associato in questa cartella</div>";
-      } else {
-        membriAA.forEach(function (item) {
-          body.appendChild(creaElementoAssociato(item.a, item.idx));
-        });
-      }
-
+      if (membriAA.length === 0) body.innerHTML = "<div style='font-size:11.5px; color:var(--muted); padding:4px 6px;'>Nessun associato</div>";
+      else membriAA.forEach(function (item) { body.appendChild(creaElementoAssociato(item.a, item.idx)); });
       block.appendChild(header);
       block.appendChild(body);
       container.appendChild(block);
     });
-
-    var ritirati = associati
-      .map(function (a, idx) { return { a: a, idx: idx }; })
-      .filter(function (item) {
-        var isRitirato = item.a.statoIscr === "Non attivo/Scaduto";
-        var matchRicerca = !q || item.a.nome.toLowerCase().indexOf(q) !== -1 || item.a.numIscr.toLowerCase().indexOf(q) !== -1;
-        return isRitirato && matchRicerca;
-      });
-
-    var ritBlock = document.createElement("div");
-    ritBlock.className = "folder-block";
-    var ritOpen = q ? true : !!cartelleAperte["Ritirati/non iscritti"];
-
-    var ritHeader = document.createElement("div");
-    ritHeader.className = "folder-header ritirati";
-    ritHeader.innerHTML = "<span>" + (ritOpen ? "📂" : "📁") + " Ritirati/non iscritti (" + ritirati.length + ")</span><span>" + (ritOpen ? "▾" : "▸") + "</span>";
-    ritHeader.addEventListener("click", function () {
-      cartelleAperte["Ritirati/non iscritti"] = !cartelleAperte["Ritirati/non iscritti"];
-      renderAssociati();
-    });
-
-    var ritBody = document.createElement("div");
-    ritBody.className = "folder-body" + (ritOpen ? "" : " collapsed");
-    if (ritirati.length === 0) {
-      ritBody.innerHTML = "<div style='font-size:11.5px; color:var(--muted); padding:4px 6px;'>Nessun associato ritirato o non attivo</div>";
-    } else {
-      ritirati.forEach(function (item) {
-        ritBody.appendChild(creaElementoAssociato(item.a, item.idx));
-      });
-    }
-
-    ritBlock.appendChild(ritHeader);
-    ritBlock.appendChild(ritBody);
-    container.appendChild(ritBlock);
   }
 
-  document.getElementById("searchAssoc").addEventListener("keyup", renderAssociati);
-
   function caricaScheda(a) {
+    if (!a) return;
     document.getElementById("inpNumIscrizione").value = a.numIscr;
     document.getElementById("inpStatoIscrizione").value = a.statoIscr || "Attivo";
     popolaSelectAnni();
     document.getElementById("inpAnnoAccademico").value = a.annoAcc || "A.A 2026-2027";
     document.getElementById("inpAssociato").value = a.nome;
-    document.getElementById("inpCorsista").value = a.corsista;
+    document.getElementById("inpCorsista").value = a.corsista || "";
     document.getElementById("inpSede").value = a.sede || "Misilmeri";
     document.getElementById("inpTelefono").value = a.tel || "";
     document.getElementById("inpTelefono2").value = a.tel2 || "";
     document.getElementById("inpEmail").value = a.email || "";
     document.getElementById("inpCF").value = a.cf || "";
-    document.getElementById("inpTipoCorso").value = a.tipo;
+    document.getElementById("inpTipoCorso").value = a.tipo || "Strumentale";
     document.getElementById("inpQuotaMensile").value = Number(a.quota || 0).toFixed(2);
     document.getElementById("chkTrinity").checked = !!a.trinity;
-    document.getElementById("inpDataFirma").value = a.firma;
-    document.getElementById("inpPrimaLezione").value = a.prima;
-    document.getElementById("inpScadenza").value = a.scad;
-    document.getElementById("chkMeseProva").checked = !!a.prova;
-    toggleMeseProva();
-
-    document.getElementById("prevNumIscr").textContent = a.numIscr;
-    document.getElementById("prevAssoc").textContent = a.nome;
-    document.getElementById("prevCors").textContent = a.corsista;
-    document.getElementById("nomeFileContratto").textContent = a.contrattoNome || ("Contratto_" + a.numIscr + "_" + a.nome.replace(/\s+/g, "_") + ".pdf");
-    aggiornaLinkDriveVisivo("linkDriveContratto", a.contrattoDriveUrl || "");
-
-    aggiornaRiferimentiWhatsApp();
-    aggiornaDescrizioneCorso();
+    document.getElementById("inpDataFirma").value = a.firma || "";
+    document.getElementById("inpPrimaLezione").value = a.prima || "";
+    document.getElementById("inpScadenza").value = a.scad || "";
+    document.getElementById("descCorsoPill").textContent = dettaglioPerTipoCorso(a.tipo || "Strumentale");
     aggiornaTabellaQuote();
   }
 
-  // Sincronizzazione modifiche scheda sull'associato selezionato
+  document.getElementById("searchAssoc").addEventListener("keyup", renderAssociati);
   document.getElementById("inpAssociato").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].nome = this.value;
-    document.getElementById("prevAssoc").textContent = this.value;
-    aggiornaRiferimentiWhatsApp();
     renderAssociati();
     programmaSyncAutomatico("modifica_associato");
   });
   document.getElementById("inpCorsista").addEventListener("input", function () {
     if (associati[selectedAssocIdx]) associati[selectedAssocIdx].corsista = this.value;
-    document.getElementById("prevCors").textContent = this.value;
     programmaSyncAutomatico("modifica_corsista");
   });
-  document.getElementById("inpTelefono2").addEventListener("input", function () {
-    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].tel2 = this.value;
-    programmaSyncAutomatico("modifica_tel2");
-  });
-  document.getElementById("inpEmail").addEventListener("input", function () {
-    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].email = this.value;
-    programmaSyncAutomatico("modifica_email");
-  });
-  document.getElementById("inpCF").addEventListener("input", function () {
-    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].cf = this.value;
-    programmaSyncAutomatico("modifica_cf");
-  });
-  document.getElementById("inpPrimaLezione").addEventListener("input", function () {
-    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].prima = this.value;
-    programmaSyncAutomatico("modifica_prima_lezione");
-  });
-  document.getElementById("inpScadenza").addEventListener("input", function () {
-    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].scad = this.value;
-    renderAssociati();
-    programmaSyncAutomatico("modifica_scadenza");
-  });
-  document.getElementById("inpStatoIscrizione").addEventListener("change", function () {
-    if (associati[selectedAssocIdx]) {
-      associati[selectedAssocIdx].statoIscr = this.value;
-      if (this.value === "Non attivo/Scaduto") cartelleAperte["Ritirati/non iscritti"] = true;
-      else cartelleAperte[associati[selectedAssocIdx].annoAcc || "A.A 2026-2027"] = true;
-    }
-    renderAssociati();
-    programmaSyncAutomatico("modifica_stato_iscrizione");
-  });
-  document.getElementById("inpAnnoAccademico").addEventListener("change", function () {
-    if (associati[selectedAssocIdx]) {
-      associati[selectedAssocIdx].annoAcc = this.value;
-      cartelleAperte[this.value] = true;
-    }
-    renderAssociati();
-    programmaSyncAutomatico("modifica_anno_accademico");
-  });
-  document.getElementById("inpSede").addEventListener("change", function () {
-    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].sede = this.value;
-    programmaSyncAutomatico("modifica_sede");
+  document.getElementById("inpTelefono").addEventListener("input", function () {
+    if (associati[selectedAssocIdx]) associati[selectedAssocIdx].tel = this.value;
+    programmaSyncAutomatico("modifica_telefono");
   });
 
-  function cambiaTipoCorso() {
-    var tipo = document.getElementById("inpTipoCorso").value;
-    var nuovaQuota = prezzoPerTipoCorso(tipo);
-    document.getElementById("inpQuotaMensile").value = nuovaQuota.toFixed(2);
-    if (associati[selectedAssocIdx]) {
-      associati[selectedAssocIdx].tipo = tipo;
-      associati[selectedAssocIdx].quota = nuovaQuota;
-    }
-    aggiornaDescrizioneCorso();
-    aggiornaTabellaQuote();
-    programmaSyncAutomatico("modifica_tipo_corso");
-  }
-
-  document.getElementById("inpTipoCorso").addEventListener("change", cambiaTipoCorso);
-  document.getElementById("inpQuotaMensile").addEventListener("input", function () {
-    if (associati[selectedAssocIdx]) {
-      associati[selectedAssocIdx].quota = parseFloat(this.value) || 0;
-    }
-    aggiornaTabellaQuote();
-    programmaSyncAutomatico("modifica_quota");
-  });
-  document.getElementById("chkTrinity").addEventListener("change", function () {
-    if (associati[selectedAssocIdx]) {
-      associati[selectedAssocIdx].trinity = this.checked;
-    }
-    aggiornaTabellaQuote();
-    programmaSyncAutomatico("modifica_trinity");
-  });
-
-  function aggiornaDescrizioneCorso() {
-    var tipo = document.getElementById("inpTipoCorso").value;
-    var desc = dettaglioPerTipoCorso(tipo);
-    document.getElementById("descCorsoPill").textContent = desc;
-    document.getElementById("prevDett").textContent = desc;
-  }
-
-  function aggiornaTabellaQuote() {
-    var baseMensile = parseFloat(document.getElementById("inpQuotaMensile").value) || 0;
-    var trinityExtra = document.getElementById("chkTrinity").checked ? 25.00 : 0;
-    var totaleMeseContrattuale = baseMensile + trinityExtra;
-
-    var mesi = ["Settembre", "Ottobre", "Novembre", "Dicembre", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno"];
-    var righe = [{ n: 1, voce: "Quota Annuale Associativa", rif: "Alla sottoscrizione", imp: 50.00, stato: "Saldata" }];
-    mesi.forEach(function (m, i) {
-      righe.push({
-        n: i + 2,
-        voce: "Mese " + (i + 1) + " (" + m + ") - 2026/2027",
-        rif: "Entro il giorno 5",
-        imp: totaleMeseContrattuale,
-        stato: i < 2 ? "Saldata" : "Da pagare"
-      });
-    });
-    righe.push({ n: 12, voce: "Concerto di Capodanno", rif: "Entro il 23 Novembre", imp: 40.00, stato: "Da pagare" });
-    righe.push({ n: 13, voce: "Concerto di Fine Anno Accademico", rif: "Entro il 18 Maggio", imp: 60.00, stato: "Da pagare" });
-
-    var tbody = document.getElementById("tbodyQuote");
-    tbody.innerHTML = "";
-    var totBilancio = 0, totSaldato = 0, totResiduo = 0;
-
-    righe.forEach(function (r) {
-      totBilancio += r.imp;
-      if (r.stato === "Saldata") totSaldato += r.imp;
-      else totResiduo += r.imp;
-      var badge = r.stato === "Saldata" ? "badge-ok" : "badge-warn";
-      tbody.innerHTML += "<tr><td class='center'>" + r.n + "</td><td>" + r.voce + "</td><td>" + r.rif + "</td><td class='right'><strong>€ " + fmtEuro(r.imp) + "</strong></td><td class='center'><span class='badge " + badge + "'>" + r.stato + "</span></td></tr>";
-    });
-
-    document.getElementById("bilancioTotale").textContent = "€ " + fmtEuro(totBilancio);
-    document.getElementById("bilancioSaldato").textContent = "€ " + fmtEuro(totSaldato);
-    document.getElementById("bilancioResiduo").textContent = "€ " + fmtEuro(totResiduo);
-  }
-
-  // Allega / Scansiona / Scarica Contratto Firmato -> Drive FILE CREATI
-  document.getElementById("btnAllegaContratto").addEventListener("click", function () {
-    document.getElementById("inpFileContratto").click();
-  });
-
-  document.getElementById("inpFileContratto").addEventListener("change", async function () {
-    var file = this.files && this.files[0];
-    if (!file) return;
-    var assoc = associati[selectedAssocIdx];
-    var objectUrl = URL.createObjectURL(file);
-    if (assoc) {
-      assoc.contrattoNome = file.name;
-      assoc.contrattoUrl = objectUrl;
-    }
-    document.getElementById("nomeFileContratto").textContent = file.name;
-    document.getElementById("driveDestContratto").textContent = "Drive: FILE CREATI / Contratti Originali";
-
-    try {
-      showMessage("Caricamento contratto su Google Drive (FILE CREATI)...");
-      var salvato = await caricaFileSuDriveFileCreati(file, file.name, "Contratti Originali");
-      if (assoc && salvato.url) {
-        assoc.contrattoDriveUrl = salvato.url;
-        aggiornaLinkDriveVisivo("linkDriveContratto", salvato.url);
-      }
-      programmaSyncAutomatico("allega_contratto");
-      showMessage("Salvato in Google Drive / FILE CREATI / Contratti Originali: " + salvato.name);
-    } catch (err) {
-      showMessage("Allegato locale pronto. Errore Drive: " + err.message);
-    }
-    this.value = "";
-  });
-
-  document.getElementById("btnScanContratto").addEventListener("click", function () {
-    document.getElementById("inpFileScanContratto").click();
-  });
-
-  document.getElementById("inpFileScanContratto").addEventListener("change", async function () {
-    var file = this.files && this.files[0];
-    if (!file) return;
-    var assoc = associati[selectedAssocIdx];
-    var nomeDefault = assoc
-      ? "Scansione_Contratto_" + assoc.numIscr + "_" + assoc.nome.replace(/\s+/g, "_") + "_" + file.name
-      : "Scansione_Contratto_" + file.name;
-    var objectUrl = URL.createObjectURL(file);
-    if (assoc) {
-      assoc.contrattoNome = nomeDefault;
-      assoc.contrattoUrl = objectUrl;
-    }
-    document.getElementById("nomeFileContratto").textContent = nomeDefault;
-    document.getElementById("driveDestContratto").textContent = "Drive: FILE CREATI / Contratti Originali";
-
-    try {
-      showMessage("Invio scansione contratto a Google Drive (FILE CREATI)...");
-      var salvato = await caricaFileSuDriveFileCreati(file, nomeDefault, "Contratti Originali");
-      if (assoc && salvato.url) {
-        assoc.contrattoDriveUrl = salvato.url;
-        aggiornaLinkDriveVisivo("linkDriveContratto", salvato.url);
-      }
-      programmaSyncAutomatico("scansione_contratto");
-      showMessage("Scansione salvata in Google Drive / FILE CREATI: " + salvato.name);
-    } catch (err) {
-      showMessage("Scansione acquisita in locale. Errore Drive: " + err.message);
-    }
-    this.value = "";
-  });
-
-  document.getElementById("btnScaricaContratto").addEventListener("click", function () {
-    var assoc = associati[selectedAssocIdx];
-    var nomeFile = (assoc && assoc.contrattoNome) || document.getElementById("nomeFileContratto").textContent || "Contratto_Firmato.pdf";
-    if (assoc && assoc.contrattoUrl) {
-      var a = document.createElement("a");
-      a.href = assoc.contrattoUrl;
-      a.download = nomeFile;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showMessage("Download avviato: " + nomeFile);
-    } else if (assoc && assoc.contrattoDriveUrl) {
-      window.open(assoc.contrattoDriveUrl, "_blank");
-    } else {
-      showMessage("Allega o scansiona un file per scaricarlo o inviarlo in FILE CREATI.");
-    }
-  });
-
-  document.getElementById("btnCreaComunicazioneDocx").addEventListener("click", generaEScaricaDocxComunicazioneInsoluto);
-
-  document.getElementById("btnCaricaLogoOriginale").addEventListener("click", function () {
-    document.getElementById("inpFileLogoOriginale").click();
-  });
-
-  document.getElementById("inpFileLogoOriginale").addEventListener("change", async function () {
-    var file = this.files && this.files[0];
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = async function (ev) {
-      var lower = file.name.toLowerCase();
-      var ext = (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) ? "jpeg" : "png";
-      logoOriginaleData = {
-        arrayBuffer: ev.target.result,
-        ext: ext,
-        nome: file.name
-      };
-      var lbl = document.getElementById("nomeLogoOriginale");
-      if (lbl) {
-        lbl.textContent = file.name + " (incorporato tal quale nel .docx)";
-        lbl.style.color = "#15803d";
-      }
-      try {
-        await caricaFileSuDriveFileCreati(file, file.name, "Loghi");
-        showMessage("Logo caricato in FILE CREATI e incorporato senza modifiche: " + file.name);
-      } catch (err) {
-        showMessage("Logo caricato per .docx. Errore Drive: " + err.message);
-      }
-    };
-    reader.readAsArrayBuffer(file);
-    this.value = "";
-  });
-
-  // --- MESSAGGI WHATSAPP ---
-  document.querySelectorAll("[data-copy]").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var ta = document.getElementById(btn.getAttribute("data-copy"));
-      copiaTesto(ta.value, btn.getAttribute("data-toast"));
-    });
-  });
-
-  document.querySelectorAll(".btn-open-wa").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var ta = document.getElementById(btn.getAttribute("data-msg"));
-      apriChatWhatsApp(ta.value);
-    });
-  });
-
-  // --- NUOVI CONTATTI ---
-  function renderNuoviContatti() {
-    var tbody = document.getElementById("tbodyNuoviContatti");
-    tbody.innerHTML = "";
-    document.getElementById("countNuoviContatti").textContent = nuoviContatti.length;
-
-    if (nuoviContatti.length === 0) {
-      tbody.innerHTML = "<tr><td colspan='7' class='center' style='color:var(--muted); padding:14px;'>Nessun contatto in attesa di iscrizione.</td></tr>";
-      return;
-    }
-
-    nuoviContatti.forEach(function (c, idx) {
-      var tr = document.createElement("tr");
-      tr.innerHTML =
-        "<td class='center'>" + (idx + 1) + "</td>" +
-        "<td><strong>" + c.nome + " " + c.cognome + "</strong></td>" +
-        "<td>" + c.cell + "</td>" +
-        "<td>" + c.sede + "</td>" +
-        "<td>" + c.corso + "</td>" +
-        "<td><input type='text' value='" + (c.dataProva || "") + "' placeholder='GG/MM/AAAA' data-idx='" + idx + "' class='inp-data-prova-nc' /></td>" +
-        "<td class='center'><button class='btn btn-green btn-iscrivi-nc' type='button' data-idx='" + idx + "'>Iscritta → Passa ad Associati</button></td>";
-      tbody.appendChild(tr);
-    });
-
-    document.querySelectorAll(".inp-data-prova-nc").forEach(function (inp) {
-      inp.addEventListener("change", function () {
-        nuoviContatti[parseInt(this.getAttribute("data-idx"), 10)].dataProva = this.value;
-        programmaSyncAutomatico("modifica_data_prova_contatto");
-      });
-    });
-
-    document.querySelectorAll(".btn-iscrivi-nc").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var i = parseInt(this.getAttribute("data-idx"), 10);
-        var contatto = nuoviContatti[i];
-        var nextNum = "SMA-" + (associati.length + 1);
-        var oggi = "26/11/2026";
-        var scadStr = formatData(aggiungiMesiAccademici(parseData(oggi), 10));
-        var quotaBase = prezzoPerTipoCorso(contatto.corso);
-
-        var nuovoAssoc = {
-          id: Date.now(),
-          numIscr: nextNum,
-          statoIscr: "Neo Iscritto",
-          annoAcc: anniAccademici[anniAccademici.length - 1] || "A.A 2026-2027",
-          nome: contatto.nome + " " + contatto.cognome,
-          corsista: contatto.nome + " " + contatto.cognome,
-          luogoNascita: "",
-          dataNascita: "",
-          indirizzo: "",
-          sede: contatto.sede,
-          tel: contatto.cell,
-          tel2: "",
-          email: "",
-          cf: "",
-          scad: scadStr,
-          tipo: contatto.corso,
-          quota: quotaBase,
-          trinity: false,
-          firma: oggi,
-          prima: oggi,
-          prova: false,
-          contrattoNome: "Contratto_" + nextNum + "_" + (contatto.nome + "_" + contatto.cognome).replace(/\s+/g, "_") + ".pdf",
-          contrattoUrl: "",
-          contrattoDriveUrl: ""
-        };
-
-        associati.push(nuovoAssoc);
-        nuoviContatti.splice(i, 1);
-        selectedAssocIdx = associati.length - 1;
-
-        renderNuoviContatti();
-        renderAssociati();
-        caricaScheda(nuovoAssoc);
-        attivaAreaPrincipale("associati");
-        programmaSyncAutomatico("iscrizione_nuovo_contatto");
-        showMessage("Iscritto come Neo Iscritto (" + nextNum + ") nell'Area Associati.");
-      });
-    });
-  }
-
-  document.getElementById("btnAddNuovoContatto").addEventListener("click", function () {
-    var nome = document.getElementById("ncNome").value.trim();
-    var cognome = document.getElementById("ncCognome").value.trim();
-    var cell = document.getElementById("ncCell").value.trim();
-    if (!nome || !cognome || !cell) {
-      showMessage("Inserisci Nome, Cognome e Cellulare del contatto.");
-      return;
-    }
-    nuoviContatti.push({
-      id: Date.now(),
-      nome: nome,
-      cognome: cognome,
-      cell: cell,
-      sede: document.getElementById("ncSede").value,
-      corso: document.getElementById("ncCorso").value,
-      dataProva: document.getElementById("ncDataProva").value.trim()
-    });
-    document.getElementById("ncNome").value = "";
-    document.getElementById("ncCognome").value = "";
-    document.getElementById("ncCell").value = "";
-    document.getElementById("ncDataProva").value = "";
-    renderNuoviContatti();
-    programmaSyncAutomatico("nuovo_contatto");
-  });
-
-  // --- RICEVUTA ASSOCIATIVA ---
-  document.getElementById("ricMetodo").addEventListener("change", function () {
-    var met = this.value;
-    document.getElementById("boxProva").style.display = (met === "Contanti") ? "none" : "block";
-    document.getElementById("prevMetodo").textContent = met;
-  });
-
-  document.getElementById("ricVoce").addEventListener("input", function () {
-    document.getElementById("prevVoce").textContent = this.value;
-  });
-
-  document.getElementById("ricImporto").addEventListener("input", function () {
-    document.getElementById("prevImp").textContent = "€ " + fmtEuro(parseFloat(this.value) || 0);
-  });
-
-  document.getElementById("btnAllegaProva").addEventListener("click", function () {
-    document.getElementById("inpFileProvaPagamento").click();
-  });
-
-  document.getElementById("inpFileProvaPagamento").addEventListener("change", async function () {
-    var file = this.files && this.files[0];
-    if (!file) return;
-    provaCaricata = true;
-    provaFileObj = file;
-    var st = document.getElementById("statoProva");
-    st.style.color = "#15803d";
-    st.textContent = file.name + " allegato";
-    try {
-      await caricaFileSuDriveFileCreati(file, file.name, "Prove Pagamento");
-      showMessage("Prova di pagamento salvata su Drive (FILE CREATI): " + file.name);
-    } catch (err) {
-      showMessage("Prova allegata. Errore Drive: " + err.message);
-    }
-    this.value = "";
-  });
-
-  document.getElementById("btnEmettiRic").addEventListener("click", function () {
-    var met = document.getElementById("ricMetodo").value;
-    if (met !== "Contanti" && !provaCaricata) {
-      showMessage("Per P2P (Postepay) o Bonifico Bancario carica prima la ricevuta in PDF o JPG.");
-      return;
-    }
-    var imp = parseFloat(document.getElementById("ricImporto").value) || 0;
-    var numIscr = document.getElementById("inpNumIscrizione").value;
-    var assoc = document.getElementById("inpAssociato").value;
-    var corsista = document.getElementById("inpCorsista").value;
-    var sede = document.getElementById("inpSede").value;
-    var voce = document.getElementById("ricVoce").value;
-    var note = document.getElementById("ricNote").value;
-    var numRic = progGen + "/2";
-
-    document.getElementById("prevVoce").textContent = voce;
-    document.getElementById("prevImp").textContent = "€ " + fmtEuro(imp);
-    document.getElementById("prevRicNum").textContent = numRic;
-
-    movimentiCassa.push({
-      data: "26/11/2026",
-      sede: sede,
-      desc: "Ric. Ass. " + numRic + " - " + assoc + " (#" + numIscr + " " + voce + ")",
-      met: met,
-      ent: imp,
-      usc: 0
-    });
-
-    generaEScaricaPdfRicevutaAssociativa({
-      numero: numRic,
-      data: "26/11/2026",
-      numIscr: numIscr,
-      sede: sede,
-      associato: assoc,
-      corsista: corsista,
-      metodo: met,
-      voce: voce,
-      dettaglio: document.getElementById("prevDett").textContent,
-      importo: imp,
-      note: note,
-      sottocartella: "Ricevute",
-      fileName: "Ricevuta_Associativa_" + numRic.replace("/", "-") + "_" + assoc.replace(/\s+/g, "_") + ".pdf"
-    });
-
-    progGen++;
-    document.getElementById("ricCodice").value = progGen + "/3 del 26/11/2026";
-    provaCaricata = false;
-    provaFileObj = null;
-    renderCassa();
-    programmaSyncAutomatico("emissione_ricevuta");
-    showMessage("Ricevuta Associativa PDF emessa, inviata su FILE CREATI e registrata in Cassa.");
-  });
-
-  document.getElementById("btnInviaRicWa").addEventListener("click", function () {
-    var numIscr = document.getElementById("inpNumIscrizione").value;
-    var assoc = document.getElementById("inpAssociato").value;
-    var numRic = document.getElementById("prevRicNum").textContent;
-    var voce = document.getElementById("ricVoce").value;
-    var imp = fmtEuro(parseFloat(document.getElementById("ricImporto").value) || 0);
-    var msg = "Gentile " + assoc + " (Iscr. #" + numIscr + "), le inviamo la Ricevuta Associativa N. " + numRic + " relativa a: " + voce + " (Quota associativa versata: € " + imp + "). Cordiali Saluti, La Segreteria Sicily Music Academy ®";
-    apriChatWhatsApp(msg);
-  });
-
-  // --- DOCENTI ---
-  document.querySelectorAll("#docSubTabs .sub-tab").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      var targetId = "doc-sub-" + btn.getAttribute("data-doc-sub");
-      document.querySelectorAll("#area-docenti .sub-panel").forEach(function (p) { p.classList.remove("active"); });
-      document.querySelectorAll("#docSubTabs .sub-tab").forEach(function (b) { b.classList.remove("active"); });
-      var panel = document.getElementById(targetId);
-      if (panel) panel.classList.add("active");
-      btn.classList.add("active");
-    });
-  });
-
-  function aggiornaRiepilogoTendinaDocente() {
-    var d = docenti[selectedDocIdx] || docenti[0];
-    if (!d) return;
-    var lblNome = document.getElementById("lblDocTendinaNome");
-    var lblDett = document.getElementById("lblDocTendinaDettagli");
-    if (lblNome) lblNome.textContent = d.nome;
-    if (lblDett) lblDett.textContent = d.materia + (d.tel ? " • Tel: " + d.tel : "");
-  }
-
-  function renderRegistroOreDocente(aggiornaOreCampo) {
-    var d = docenti[selectedDocIdx];
-    var tbody = document.getElementById("tbodyRegistroOreDoc");
-    var lblBadge = document.getElementById("lblTotOreRegistro");
-    if (!d || !tbody) return;
-    if (!Array.isArray(d.registroGiorni)) d.registroGiorni = [];
-
-    tbody.innerHTML = "";
-    var totOre = 0;
-
-    if (d.registroGiorni.length === 0) {
-      tbody.innerHTML = "<tr><td colspan='5' class='center' style='color:var(--muted); padding:10px;'>Nessun giorno registrato nel registro digitale per questo docente.</td></tr>";
-    } else {
-      d.registroGiorni.forEach(function (item, idx) {
-        var oreNum = parseFloat(item.ore) || 0;
-        totOre += oreNum;
-        var tr = document.createElement("tr");
-        tr.innerHTML =
-          "<td class='center'>" + (idx + 1) + "</td>" +
-          "<td><strong>" + (item.giorno || "-") + "</strong></td>" +
-          "<td class='right'><strong>" + oreNum.toFixed(1).replace(".", ",") + " h</strong></td>" +
-          "<td>" + (item.note || "-") + "</td>" +
-          "<td class='center'><button class='btn btn-red btn-sm btn-del-giorno-doc' type='button' data-idx='" + idx + "'>Togli</button></td>";
-        tbody.appendChild(tr);
-      });
-    }
-
-    if (lblBadge) {
-      lblBadge.textContent = "Totale Giorni: " + d.registroGiorni.length + " • Ore Registrate: " + totOre.toFixed(1).replace(".", ",") + " h";
-    }
-
-    if (aggiornaOreCampo && d.registroGiorni.length > 0) {
-      document.getElementById("docOre").value = totOre;
-      var rimborsoSpese = parseFloat(document.getElementById("docTariffa").value) || 0;
-      document.getElementById("docTotale").value = (totOre * rimborsoSpese).toFixed(2);
-      calcolaDocente();
-    }
-
-    document.querySelectorAll(".btn-del-giorno-doc").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var i = parseInt(this.getAttribute("data-idx"), 10);
-        d.registroGiorni.splice(i, 1);
-        renderRegistroOreDocente(true);
-        programmaSyncAutomatico("rimozione_ora_docente");
-        showMessage("Giorno rimosso dal registro del docente.");
-      });
-    });
-  }
-
-  document.getElementById("btnAddGiornoOre").addEventListener("click", function () {
-    var d = docenti[selectedDocIdx];
-    if (!d) return;
-    if (!Array.isArray(d.registroGiorni)) d.registroGiorni = [];
-
-    var giorno = (document.getElementById("regGiornoData").value || "").trim();
-    var ore = parseFloat(document.getElementById("regGiornoOre").value);
-    var note = (document.getElementById("regGiornoNote").value || "").trim();
-
-    if (!giorno || isNaN(ore) || ore <= 0) {
-      showMessage("Inserisci un giorno valido e un numero di ore maggiore di zero.");
-      return;
-    }
-
-    d.registroGiorni.push({ giorno: giorno, ore: ore, note: note });
-    document.getElementById("regGiornoNote").value = "";
-    renderRegistroOreDocente(true);
-    programmaSyncAutomatico("registrazione_ora_docente");
-    showMessage("Registrato giorno " + giorno + " (" + ore + " h) per " + d.nome + ".");
-  });
-
-  function caricaSchedaDocente(idx) {
-    if (idx < 0 || idx >= docenti.length) return;
-    selectedDocIdx = idx;
-    var d = docenti[idx];
-    document.getElementById("docNome").value = d.nome || "";
-    document.getElementById("docMateria").value = d.materia || "";
-    document.getElementById("docSede").value = d.sede || "Misilmeri";
-    document.getElementById("docTel").value = d.tel || "";
-    document.getElementById("docEmail").value = d.email || "";
-    document.getElementById("docCF").value = d.cf || "";
-    document.getElementById("docIban").value = d.iban || "";
-    document.getElementById("docIndirizzo").value = d.indirizzo || "";
-    document.getElementById("docTariffa").value = d.tariffa || 25;
-    document.getElementById("docNomeDocumento").textContent = d.docNome || "Nessun documento caricato";
-    aggiornaLinkDriveVisivo("linkDriveDocIdentita", d.docDriveUrl || "");
-
-    var selTendina = document.getElementById("selDocenteTendina");
-    if (selTendina) selTendina.value = String(idx);
-
-    document.querySelectorAll("#docentiList .assoc-item").forEach(function (el, i) {
-      el.classList.toggle("active", i === idx);
-    });
-
-    renderRegistroOreDocente(true);
-    calcolaDocente();
-    aggiornaRiepilogoTendinaDocente();
-  }
-
-  function popolaTendinaDocenti() {
-    var sel = document.getElementById("selDocenteTendina");
-    if (!sel) return;
-    sel.innerHTML = "";
-    docenti.forEach(function (d, idx) {
-      var opt = document.createElement("option");
-      opt.value = String(idx);
-      opt.textContent = d.nome + " (" + d.materia + ")";
-      sel.appendChild(opt);
-    });
-    sel.value = String(selectedDocIdx);
-  }
-
-  function renderDocenti() {
-    var box = document.getElementById("docentiList");
-    box.innerHTML = "";
-    docenti.forEach(function (d, idx) {
-      var div = document.createElement("div");
-      div.className = "assoc-item" + (idx === selectedDocIdx ? " active" : "");
-      div.innerHTML = "<span>" + d.nome + "</span><span class='date'>€ " + d.tariffa + "/h</span>";
-      div.addEventListener("click", function () {
-        caricaSchedaDocente(idx);
-      });
-      box.appendChild(div);
-    });
-    popolaTendinaDocenti();
-    aggiornaRiepilogoTendinaDocente();
-  }
-
-  document.getElementById("selDocenteTendina").addEventListener("change", function () {
-    caricaSchedaDocente(parseInt(this.value, 10) || 0);
-  });
-
-  ["docNome", "docMateria", "docSede", "docTel", "docEmail", "docCF", "docIban", "docIndirizzo", "docTariffa"].forEach(function (fieldId) {
-    var el = document.getElementById(fieldId);
-    if (!el) return;
-    el.addEventListener(el.tagName === "SELECT" ? "change" : "input", function () {
-      var d = docenti[selectedDocIdx];
-      if (!d) return;
-      if (fieldId === "docNome") d.nome = this.value;
-      else if (fieldId === "docMateria") d.materia = this.value;
-      else if (fieldId === "docSede") d.sede = this.value;
-      else if (fieldId === "docTel") d.tel = this.value;
-      else if (fieldId === "docEmail") d.email = this.value;
-      else if (fieldId === "docCF") d.cf = this.value;
-      else if (fieldId === "docIban") d.iban = this.value;
-      else if (fieldId === "docIndirizzo") d.indirizzo = this.value;
-      else if (fieldId === "docTariffa") {
-        d.tariffa = parseFloat(this.value) || 0;
-        calcolaDocente();
-      }
-      renderDocenti();
-      programmaSyncAutomatico("modifica_docente");
-    });
-  });
-
-  document.getElementById("btnNuovoDocente").addEventListener("click", function () {
-    var nuovo = {
-      id: Date.now(),
-      nome: "Nuovo Docente",
-      materia: "Strumento / Materia",
-      sede: "Misilmeri",
-      tel: "",
-      email: "",
-      cf: "",
-      iban: "",
-      indirizzo: "",
-      tariffa: 25,
-      docNome: "Nessun documento caricato",
-      docUrl: "",
-      docDriveUrl: "",
-      registroGiorni: []
-    };
-    docenti.push(nuovo);
-    selectedDocIdx = docenti.length - 1;
-    renderDocenti();
-    caricaSchedaDocente(selectedDocIdx);
-    document.getElementById("docNome").focus();
-    programmaSyncAutomatico("nuovo_docente");
-    showMessage("Creata nuova scheda docente.");
-  });
-
-  document.getElementById("btnCaricaDocIdentita").addEventListener("click", function () {
-    document.getElementById("inpFileDocIdentita").click();
-  });
-
-  document.getElementById("inpFileDocIdentita").addEventListener("change", async function () {
-    var file = this.files && this.files[0];
-    if (!file) return;
-    var d = docenti[selectedDocIdx];
-    var url = URL.createObjectURL(file);
-    if (d) {
-      d.docNome = file.name;
-      d.docUrl = url;
-    }
-    document.getElementById("docNomeDocumento").textContent = file.name;
-    try {
-      showMessage("Invio documento docente su Drive (FILE CREATI)...");
-      var salvato = await caricaFileSuDriveFileCreati(file, file.name, "Documenti Docenti");
-      if (d && salvato.url) {
-        d.docDriveUrl = salvato.url;
-        aggiornaLinkDriveVisivo("linkDriveDocIdentita", salvato.url);
-      }
-      programmaSyncAutomatico("carica_doc_identita");
-      showMessage("Documento salvato in Drive (FILE CREATI / Documenti Docenti): " + salvato.name);
-    } catch (err) {
-      showMessage("Documento caricato in locale. Errore Drive: " + err.message);
-    }
-    this.value = "";
-  });
-
-  document.getElementById("btnScaricaDocIdentita").addEventListener("click", function () {
-    var d = docenti[selectedDocIdx];
-    var nomeFile = (d && d.docNome) || document.getElementById("docNomeDocumento").textContent || "Documento_Docente.pdf";
-    if (d && d.docUrl) {
-      var a = document.createElement("a");
-      a.href = d.docUrl;
-      a.download = nomeFile;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showMessage("Download documento avviato: " + nomeFile);
-    } else if (d && d.docDriveUrl) {
-      window.open(d.docDriveUrl, "_blank");
-    } else {
-      showMessage("Nessun file reale allegato per '" + nomeFile + "' (carica prima un documento con 'Carica Copia Documento').");
-    }
-  });
-
-  function calcolaDocente() {
-    var ore = parseFloat(document.getElementById("docOre").value) || 0;
-    var rimborsoSpese = parseFloat(document.getElementById("docTariffa").value) || 0;
-    var compensoPO = parseFloat(document.getElementById("docTotale").value) || 0;
-    if (ore > 0 && compensoPO === 0 && rimborsoSpese > 0) {
-      compensoPO = ore * rimborsoSpese;
-      document.getElementById("docTotale").value = compensoPO.toFixed(2);
-    }
-    var sommaTotale = rimborsoSpese + compensoPO;
-    var totCompInput = document.getElementById("docTotaleComplessivo");
-    if (totCompInput) {
-      totCompInput.value = "€ " + fmtEuro(sommaTotale);
-    }
-    return {
-      ore: ore,
-      rimborsoSpese: rimborsoSpese,
-      compensoPO: compensoPO,
-      sommaTotale: sommaTotale
-    };
-  }
-  document.getElementById("docOre").addEventListener("input", function () {
-    var ore = parseFloat(this.value) || 0;
-    var rimborsoSpese = parseFloat(document.getElementById("docTariffa").value) || 0;
-    document.getElementById("docTotale").value = (ore * rimborsoSpese).toFixed(2);
-    calcolaDocente();
-  });
-  document.getElementById("docTariffa").addEventListener("input", calcolaDocente);
-  document.getElementById("docTotale").addEventListener("input", calcolaDocente);
-
-  async function generaEScaricaPdfRiepilogoMensileDocente() {
-    try {
-      var jspdfLib = window.jspdf;
-      if (!jspdfLib || !jspdfLib.jsPDF) {
-        showMessage("Libreria PDF non disponibile offline.");
-        return;
-      }
-      var d = docenti[selectedDocIdx] || {};
-      var nomeDoc = document.getElementById("docNome").value || d.nome || "Docente";
-      var materia = document.getElementById("docMateria").value || d.materia || "";
-      var calc = calcolaDocente();
-      var metRimborso = document.getElementById("docMetodoRimborso").value || "Contanti";
-      var metCompenso = document.getElementById("docMetodoCompenso").value || "Bonifico Bancario";
-
-      var doc = new jspdfLib.jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
-      doc.setFillColor(15, 23, 42);
-      doc.rect(14, 14, 182, 22, "F");
-      doc.setTextColor(255, 255, 255);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(13);
-      doc.text("SICILY MUSIC ACADEMY APS — RIEPILOGO MENSILE DOCENTE", 20, 24);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(9);
-      doc.text("C.F. 97332490826 | Misilmeri / Monreale", 20, 31);
-
-      doc.setTextColor(15, 23, 42);
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(11);
-      doc.text("Docente: " + nomeDoc, 14, 46);
-      doc.setFont("helvetica", "normal");
-      doc.setFontSize(10);
-      doc.text("Strumento / Materia: " + materia, 14, 53);
-      doc.text("Data: 26/11/2026 | Ore svolte: " + calc.ore + " h", 14, 60);
-
-      var yReg = 67;
-      if (Array.isArray(d.registroGiorni) && d.registroGiorni.length > 0) {
-        doc.setFont("helvetica", "bold");
-        doc.text("Dettaglio Giorni Registrati:", 14, yReg);
-        yReg += 6;
-        doc.setFont("helvetica", "normal");
-        doc.setFontSize(9.5);
-        d.registroGiorni.forEach(function (gItem) {
-          if (yReg < 145) {
-            doc.text("• " + (gItem.giorno || "-") + ": " + (parseFloat(gItem.ore) || 0) + " h" + (gItem.note ? " — " + gItem.note : ""), 16, yReg);
-            yReg += 5.5;
-          }
-        });
-        yReg += 3;
-      }
-
-      doc.setFontSize(10);
-      doc.text("Rimborso spese: EUR " + fmtEuro(calc.rimborsoSpese) + " (" + metRimborso + ")", 14, yReg);
-      doc.text("Compenso P.O.: EUR " + fmtEuro(calc.compensoPO) + " (" + metCompenso + ")", 14, yReg + 7);
-
-      doc.setFont("helvetica", "bold");
-      doc.setFontSize(11.5);
-      doc.text("Totale (Rimborso spese + Compenso P.O.): EUR " + fmtEuro(calc.sommaTotale), 14, yReg + 18);
-
-      var fileName = "Riepilogo_Mensile_" + nomeDoc.replace(/\s+/g, "_") + "_2026-11.pdf";
-      doc.save(fileName);
-
-      try {
-        var pdfBlob = doc.output("blob");
-        await caricaFileSuDriveFileCreati(pdfBlob, fileName, "Riepiloghi Docenti");
-      } catch (driveErr) {
-        console.warn("Invio PDF riepilogo docente su Drive:", driveErr);
-      }
-
-      var lbl = document.getElementById("docRiepilogoStato");
-      if (lbl) {
-        lbl.style.color = "#15803d";
-        lbl.textContent = "Generato e inviato in FILE CREATI: " + fileName + " (Totale: € " + fmtEuro(calc.sommaTotale) + ")";
-      }
-      showMessage("Riepilogo mensile (PDF) generato e inviato in FILE CREATI per " + nomeDoc + ".");
-    } catch (err) {
-      showMessage("Errore nella generazione del Riepilogo mensile (PDF): " + err.message);
-    }
-  }
-
-  document.getElementById("btnCreaRiepilogoMensilePdf").addEventListener("click", generaEScaricaPdfRiepilogoMensileDocente);
-
-  document.getElementById("btnLiquidaDoc").addEventListener("click", function () {
-    var calc = calcolaDocente();
-    var metRimborso = document.getElementById("docMetodoRimborso").value || "Contanti";
-    var metCompenso = document.getElementById("docMetodoCompenso").value || "Bonifico Bancario";
-    var docNome = document.getElementById("docNome").value;
-    var ore = calc.ore;
-    var sedeRaw = document.getElementById("docSede").value;
-    var sede = sedeRaw.indexOf("Monreale") === 0 ? "Monreale" : "Misilmeri";
-
-    if (calc.rimborsoSpese > 0) {
-      movimentiCassa.push({
-        data: "26/11/2026",
-        sede: sede,
-        desc: "Rimborso spese " + docNome + " (" + ore + "h)",
-        met: metRimborso,
-        ent: 0,
-        usc: calc.rimborsoSpese
-      });
-    }
-    if (calc.compensoPO > 0) {
-      movimentiCassa.push({
-        data: "26/11/2026",
-        sede: sede,
-        desc: "Compenso P.O. " + docNome + " (" + ore + "h)",
-        met: metCompenso,
-        ent: 0,
-        usc: calc.compensoPO
-      });
-    }
-
-    var tbodyDoc = document.getElementById("tbodyStoricoDoc");
-    tbodyDoc.innerHTML +=
-      "<tr><td>26/11/2026</td><td>Rimborso spese (" + ore + "h) + Compenso P.O. Novembre 2026</td><td>" +
-      metRimborso + " / " + metCompenso +
-      "</td><td class='right'><strong>€ " + fmtEuro(calc.sommaTotale) + "</strong></td></tr>";
-    renderCassa();
-    programmaSyncAutomatico("liquidazione_docente");
-    showMessage("Uscite registrate in Cassa per un totale di € " + fmtEuro(calc.sommaTotale) + ".");
-  });
-
-  // --- CASSA EDITABILE + EXPORT EXCEL ---
-  function getMovimentiFiltrati() {
-    var fSede = document.getElementById("filtroCassaSede").value;
-    var fMet = document.getElementById("filtroCassaMet").value;
-    var fTxt = (document.getElementById("filtroCassaTesto").value || "").toLowerCase();
-
-    return movimentiCassa
-      .map(function (m, realIdx) { return { m: m, realIdx: realIdx }; })
-      .filter(function (item) {
-        var m = item.m;
-        if (fSede !== "Tutte" && m.sede !== fSede) return false;
-        if (fMet === "Contanti" && m.met !== "Contanti") return false;
-        if (fMet === "Tracciabili" && m.met === "Contanti") return false;
-        if (fTxt && m.desc.toLowerCase().indexOf(fTxt) === -1) return false;
-        return true;
-      });
-  }
-
-  document.getElementById("btnAddCassa").addEventListener("click", function () {
-    var desc = document.getElementById("cassaDesc").value.trim();
-    if (!desc) {
-      showMessage("Inserisci una descrizione per il movimento di Cassa.");
-      return;
-    }
-    var ent = parseFloat(document.getElementById("cassaEnt").value) || 0;
-    var usc = parseFloat(document.getElementById("cassaUsc").value) || 0;
-    movimentiCassa.push({
-      data: document.getElementById("cassaData").value,
-      sede: document.getElementById("cassaSede").value,
-      desc: desc,
-      met: document.getElementById("cassaMet").value,
-      ent: ent,
-      usc: usc
-    });
-    document.getElementById("cassaDesc").value = "";
-    document.getElementById("cassaEnt").value = "";
-    document.getElementById("cassaUsc").value = "";
-    renderCassa();
-    programmaSyncAutomatico("nuovo_movimento_cassa");
-  });
-
-  function renderCassa() {
-    var tbody = document.getElementById("tbodyCassa");
-    tbody.innerHTML = "";
-    var totE = 0, totU = 0, saldo = 0, saldoContanti = 0, saldoTracc = 0;
-
-    var lista = getMovimentiFiltrati();
-    lista.forEach(function (item, idx) {
-      var m = item.m;
-      var realIdx = item.realIdx;
-      totE += m.ent;
-      totU += m.usc;
-      var diff = m.ent - m.usc;
-      saldo += diff;
-      if (m.met === "Contanti") saldoContanti += diff;
-      else saldoTracc += diff;
-
-      var tr = document.createElement("tr");
-      if (editingCassaIdx === realIdx) {
-        tr.innerHTML =
-          "<td class='center'>" + (idx + 1) + "</td>" +
-          "<td><input type='text' id='editData_" + realIdx + "' value='" + m.data + "' /></td>" +
-          "<td><select id='editSede_" + realIdx + "'><option" + (m.sede === "Misilmeri" ? " selected" : "") + ">Misilmeri</option><option" + (m.sede === "Monreale" ? " selected" : "") + ">Monreale</option></select></td>" +
-          "<td><input type='text' id='editDesc_" + realIdx + "' value='" + m.desc.replace(/'/g, "&#39;") + "' /></td>" +
-          "<td><select id='editMet_" + realIdx + "'><option" + (m.met === "Contanti" ? " selected" : "") + ">Contanti</option><option" + (m.met === "P2P (Postepay)" ? " selected" : "") + ">P2P (Postepay)</option><option" + (m.met === "Bonifico Bancario" ? " selected" : "") + ">Bonifico Bancario</option></select></td>" +
-          "<td><input type='number' step='0.01' id='editEnt_" + realIdx + "' value='" + m.ent.toFixed(2) + "' /></td>" +
-          "<td><input type='number' step='0.01' id='editUsc_" + realIdx + "' value='" + m.usc.toFixed(2) + "' /></td>" +
-          "<td class='right'><strong>€ " + fmtEuro(saldo) + "</strong></td>" +
-          "<td class='center'><button class='btn btn-green btn-sm btn-save-cassa' type='button' data-idx='" + realIdx + "'>Salva</button> <button class='btn btn-outline btn-sm btn-cancel-cassa' type='button'>Annulla</button></td>";
-      } else {
-        tr.innerHTML =
-          "<td class='center'>" + (idx + 1) + "</td>" +
-          "<td>" + m.data + "</td>" +
-          "<td>" + m.sede + "</td>" +
-          "<td>" + m.desc + "</td>" +
-          "<td>" + m.met + "</td>" +
-          "<td class='right' style='color:var(--green);'>" + (m.ent > 0 ? "€ " + fmtEuro(m.ent) : "-") + "</td>" +
-          "<td class='right' style='color:var(--red);'>" + (m.usc > 0 ? "€ " + fmtEuro(m.usc) : "-") + "</td>" +
-          "<td class='right'><strong>€ " + fmtEuro(saldo) + "</strong></td>" +
-          "<td class='center'><button class='btn btn-outline btn-sm btn-edit-cassa' type='button' data-idx='" + realIdx + "'>Modifica</button> <button class='btn btn-red btn-sm btn-del-cassa' type='button' data-idx='" + realIdx + "'>Elimina</button></td>";
-      }
-      tbody.appendChild(tr);
-    });
-
-    document.querySelectorAll(".btn-edit-cassa").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        editingCassaIdx = parseInt(this.getAttribute("data-idx"), 10);
-        renderCassa();
-      });
-    });
-
-    document.querySelectorAll(".btn-cancel-cassa").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        editingCassaIdx = null;
-        renderCassa();
-      });
-    });
-
-    document.querySelectorAll(".btn-save-cassa").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var i = parseInt(this.getAttribute("data-idx"), 10);
-        var nuovaDesc = document.getElementById("editDesc_" + i).value.trim();
-        if (!nuovaDesc) {
-          showMessage("La descrizione non può essere vuota.");
-          return;
-        }
-        movimentiCassa[i] = {
-          data: document.getElementById("editData_" + i).value.trim() || movimentiCassa[i].data,
-          sede: document.getElementById("editSede_" + i).value,
-          desc: nuovaDesc,
-          met: document.getElementById("editMet_" + i).value,
-          ent: parseFloat(document.getElementById("editEnt_" + i).value) || 0,
-          usc: parseFloat(document.getElementById("editUsc_" + i).value) || 0
-        };
-        editingCassaIdx = null;
-        renderCassa();
-        programmaSyncAutomatico("modifica_movimento_cassa");
-        showMessage("Voce di Cassa aggiornata.");
-      });
-    });
-
-    document.querySelectorAll(".btn-del-cassa").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var i = parseInt(this.getAttribute("data-idx"), 10);
-        movimentiCassa.splice(i, 1);
-        if (editingCassaIdx === i) editingCassaIdx = null;
-        renderCassa();
-        programmaSyncAutomatico("elimina_movimento_cassa");
-        showMessage("Voce eliminata dalla Cassa.");
-      });
-    });
-
-    document.getElementById("totEntrateLbl").textContent = "Totale Entrate: € " + fmtEuro(totE);
-    document.getElementById("totUsciteLbl").textContent = "Totale Uscite: € " + fmtEuro(totU);
-    document.getElementById("saldoContantiLbl").textContent = "Saldo Contanti: € " + fmtEuro(saldoContanti);
-    document.getElementById("saldoTraccLbl").textContent = "Saldo Tracciabili: € " + fmtEuro(saldoTracc);
-    document.getElementById("saldoNettoLbl").textContent = "Saldo Netto: € " + fmtEuro(saldo);
-  }
-
-  document.getElementById("btnExportExcelCassa").addEventListener("click", async function () {
-    try {
-      if (!window.XLSX) {
-        showMessage("Libreria Excel non disponibile offline.");
-        return;
-      }
-      var rows = [
-        ["SICILY MUSIC ACADEMY APS — REGISTRO CASSA (ENTRATE / USCITE)"],
-        ["Riga", "Data", "Sede", "Descrizione Movimento", "Metodo", "Entrate (+€)", "Uscite (-€)", "Saldo (€)"]
-      ];
-      var totE = 0, totU = 0, saldo = 0;
-      getMovimentiFiltrati().forEach(function (item, idx) {
-        var m = item.m;
-        totE += m.ent;
-        totU += m.usc;
-        saldo += (m.ent - m.usc);
-        rows.push([idx + 1, m.data, m.sede, m.desc, m.met, Number(m.ent.toFixed(2)), Number(m.usc.toFixed(2)), Number(saldo.toFixed(2))]);
-      });
-      rows.push(["", "", "", "TOTALI", "", Number(totE.toFixed(2)), Number(totU.toFixed(2)), Number(saldo.toFixed(2))]);
-
-      var ws = window.XLSX.utils.aoa_to_sheet(rows);
-      var wb = window.XLSX.utils.book_new();
-      window.XLSX.utils.book_append_sheet(wb, ws, "Cassa SMA APS");
-      var fileName = "Cassa_Sicily_Music_Academy_26-11-2026.xlsx";
-      window.XLSX.writeFile(wb, fileName);
-
-      try {
-        var wbOut = window.XLSX.write(wb, { bookType: "xlsx", type: "array" });
-        var xlsxBlob = new Blob([wbOut], {
-          type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        });
-        await caricaFileSuDriveFileCreati(xlsxBlob, fileName, "Esportazioni Cassa");
-        showMessage("File Excel (.xlsx) scaricato e inviato in FILE CREATI.");
-      } catch (driveErr) {
-        showMessage("File Excel (.xlsx) scaricato. Errore Drive: " + driveErr.message);
-      }
-    } catch (err) {
-      showMessage("Errore durante l'esportazione Excel: " + err.message);
-    }
-  });
-
-  document.getElementById("filtroCassaSede").addEventListener("change", renderCassa);
-  document.getElementById("filtroCassaMet").addEventListener("change", renderCassa);
-  document.getElementById("filtroCassaTesto").addEventListener("keyup", renderCassa);
-  document.getElementById("btnResetFiltriCassa").addEventListener("click", function () {
-    document.getElementById("filtroCassaSede").value = "Tutte";
-    document.getElementById("filtroCassaMet").value = "Tutti";
-    document.getElementById("filtroCassaTesto").value = "";
-    renderCassa();
-  });
-
-  // --- DOCUMENTI E MODULISTICA ---
-  function rilevaFormatoFile(nomeFile) {
-    var lower = (nomeFile || "").toLowerCase();
-    if (lower.endsWith(".pdf")) return "PDF";
-    if (lower.endsWith(".docx")) return "DOCX";
-    if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return "JPG";
-    return "FILE";
-  }
-
-  function formattaDimensione(bytes) {
-    if (!bytes) return "—";
-    if (bytes < 1024 * 1024) return Math.max(1, Math.round(bytes / 1024)) + " KB";
-    return (bytes / (1024 * 1024)).toFixed(2) + " MB";
-  }
-
-  function renderDocumentiModulistica() {
-    var q = (document.getElementById("searchDocMod").value || "").toLowerCase().trim();
-    var tbody = document.getElementById("tbodyDocMod");
-    tbody.innerHTML = "";
-
-    var filtrati = documentiModulistica
-      .map(function (d, idx) { return { d: d, idx: idx }; })
-      .filter(function (item) {
-        return !q || item.d.titolo.toLowerCase().indexOf(q) !== -1 || item.d.nomeFile.toLowerCase().indexOf(q) !== -1;
-      });
-
-    if (filtrati.length === 0) {
-      tbody.innerHTML = "<tr><td colspan='6' class='center' style='color:var(--muted); padding:14px;'>Nessun documento presente nella cartella.</td></tr>";
-      return;
-    }
-
-    filtrati.forEach(function (item, i) {
-      var d = item.d;
-      var driveBtn = d.driveUrl
-        ? " <a class='btn btn-green btn-sm' href='" + d.driveUrl + "' target='_blank' rel='noopener'>Drive</a>"
-        : "";
-      var tr = document.createElement("tr");
-      tr.innerHTML =
-        "<td class='center'>" + (i + 1) + "</td>" +
-        "<td><strong>" + d.titolo + "</strong><br/><span style='font-size:11px; color:var(--muted);'>" + d.nomeFile + "</span></td>" +
-        "<td><span class='badge badge-info'>" + d.formato + "</span></td>" +
-        "<td>" + d.data + "</td>" +
-        "<td>" + d.size + "</td>" +
-        "<td class='center'><button class='btn btn-blue btn-sm btn-dl-doc' type='button' data-idx='" + item.idx + "'>Scarica</button>" + driveBtn + " <button class='btn btn-red btn-sm btn-rm-doc' type='button' data-idx='" + item.idx + "'>Elimina</button></td>";
-      tbody.appendChild(tr);
-    });
-
-    document.querySelectorAll(".btn-dl-doc").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var docItem = documentiModulistica[parseInt(this.getAttribute("data-idx"), 10)];
-        if (!docItem) return;
-        if (docItem.url) {
-          var a = document.createElement("a");
-          a.href = docItem.url;
-          a.download = docItem.nomeFile;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          showMessage("Download avviato: " + docItem.nomeFile);
-        } else if (docItem.driveUrl) {
-          window.open(docItem.driveUrl, "_blank");
-        } else {
-          showMessage("File modello '" + docItem.nomeFile + "' pronto in cartella (carica un file reale dal computer per scaricarlo).");
-        }
-      });
-    });
-
-    document.querySelectorAll(".btn-rm-doc").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        documentiModulistica.splice(parseInt(this.getAttribute("data-idx"), 10), 1);
-        renderDocumentiModulistica();
-        programmaSyncAutomatico("elimina_documento");
-        showMessage("Documento rimosso dalla cartella.");
-      });
-    });
-  }
-
-  document.getElementById("btnAddDocMod").addEventListener("click", async function () {
-    var inpFile = document.getElementById("docModFile");
-    var file = inpFile.files && inpFile.files[0];
-    if (!file) {
-      showMessage("Seleziona un file PDF, DOCX o JPG da caricare.");
-      return;
-    }
-    var formato = rilevaFormatoFile(file.name);
-    if (formato === "FILE") {
-      showMessage("Formato non supportato: carica solo file .pdf, .docx o .jpg.");
-      return;
-    }
-    var titolo = document.getElementById("docModTitolo").value.trim() || file.name;
-    var driveUrl = "";
-
-    try {
-      showMessage("Invio documento su Google Drive (FILE CREATI)...");
-      var salvato = await caricaFileSuDriveFileCreati(file, file.name, "Documenti e Modulistica");
-      driveUrl = salvato.url || "";
-    } catch (err) {
-      showMessage("Salvato in locale. Errore Drive: " + err.message);
-    }
-
-    documentiModulistica.push({
-      titolo: titolo,
-      nomeFile: file.name,
-      formato: formato,
-      data: "26/11/2026",
-      size: formattaDimensione(file.size),
-      url: URL.createObjectURL(file),
-      driveUrl: driveUrl
-    });
-    document.getElementById("docModTitolo").value = "";
-    inpFile.value = "";
-    renderDocumentiModulistica();
-    programmaSyncAutomatico("nuovo_documento");
-    showMessage("File caricato in Documenti e modulistica e inviato in FILE CREATI: " + file.name);
-  });
-
-  document.getElementById("searchDocMod").addEventListener("keyup", renderDocumentiModulistica);
-
-  // Nuovo associato vuoto
   document.getElementById("btnNuovoAssoc").addEventListener("click", function () {
     var nextNum = "SMA-" + (associati.length + 1);
     var annoSel = document.getElementById("inpAnnoAccademico").value || "A.A 2026-2027";
@@ -3971,9 +1308,6 @@ document.addEventListener("DOMContentLoaded", function () {
       annoAcc: annoSel,
       nome: "Nuovo Associato",
       corsista: "",
-      luogoNascita: "",
-      dataNascita: "",
-      indirizzo: "",
       sede: "Misilmeri",
       tel: "",
       tel2: "",
@@ -3983,12 +1317,9 @@ document.addEventListener("DOMContentLoaded", function () {
       tipo: "Strumentale",
       quota: 120.00,
       trinity: false,
-      firma: "26/11/2026",
-      prima: "26/11/2026",
-      prova: false,
-      contrattoNome: "Contratto_" + nextNum + "_Nuovo_Associato.pdf",
-      contrattoUrl: "",
-      contrattoDriveUrl: ""
+      firma: "27/11/2026",
+      prima: "27/11/2026",
+      prova: false
     };
     associati.push(nuovo);
     selectedAssocIdx = associati.length - 1;
@@ -3996,19 +1327,158 @@ document.addEventListener("DOMContentLoaded", function () {
     caricaScheda(nuovo);
     document.getElementById("inpAssociato").focus();
     programmaSyncAutomatico("nuovo_associato");
-    showMessage("Creata nuova scheda con Numero Iscrizione " + nextNum);
+    showMessage("Creato nuovo associato " + nextNum + " e salvato.");
   });
 
-  // Inizializzazione
+  function aggiornaTabellaQuote() {
+    var baseMensile = parseFloat(document.getElementById("inpQuotaMensile").value) || 0;
+    var trinityExtra = document.getElementById("chkTrinity").checked ? 25.00 : 0;
+    var totaleMese = baseMensile + trinityExtra;
+    var mesi = ["Settembre", "Ottobre", "Novembre", "Dicembre", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno"];
+    var righe = [{ n: 1, voce: "Quota Annuale Associativa", rif: "Alla sottoscrizione", imp: 50.00, stato: "Saldata" }];
+    mesi.forEach(function (m, i) {
+      righe.push({ n: i + 2, voce: "Mese " + (i + 1) + " (" + m + ")", rif: "Entro il giorno 5", imp: totaleMese, stato: i < 2 ? "Saldata" : "Da pagare" });
+    });
+    var tbody = document.getElementById("tbodyQuote");
+    tbody.innerHTML = "";
+    var totB = 0, totS = 0, totR = 0;
+    righe.forEach(function (r) {
+      totB += r.imp;
+      if (r.stato === "Saldata") totS += r.imp; else totR += r.imp;
+      tbody.innerHTML += "<tr><td class='center'>" + r.n + "</td><td>" + r.voce + "</td><td>" + r.rif + "</td><td class='right'><strong>€ " + fmtEuro(r.imp) + "</strong></td><td class='center'><span class='badge " + (r.stato === "Saldata" ? "badge-ok" : "badge-warn") + "'>" + r.stato + "</span></td></tr>";
+    });
+    document.getElementById("bilancioTotale").textContent = "€ " + fmtEuro(totB);
+    document.getElementById("bilancioSaldato").textContent = "€ " + fmtEuro(totS);
+    document.getElementById("bilancioResiduo").textContent = "€ " + fmtEuro(totR);
+  }
+
+  function renderNuoviContatti() {
+    var tbody = document.getElementById("tbodyNuoviContatti");
+    tbody.innerHTML = "";
+    document.getElementById("countNuoviContatti").textContent = nuoviContatti.length;
+    nuoviContatti.forEach(function (c, idx) {
+      var tr = document.createElement("tr");
+      tr.innerHTML = "<td>" + (idx + 1) + "</td><td><strong>" + c.nome + " " + c.cognome + "</strong></td><td>" + c.cell + "</td><td>" + c.sede + "</td><td>" + c.corso + "</td><td>" + (c.dataProva || "-") + "</td><td class='center'><button class='btn btn-green btn-sm btn-iscrivi-nc' type='button' data-idx='" + idx + "'>Passa ad Associati</button></td>";
+      tbody.appendChild(tr);
+    });
+    document.querySelectorAll(".btn-iscrivi-nc").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var i = parseInt(this.getAttribute("data-idx"), 10);
+        var c = nuoviContatti[i];
+        var nextNum = "SMA-" + (associati.length + 1);
+        associati.push({
+          id: Date.now(), numIscr: nextNum, statoIscr: "Neo Iscritto", annoAcc: anniAccademici[anniAccademici.length - 1],
+          nome: c.nome + " " + c.cognome, corsista: c.nome + " " + c.cognome, sede: c.sede, tel: c.cell,
+          scad: "14/10/2027", tipo: c.corso, quota: prezzoPerTipoCorso(c.corso), trinity: false, firma: "27/11/2026", prima: "27/11/2026"
+        });
+        nuoviContatti.splice(i, 1);
+        selectedAssocIdx = associati.length - 1;
+        renderNuoviContatti();
+        renderAssociati();
+        caricaScheda(associati[selectedAssocIdx]);
+        attivaAreaPrincipale("associati");
+        programmaSyncAutomatico("iscrizione_contatto");
+      });
+    });
+  }
+
+  document.getElementById("btnAddNuovoContatto").addEventListener("click", function () {
+    var nome = document.getElementById("ncNome").value.trim();
+    var cognome = document.getElementById("ncCognome").value.trim();
+    var cell = document.getElementById("ncCell").value.trim();
+    if (!nome || !cognome || !cell) return;
+    nuoviContatti.push({ id: Date.now(), nome: nome, cognome: cognome, cell: cell, sede: document.getElementById("ncSede").value, corso: document.getElementById("ncCorso").value, dataProva: document.getElementById("ncDataProva").value.trim() });
+    document.getElementById("ncNome").value = "";
+    document.getElementById("ncCognome").value = "";
+    document.getElementById("ncCell").value = "";
+    document.getElementById("ncDataProva").value = "";
+    renderNuoviContatti();
+    programmaSyncAutomatico("nuovo_contatto");
+  });
+
+  function renderDocenti() {
+    var box = document.getElementById("docentiList");
+    box.innerHTML = "";
+    docenti.forEach(function (d, idx) {
+      var div = document.createElement("div");
+      div.className = "assoc-item" + (idx === selectedDocIdx ? " active" : "");
+      div.innerHTML = "<span>" + d.nome + "</span><span class='date'>€ " + d.tariffa + "/h</span>";
+      div.addEventListener("click", function () { caricaSchedaDocente(idx); });
+      box.appendChild(div);
+    });
+  }
+
+  function caricaSchedaDocente(idx) {
+    selectedDocIdx = idx;
+    var d = docenti[idx];
+    if (!d) return;
+    document.getElementById("docNome").value = d.nome;
+    document.getElementById("docMateria").value = d.materia;
+    document.getElementById("docTariffa").value = d.tariffa;
+    renderDocenti();
+  }
+
+  document.getElementById("btnNuovoDocente").addEventListener("click", function () {
+    docenti.push({ id: Date.now(), nome: "Nuovo Docente", materia: "Materia", tariffa: 25 });
+    caricaSchedaDocente(docenti.length - 1);
+    programmaSyncAutomatico("nuovo_docente");
+  });
+
+  function renderCassa() {
+    var tbody = document.getElementById("tbodyCassa");
+    tbody.innerHTML = "";
+    var totE = 0, totU = 0, saldo = 0, saldoC = 0, saldoT = 0;
+    movimentiCassa.forEach(function (m, idx) {
+      totE += m.ent; totU += m.usc;
+      var diff = m.ent - m.usc;
+      saldo += diff;
+      if (m.met === "Contanti") saldoC += diff; else saldoT += diff;
+      tbody.innerHTML += "<tr><td>" + (idx + 1) + "</td><td>" + m.data + "</td><td>" + m.sede + "</td><td>" + m.desc + "</td><td>" + m.met + "</td><td class='right'>" + (m.ent > 0 ? "€ " + fmtEuro(m.ent) : "-") + "</td><td class='right'>" + (m.usc > 0 ? "€ " + fmtEuro(m.usc) : "-") + "</td><td class='right'><strong>€ " + fmtEuro(saldo) + "</strong></td><td class='center'><button class='btn btn-red btn-sm' onclick='void(0)'>—</button></td></tr>";
+    });
+    document.getElementById("totEntrateLbl").textContent = "Totale Entrate: € " + fmtEuro(totE);
+    document.getElementById("totUsciteLbl").textContent = "Totale Uscite: € " + fmtEuro(totU);
+    document.getElementById("saldoContantiLbl").textContent = "Saldo Contanti: € " + fmtEuro(saldoC);
+    document.getElementById("saldoTraccLbl").textContent = "Saldo Tracciabili: € " + fmtEuro(saldoT);
+    document.getElementById("saldoNettoLbl").textContent = "Saldo Netto: € " + fmtEuro(saldo);
+  }
+
+  document.getElementById("btnAddCassa").addEventListener("click", function () {
+    var desc = document.getElementById("cassaDesc").value.trim();
+    if (!desc) return;
+    movimentiCassa.push({
+      data: document.getElementById("cassaData").value,
+      sede: document.getElementById("cassaSede").value,
+      desc: desc,
+      met: document.getElementById("cassaMet").value,
+      ent: parseFloat(document.getElementById("cassaEnt").value) || 0,
+      usc: parseFloat(document.getElementById("cassaUsc").value) || 0
+    });
+    document.getElementById("cassaDesc").value = "";
+    document.getElementById("cassaEnt").value = "";
+    document.getElementById("cassaUsc").value = "";
+    renderCassa();
+    programmaSyncAutomatico("nuovo_movimento_cassa");
+  });
+
+  function renderDocumentiModulistica() {
+    var tbody = document.getElementById("tbodyDocMod");
+    tbody.innerHTML = "";
+    documentiModulistica.forEach(function (d, i) {
+      tbody.innerHTML += "<tr><td>" + (i + 1) + "</td><td><strong>" + d.titolo + "</strong></td><td>" + d.formato + "</td><td>" + d.data + "</td><td>" + d.size + "</td><td class='center'>—</td></tr>";
+    });
+  }
+
+  // Avvio: carica prima la copia locale, renderizza subito e poi allinea con il cloud
+  caricaStatoLocale();
   popolaSelectAnni();
   renderAssociati();
-  caricaScheda(associati[0]);
+  caricaScheda(associati[selectedAssocIdx] || associati[0]);
   renderNuoviContatti();
   renderDocenti();
-  caricaSchedaDocente(0);
+  caricaSchedaDocente(selectedDocIdx || 0);
   renderCassa();
   renderDocumentiModulistica();
-  attivaAreaPrincipale("docenti");
+  attivaAreaPrincipale("associati");
   caricaDatiDalCloud(true);
 });
 </script>
