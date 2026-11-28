@@ -672,6 +672,31 @@
           </div>
           <textarea class="wa-text" id="msg-ev" rows="3" readonly>Gentile Associato, con grande piacere La informiamo che sono aperte le adesioni organizzative per il prossimo evento musicale dell'Accademia. La invitiamo a rivolgersi alla segreteria per confermare la partecipazione del corsista. Cordiali Saluti, La segreteria Sicily Music Academy ®.</textarea>
         </div>
+
+        <div class="wa-card">
+          <div class="wa-card-header">
+            <strong>7. COORDINATE BANCARIE E POSTEPAY PER VERSAMENTO QUOTE</strong>
+            <div class="inline-row">
+              <span class="copy-toast" id="toast-coord">Copiato!</span>
+              <button class="btn btn-navy btn-sm" type="button" data-copy="msg-coord" data-toast="toast-coord">Copia Messaggio</button>
+              <button class="btn btn-wa btn-sm btn-open-wa" type="button" data-msg="msg-coord">Apri WhatsApp (<span class="lbl-wa-iscr">Iscr. #SMA-0012627</span>)</button>
+            </div>
+          </div>
+          <textarea class="wa-text" id="msg-coord" rows="8" readonly>Gentile Associato, ecco gli estremi per effettuare il versamento delle quote associative a favore di Sicily Music Academy APS:
+
+BONIFICO BANCARIO
+• Banca: Monte dei Paschi di Siena
+• Intestato a: Sicily Music Academy APS
+• IBAN: IT20C0103004604000004330514
+• Causale: Quota Associativa [Nome Corsista] - [Mese di riferimento]
+
+RICARICA POSTEPAY (P2P)
+• Numero Carta: 4023 6013 6487 2879
+• Intestatario: Davide Cutrona
+
+Una volta effettuato il pagamento, La invitiamo a inviare la ricevuta su questo numero WhatsApp oppure all'email direzione.sicilymusicacademy@gmail.com.
+Cordiali Saluti, La Segreteria Sicily Music Academy ®.</textarea>
+        </div>
       </div>
     </div>
   </div>
@@ -1102,42 +1127,43 @@ document.addEventListener("DOMContentLoaded", function () {
     try { await caricaFileSuDriveFileCreati(doc.output("blob"), dati.fileName, dati.sottocartella || "Ricevute"); } catch (e) {}
   }
 
-  // COMUNICAZIONE DI INSOLUTO (.DOCX) ARTICOLATA
+  // COMUNICAZIONE DI INSOLUTO (.DOCX) — FORMAT UFFICIALE SICILY MUSIC ACADEMY APS
   async function generaEScaricaDocxComunicazioneInsoluto() {
     if (!window.JSZip) { showMessage("Libreria DOCX non disponibile."); return; }
     var a = associati[selectedAssocIdx] || {};
     var numIscr = document.getElementById("inpNumIscrizione").value || "SMA-0012627";
-    var sede = document.getElementById("inpSede").value || "Misilmeri";
-    var associato = document.getElementById("inpAssociato").value || "Associato";
-    var corsista = document.getElementById("inpCorsista").value || associato;
-    var cf = document.getElementById("inpCF").value || "-";
-    var tel = document.getElementById("inpTelefono").value || "-";
-    var email = document.getElementById("inpEmail").value || "-";
+    var sede = document.getElementById("inpSede").value || "Monreale";
+    var associato = (document.getElementById("inpAssociato").value || "Associato").trim();
+    var corsista = (document.getElementById("inpCorsista").value || associato).trim();
+    var cf = (document.getElementById("inpCF").value || "").trim();
     var tipoCorso = document.getElementById("inpTipoCorso").value || "Strumentale";
-    var dataFirma = document.getElementById("inpDataFirma").value || "-";
-    var primaLez = document.getElementById("inpPrimaLezione").value || "-";
-    var scadenza = document.getElementById("inpScadenza").value || "-";
+    var oggettoContratto = "Contratto d' Iscrizione al Corso " + tipoCorso;
+    var dataFirma = document.getElementById("inpDataFirma").value || "__/__/____";
+    var scadenza = document.getElementById("inpScadenza").value || "__/__/____";
     var quotaBase = parseFloat(document.getElementById("inpQuotaMensile").value) || 0;
     var trinityFee = document.getElementById("chkTrinity").checked ? 67.00 : 0;
     var statoMap = a.quoteStati || {};
 
+    var mesi = ["Settembre", "Ottobre", "Novembre", "Dicembre", "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno"];
     var vociPiano = [
-      { key: "q_iscrizione", label: "Quota d'Iscrizione Annuale (dovuta alla sottoscrizione)", imp: 50.00 }
+      { key: "q_iscrizione", label: "Quota Annuale Associativa", imp: 50.00 }
     ];
-    for (var m = 1; m <= 10; m++) {
+    mesi.forEach(function (m, i) {
       vociPiano.push({
-        key: "q_mese_" + m,
-        label: "Quota Associativa " + m + "^ Mese (scadenza entro il giorno 5 del mese)",
+        key: "q_mese_" + (i + 1),
+        label: "Quota Associativa Mensile del Mese di " + m,
         imp: quotaBase
       });
-    }
-    vociPiano.push({ key: "q_natale", label: "Quota Concerto di Natale (scadenza entro il 30 Novembre)", imp: 40.00 });
-    vociPiano.push({ key: "q_saggio", label: "Quota Saggio di Fine Anno Accademico (scadenza entro il 30 Maggio)", imp: 60.00 });
+    });
+    vociPiano.push({ key: "q_natale", label: "Quota Concerto di Natale / Capodanno", imp: 40.00 });
+    vociPiano.push({ key: "q_saggio", label: "Quota Concerto di Fine Anno Accademico", imp: 60.00 });
     if (trinityFee > 0) {
       vociPiano.push({ key: "q_trinity", label: "Certificazione Trinity College London (registrazione Video + apertura pratica)", imp: trinityFee });
     }
 
     var vociInsolute = vociPiano.filter(function (v) { return statoMap[v.key] !== "Saldata"; });
+    var vociVersate = vociPiano.filter(function (v) { return statoMap[v.key] === "Saldata"; });
+
     if (!vociInsolute.length) {
       showMessage("Tutte le quote di questo associato risultano già saldate.");
       return;
@@ -1147,78 +1173,172 @@ document.addEventListener("DOMContentLoaded", function () {
     vociInsolute.forEach(function (v) { totInsoluto += v.imp; });
     var totRidotto = Number((totInsoluto * 0.5).toFixed(2));
 
+    var oggi = new Date();
+    var dataOdierna = String(oggi.getDate()).padStart(2, "0") + "/" + String(oggi.getMonth() + 1).padStart(2, "0") + "/" + oggi.getFullYear();
+    var scad10 = new Date(oggi.getTime() + 10 * 24 * 60 * 60 * 1000);
+    var dataLimiteArt7 = String(scad10.getDate()).padStart(2, "0") + "/" + String(scad10.getMonth() + 1).padStart(2, "0") + "/" + scad10.getFullYear();
+
     function escXml(t) {
       return String(t || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
     }
-    function pXml(t, opts) {
+
+    function runXml(t, opts) {
       opts = opts || {};
-      var rPr = "";
+      var rPr = "<w:rFonts w:ascii=\"Times New Roman\" w:hAnsi=\"Times New Roman\"/>";
       if (opts.bold) rPr += "<w:b/>";
       if (opts.italic) rPr += "<w:i/>";
+      if (opts.underline) rPr += "<w:u w:val=\"single\"/>";
       if (opts.color) rPr += "<w:color w:val=\"" + opts.color + "\"/>";
-      if (opts.size) rPr += "<w:sz w:val=\"" + opts.size + "\"/><w:szCs w:val=\"" + opts.size + "\"/>";
-      var pPr = "";
-      if (opts.align || opts.spacingAfter) {
-        pPr += "<w:pPr>";
-        if (opts.align) pPr += "<w:jc w:val=\"" + opts.align + "\"/>";
-        if (opts.spacingAfter) pPr += "<w:spacing w:after=\"" + opts.spacingAfter + "\"/>";
-        pPr += "</w:pPr>";
-      }
-      var rPrTag = rPr ? "<w:rPr>" + rPr + "</w:rPr>" : "";
-      return "<w:p>" + pPr + "<w:r>" + rPrTag + "<w:t xml:space=\"preserve\">" + escXml(t) + "</w:t></w:r></w:p>";
+      var sz = opts.size || 24;
+      rPr += "<w:sz w:val=\"" + sz + "\"/><w:szCs w:val=\"" + sz + "\"/>";
+      return "<w:r><w:rPr>" + rPr + "</w:rPr><w:t xml:space=\"preserve\">" + escXml(t) + "</w:t></w:r>";
     }
 
-    var paragraphs = [
-      pXml("SICILY MUSIC ACADEMY APS", { bold: true, size: 30, color: "0F172A", align: "center", spacingAfter: 40 }),
-      pXml("Associazione di Promozione Sociale — C.F. 97332490826", { bold: true, size: 19, color: "C28E0E", align: "center", spacingAfter: 30 }),
-      pXml("Sede Legale: Corso Vittorio Emanuele, 334 — 90036 Misilmeri (PA) | Sede Operativa: Salita San Cristoforo, 9 — Monreale (PA)", { size: 17, color: "475569", align: "center", spacingAfter: 20 }),
-      pXml("Registered Exam Centre 67642 — Trinity College London", { italic: true, size: 17, color: "475569", align: "center", spacingAfter: 220 }),
+    function pRunsXml(runs, opts) {
+      opts = opts || {};
+      var pPr = "<w:pPr>";
+      if (opts.align) pPr += "<w:jc w:val=\"" + opts.align + "\"/>";
+      if (opts.indentLeft) pPr += "<w:ind w:left=\"" + opts.indentLeft + "\"/>";
+      pPr += "<w:spacing w:after=\"" + (opts.spacingAfter !== undefined ? opts.spacingAfter : 120) + "\" w:line=\"276\" w:lineRule=\"auto\"/>";
+      pPr += "</w:pPr>";
+      return "<w:p>" + pPr + runs.join("") + "</w:p>";
+    }
 
-      pXml(sede + ", lì 28/11/2026", { size: 20, align: "right", spacingAfter: 160 }),
+    var hasLogo = !!(logoOriginaleData && logoOriginaleData.arrayBuffer);
+    var headerParagraphs = [];
+    if (hasLogo) {
+      headerParagraphs.push(
+        "<w:p><w:pPr><w:jc w:val=\"center\"/><w:spacing w:after=\"60\"/></w:pPr><w:r><w:drawing><wp:inline distT=\"0\" distB=\"0\" distL=\"0\" distR=\"0\" xmlns:wp=\"http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing\"><wp:extent cx=\"2400000\" cy=\"1150000\"/><wp:docPr id=\"1\" name=\"LogoSMA\"/><a:graphic xmlns:a=\"http://schemas.openxmlformats.org/drawingml/2006/main\"><a:graphicData uri=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:pic xmlns:pic=\"http://schemas.openxmlformats.org/drawingml/2006/picture\"><pic:nvPicPr><pic:cNvPr id=\"0\" name=\"LogoSMA\"/><pic:cNvPicPr/></pic:nvPicPr><pic:blipFill><a:blip r:embed=\"rIdLogo\" xmlns:r=\"http://schemas.openxmlformats.org/officeDocument/2006/relationships\"/><a:stretch><a:fillRect/></a:stretch></pic:blipFill><pic:spPr><a:xfrm><a:off x=\"0\" y=\"0\"/><a:ext cx=\"2400000\" cy=\"1150000\"/></a:xfrm><a:prstGeom prst=\"rect\"><a:avLst/></a:prstGeom></pic:spPr></pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>"
+      );
+    }
 
-      pXml("Spett.le Associato / Contraente:", { bold: true, size: 20, spacingAfter: 30 }),
-      pXml(associato + " — C.F.: " + cf, { bold: true, size: 21, spacingAfter: 30 }),
-      pXml("Recapiti: Tel. " + tel + " | Email: " + email, { size: 19, color: "334155", spacingAfter: 30 }),
-      pXml("Allievo / Corsista: " + corsista + " — Codice Associato: " + numIscr, { size: 20, spacingAfter: 220 }),
+    headerParagraphs.push(
+      pRunsXml([runXml("“SICILY MUSIC ACADEMY” APS", { bold: true, size: 26, color: "0F172A" })], { align: "center", spacingAfter: 40 }),
+      pRunsXml([runXml("CELL. 329.3715380 - EMAIL. direzione.sicilymusicacademy@gmail.com", { size: 20, color: "334155" })], { align: "center", spacingAfter: 30 }),
+      pRunsXml([runXml("C.F : 97332490826 - www.sicilymusicacademy.it", { size: 20, color: "334155" })], { align: "center", spacingAfter: 220 })
+    );
 
-      pXml("OGGETTO: COMUNICAZIONE DI SOLLECITO BONARIO E RICHIESTA DI REGOLARIZZAZIONE DELLE QUOTE ASSOCIATIVE", { bold: true, size: 22, color: "0F172A", spacingAfter: 180 }),
+    var bodyParagraphs = headerParagraphs.concat([
+      pRunsXml([
+        runXml("Oggetto : ", { bold: true, size: 24 }),
+        runXml("Richiesta di Saldo delle quote Associative – Associata " + associato + " (Cod. " + numIscr + ")", { bold: true, underline: true, size: 24 })
+      ], { spacingAfter: 180 }),
 
-      pXml("Gentile Associato,", { size: 21, spacingAfter: 100 }),
-      pXml("con la presente la Segreteria Amministrativa di Sicily Music Academy APS, facendo riferimento al contratto associativo da Lei sottoscritto in data " + dataFirma + " (decorrenza attività didattica: " + primaLez + "; scadenza naturale: " + scadenza + ") per la frequenza del percorso \"" + tipoCorso + "\", Le comunica che, dalle verifiche contabili effettuate alla data odierna, risultano tuttora non saldate le seguenti quote associative previste dal piano sottoscritto:", { size: 20, spacingAfter: 140 })
-    ];
+      pRunsXml([
+        runXml("La Sicily Music Academy ®APS, Ente di Formazione Musicale con sede legale in Corso Vittorio Emanuele ,334 – Misilmeri (PA) e in Salita San Cristoforo, 7, Monreale (PA),", { size: 24 })
+      ], { align: "both", spacingAfter: 160 }),
+
+      pRunsXml([runXml("PREMESSO CHE", { bold: true, size: 24 })], { align: "center", spacingAfter: 160 }),
+
+      pRunsXml([
+        runXml("In data ", { size: 24 }),
+        runXml(dataFirma, { bold: true, size: 24 }),
+        runXml(" stipulava con l’Associato ", { size: 24 }),
+        runXml(associato + (cf ? " (C.F. " + cf + ")" : ""), { bold: true, size: 24 }),
+        runXml(", un contratto avente come oggetto “", { size: 24 }),
+        runXml(oggettoContratto, { bold: true, size: 24 }),
+        runXml("” e che, in forza del predetto contratto, l’Associato, non ha ancora provveduto a Saldare il qui elenco dettagliato di Quote Associative:", { size: 24 })
+      ], { align: "both", spacingAfter: 120 })
+    ]);
 
     vociInsolute.forEach(function (v, idx) {
-      paragraphs.push(
-        pXml("   " + (idx + 1) + ". " + v.label + " — Importo: EUR " + fmtEuro(v.imp), { size: 20, spacingAfter: 50 })
+      var sep = idx === vociInsolute.length - 1 ? "." : ";";
+      bodyParagraphs.push(
+        pRunsXml([
+          runXml("• " + v.label + " di ", { size: 23 }),
+          runXml("€ " + fmtEuro(v.imp), { bold: true, size: 23 }),
+          runXml(sep, { size: 23 })
+        ], { indentLeft: 360, spacingAfter: 60 })
       );
     });
 
-    paragraphs.push(
-      pXml("", { size: 16, spacingAfter: 80 }),
-      pXml("PROSPETTO RIEPILOGATIVO DEGLI IMPORTI DOVUTI:", { bold: true, size: 21, color: "0F172A", spacingAfter: 80 }),
-      pXml("   • Totale complessivo delle quote risultanti insolute: EUR " + fmtEuro(totInsoluto), { bold: true, size: 20, spacingAfter: 60 }),
-      pXml("   • Importo agevolato con riduzione del 50% (ai sensi dell'Art. 7 del Regolamento Interno e delle condizioni contrattuali sottoscritte, valido esclusivamente in caso di definizione integrale entro il " + scadenza + "): EUR " + fmtEuro(totRidotto), { bold: true, size: 20, color: "15803D", spacingAfter: 180 }),
-
-      pXml("La invitiamo pertanto a voler provvedere alla regolarizzazione della posizione amministrativa entro e non oltre 7 (sette) giorni dal ricevimento della presente, mediante versamento presso la Segreteria della sede di riferimento oppure tramite bonifico bancario intestato a Sicily Music Academy APS, dandone tempestiva comunicazione.", { size: 20, spacingAfter: 120 }),
-      pXml("Qualora il pagamento fosse già stato effettuato nei giorni immediatamente precedenti all'invio di questa comunicazione, La preghiamo di considerarne nullo il contenuto e di trasmettere copia della relativa ricevuta alla Segreteria per l'allineamento contabile.", { italic: true, size: 19, color: "334155", spacingAfter: 200 }),
-
-      pXml("Restando a Sua completa disposizione per ogni chiarimento, porgiamo i più cordiali saluti.", { size: 20, spacingAfter: 220 }),
-      pXml("La Presidenza e la Segreteria Amministrativa", { bold: true, size: 20, align: "right", spacingAfter: 20 }),
-      pXml("Sicily Music Academy APS", { bold: true, size: 21, color: "0F172A", align: "right", spacingAfter: 140 }),
-      pXml("_________________________________________", { size: 20, align: "right" })
+    bodyParagraphs.push(
+      pRunsXml([
+        runXml("Le Quote Associative Insolute Totali ammontano a ", { bold: true, size: 24 }),
+        runXml("€ " + fmtEuro(totInsoluto), { bold: true, underline: true, size: 24 })
+      ], { spacingAfter: 160 })
     );
 
-    var docXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + paragraphs.join("") + '</w:body></w:document>';
-    var ctXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
+    if (vociVersate.length) {
+      bodyParagraphs.push(
+        pRunsXml([runXml("Dai nostri archivi ci risultano versate tali quote :", { size: 24 })], { spacingAfter: 80 })
+      );
+      vociVersate.forEach(function (v, idx) {
+        var sep = idx === vociVersate.length - 1 ? "." : ";";
+        bodyParagraphs.push(
+          pRunsXml([
+            runXml("• " + v.label + " di € " + fmtEuro(v.imp) + sep, { size: 22, color: "334155" })
+          ], { indentLeft: 360, spacingAfter: 50 })
+        );
+      });
+    }
+
+    var causaleNomi = corsista && corsista.toLowerCase() !== associato.toLowerCase()
+      ? associato + " – " + corsista
+      : associato;
+
+    bodyParagraphs.push(
+      pRunsXml([runXml("Tutto ciò premesso, L’Associazione,", { size: 24 })], { spacingAfter: 140 }),
+      pRunsXml([runXml("CHIEDE", { bold: true, size: 24 })], { align: "center", spacingAfter: 140 }),
+
+      pRunsXml([
+        runXml("All’Associato ", { size: 24 }),
+        runXml(associato, { bold: true, size: 24 }),
+        runXml(", di adempiere alle proprie Obbligazioni Contrattuali Associative, quindi al Pagamento della Quota Associativa Complessiva di ", { size: 24 }),
+        runXml("€ " + fmtEuro(totInsoluto), { bold: true, size: 24 }),
+        runXml(" (alla data odierna) in questi termini e condizioni :", { size: 24 })
+      ], { align: "both", spacingAfter: 120 }),
+
+      pRunsXml([
+        runXml("• Pagamento in misura ridotta pari a ", { size: 23 }),
+        runXml("€ " + fmtEuro(totRidotto), { bold: true, size: 23 }),
+        runXml(", come previsto dall’Art. 7 del sopra citato Contratto, da effettuarsi entro e non oltre il ", { size: 23 }),
+        runXml(dataLimiteArt7, { bold: true, size: 23 }),
+        runXml(" per la definizione e risoluzione integrale dell’insoluto e del relativo Contratto Associativo. Le ricordiamo che, in considerazione della data di sottoscrizione del contratto (", { size: 23 }),
+        runXml(dataFirma, { bold: true, size: 23 }),
+        runXml(", scadenza naturale ", { size: 23 }),
+        runXml(scadenza, { bold: true, size: 23 }),
+        runXml("), questa rappresenta l'ultima possibilità di avvalersi dell'applicazione del suddetto Art. 7. In caso di mancato saldo entro il termine indicato, l'agevolazione non sarà più applicabile e l'intero ammontare dell'insoluto dovrà essere versato in un'unica soluzione, per un importo pari a ", { size: 23 }),
+        runXml("€ " + fmtEuro(totInsoluto), { bold: true, size: 23 }),
+        runXml(".", { size: 23 })
+      ], { align: "both", indentLeft: 280, spacingAfter: 160 }),
+
+      pRunsXml([runXml("Il Pagamento dovrà pervenire tramite Bonifico Bancario alle seguenti Coordinate Bancarie ;", { size: 24 })], { spacingAfter: 80 }),
+      pRunsXml([runXml("Conto : ", { bold: true, size: 23 }), runXml("Monte dei Paschi di Siena", { size: 23 })], { indentLeft: 280, spacingAfter: 40 }),
+      pRunsXml([runXml("Intestato a : ", { bold: true, size: 23 }), runXml("Sicily Music Academy APS.", { size: 23 })], { indentLeft: 280, spacingAfter: 40 }),
+      pRunsXml([runXml("IBAN : ", { bold: true, size: 23 }), runXml("IT20C0103004604000004330514", { bold: true, size: 23 })], { indentLeft: 280, spacingAfter: 40 }),
+      pRunsXml([runXml("Causale : ", { bold: true, size: 23 }), runXml("Quote Associative Insolute " + causaleNomi + ".", { size: 23 })], { indentLeft: 280, spacingAfter: 160 }),
+
+      pRunsXml([
+        runXml("Una volta effettuato il Pagamento chiediamo all’Associato di mandare la Ricevuta del Bonifico (se intende anche disdire il contratto allegare il Modulo di Disdetta Associativa, scaricabile da qui : ", { size: 23 }),
+        runXml("https://bit.ly/3R49Qjv", { underline: true, color: "0563C1", size: 23 }),
+        runXml(" , compilato e firmato) nei formati PDF o JPG all’ Email. Direzione.sicilymusicacademy@gmail.com;", { size: 23 })
+      ], { align: "both", spacingAfter: 160 }),
+
+      pRunsXml([runXml("In Attesa di sue, La direzione,  SICILY MUSIC ACADEMY.", { size: 24 })], { spacingAfter: 240 }),
+
+      pRunsXml([runXml("Luogo, Data                                                                                Firma Presidente", { bold: true, size: 23 })], { spacingAfter: 260 }),
+      pRunsXml([runXml(sede + " , " + dataOdierna + "                                                         _______________________________", { size: 23 })], { spacingAfter: 60 })
+    ]);
+
+    var docXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>' + bodyParagraphs.join("") + '</w:body></w:document>';
+    var logoExt = hasLogo ? (logoOriginaleData.ext === "jpeg" ? "jpg" : "png") : "png";
+    var ctXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>' + (hasLogo ? '<Default Extension="' + logoExt + '" ContentType="image/' + logoOriginaleData.ext + '"/>' : '') + '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>';
     var relsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>';
 
     var zip = new window.JSZip();
     zip.file("[Content_Types].xml", ctXml);
     zip.folder("_rels").file(".rels", relsXml);
-    zip.folder("word").file("document.xml", docXml);
+    var wordFolder = zip.folder("word");
+    wordFolder.file("document.xml", docXml);
+    if (hasLogo) {
+      var docRelsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><Relationship Id="rIdLogo" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/logo.' + logoExt + '"/></Relationships>';
+      wordFolder.folder("_rels").file("document.xml.rels", docRelsXml);
+      wordFolder.folder("media").file("logo." + logoExt, logoOriginaleData.arrayBuffer);
+    }
 
     var blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-    var fileName = "Comunicazione_Insoluto_" + numIscr + "_" + associato.replace(/\s+/g, "_") + ".docx";
+    var fileName = "Comunicazione - Associato " + causaleNomi.replace(/[\/\\:*?"<>|]/g, "-") + ".docx";
     var url = URL.createObjectURL(blob);
     var aLink = document.createElement("a"); aLink.href = url; aLink.download = fileName; document.body.appendChild(aLink); aLink.click(); document.body.removeChild(aLink);
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
