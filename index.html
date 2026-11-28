@@ -1119,7 +1119,7 @@ document.addEventListener("DOMContentLoaded", function () {
     try { await caricaFileSuDriveFileCreati(doc.output("blob"), dati.fileName, dati.sottocartella || "Ricevute"); } catch (e) {}
   }
 
-  // COMUNICAZIONE DI INSOLUTO (.DOCX) COMPATIBILE CON MICROSOFT WORD MACOS
+  // COMUNICAZIONE DI INSOLUTO (.DOCX) 100% COMPATIBILE CON MICROSOFT WORD MACOS
   async function generaEScaricaDocxComunicazioneInsoluto() {
     if (!window.JSZip) { showMessage("Libreria DOCX non disponibile."); return; }
     var a = associati[selectedAssocIdx] || {};
@@ -1148,11 +1148,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var annoFine = parseInt(aaParts[1], 10) || (annoInizio + 1);
 
     var vociPiano = [
-      {
-        key: "q_iscrizione",
-        label: "Quota Annuale Associativa di € " + fmtEuro(50.00),
-        imp: 50.00
-      }
+      { key: "q_iscrizione", label: "Quota Annuale Associativa di € " + fmtEuro(50.00), imp: 50.00 }
     ];
     mesi.forEach(function (m, idx) {
       var annoMese = idx < 4 ? annoInizio : annoFine;
@@ -1162,22 +1158,10 @@ document.addEventListener("DOMContentLoaded", function () {
         imp: quotaBase
       });
     });
-    vociPiano.push({
-      key: "q_natale",
-      label: "Quota Concerto di Natale / Capodanno di € " + fmtEuro(40.00),
-      imp: 40.00
-    });
-    vociPiano.push({
-      key: "q_saggio",
-      label: "Quota Concerto di Fine Anno Accademico di € " + fmtEuro(60.00),
-      imp: 60.00
-    });
+    vociPiano.push({ key: "q_natale", label: "Quota Concerto di Natale / Capodanno di € " + fmtEuro(40.00), imp: 40.00 });
+    vociPiano.push({ key: "q_saggio", label: "Quota Concerto di Fine Anno Accademico di € " + fmtEuro(60.00), imp: 60.00 });
     if (trinityFee > 0) {
-      vociPiano.push({
-        key: "q_trinity",
-        label: "Quota Certificazione Trinity College London di € " + fmtEuro(trinityFee),
-        imp: trinityFee
-      });
+      vociPiano.push({ key: "q_trinity", label: "Quota Certificazione Trinity College London di € " + fmtEuro(trinityFee), imp: trinityFee });
     }
 
     var vociInsolute = vociPiano.filter(function (v) { return statoMap[v.key] !== "Saldata"; });
@@ -1199,7 +1183,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function escXml(t) {
       return String(t || "")
-        .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "")
+        .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/g, "")
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -1207,7 +1191,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     function runXml(t, opts) {
       opts = opts || {};
-      var rPr = '<w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/>';
+      var rPr = '<w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>';
       if (opts.bold) rPr += '<w:b/><w:bCs/>';
       if (opts.italic) rPr += '<w:i/><w:iCs/>';
       if (opts.underline) rPr += '<w:u w:val="single"/>';
@@ -1229,28 +1213,44 @@ document.addEventListener("DOMContentLoaded", function () {
       return '<w:p>' + pPr + runs.join("") + '</w:p>';
     }
 
-    var hasLogo = !!(logoOriginaleData && logoOriginaleData.arrayBuffer);
-    var imgExt = "png";
-    var imgMime = "image/png";
-    if (hasLogo) {
-      var nLow = String(logoOriginaleData.nome || "").toLowerCase();
-      if (nLow.endsWith(".jpg") || nLow.endsWith(".jpeg") || logoOriginaleData.ext === "jpeg" || logoOriginaleData.ext === "jpg") {
-        imgExt = "jpg";
-        imgMime = "image/jpeg";
-      }
-    }
-
+    var pngLogoBuffer = null;
     var cxLogo = 2400000;
     var cyLogo = 1100000;
-    if (hasLogo && logoOriginaleData.width && logoOriginaleData.height) {
-      cyLogo = Math.round(cxLogo * (logoOriginaleData.height / logoOriginaleData.width));
+    if (logoOriginaleData && logoOriginaleData.arrayBuffer) {
+      try {
+        var srcBlob = new Blob([logoOriginaleData.arrayBuffer]);
+        var srcUrl = URL.createObjectURL(srcBlob);
+        pngLogoBuffer = await new Promise(function (resolve) {
+          var imgEl = new Image();
+          imgEl.onload = function () {
+            var w = imgEl.naturalWidth || 400;
+            var h = imgEl.naturalHeight || 180;
+            cyLogo = Math.round(cxLogo * (h / w));
+            var canvas = document.createElement("canvas");
+            canvas.width = w;
+            canvas.height = h;
+            var ctx = canvas.getContext("2d");
+            ctx.fillStyle = "#ffffff";
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(imgEl, 0, 0, w, h);
+            URL.revokeObjectURL(srcUrl);
+            canvas.toBlob(function (b) {
+              if (!b) { resolve(null); return; }
+              b.arrayBuffer().then(resolve).catch(function () { resolve(null); });
+            }, "image/png");
+          };
+          imgEl.onerror = function () { URL.revokeObjectURL(srcUrl); resolve(null); };
+          imgEl.src = srcUrl;
+        });
+      } catch (e) { pngLogoBuffer = null; }
     }
 
+    var hasLogo = !!pngLogoBuffer;
     var logoParagraph = "";
     if (hasLogo) {
       logoParagraph =
         '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="60"/></w:pPr><w:r><w:drawing>' +
-        '<wp:inline distT="0" distB="0" distL="0" distR="0">' +
+        '<wp:inline distT="0" distB="0" distL="0" distR="0" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">' +
         '<wp:extent cx="' + cxLogo + '" cy="' + cyLogo + '"/>' +
         '<wp:effectExtent l="0" t="0" r="0" b="0"/>' +
         '<wp:docPr id="1" name="LogoSMA"/>' +
@@ -1264,25 +1264,25 @@ document.addEventListener("DOMContentLoaded", function () {
         '</pic:pic></a:graphicData></a:graphic></wp:inline></w:drawing></w:r></w:p>';
     }
 
-    var refAssociato = associato + (cf ? " (C.F. " + cf + ")" : "") + (corsista && corsista.toLowerCase() !== associato.toLowerCase() ? " – Corsista " + corsista : "");
-    var causaleSuggerita = "Quote Associative Insolute " + associato + (corsista && corsista.toLowerCase() !== associato.toLowerCase() ? " – " + corsista : "") + ".";
+    var refAssociato = associato + (cf ? " (C.F. " + cf + ")" : "") + (corsista && corsista.toLowerCase() !== associato.toLowerCase() ? " - Corsista " + corsista : "");
+    var causaleSuggerita = "Quote Associative Insolute " + associato + (corsista && corsista.toLowerCase() !== associato.toLowerCase() ? " - " + corsista : "") + ".";
 
     var paragraphs = [];
     if (logoParagraph) paragraphs.push(logoParagraph);
 
     paragraphs.push(
-      pRunsXml([runXml("“SICILY MUSIC ACADEMY” APS", { bold: true, size: 22, color: "334155" })], { align: "center", spacingAfter: 20, line: 230 }),
+      pRunsXml([runXml("SICILY MUSIC ACADEMY APS", { bold: true, size: 22, color: "334155" })], { align: "center", spacingAfter: 20, line: 230 }),
       pRunsXml([runXml("CELL. 329.3715380 - EMAIL. direzione.sicilymusicacademy@gmail.com", { size: 18, color: "475569" })], { align: "center", spacingAfter: 20, line: 230 }),
       pRunsXml([runXml("C.F : 97332490826 - www.sicilymusicacademy.it", { size: 18, color: "475569" })], { align: "center", spacingAfter: 200, line: 230 }),
 
       pRunsXml([
-        runXml("Oggetto : Richiesta di Saldo delle quote Associative – Associato/a " + associato, { bold: true, size: 22, color: "0F172A" })
+        runXml("Oggetto : Richiesta di Saldo delle quote Associative - Associato/a " + associato, { bold: true, size: 22, color: "0F172A" })
       ], { spacingAfter: 160 }),
 
       pRunsXml([
         runXml("La "),
-        runXml("Sicily Music Academy ®APS", { bold: true }),
-        runXml(", Ente di Formazione Musicale con sede legale in Corso Vittorio Emanuele, 334 – Misilmeri (PA) e sede operativa in Salita San Cristoforo, 7 – Monreale (PA),")
+        runXml("Sicily Music Academy APS", { bold: true }),
+        runXml(", Ente di Formazione Musicale con sede legale in Corso Vittorio Emanuele, 334 - Misilmeri (PA) e sede operativa in Salita San Cristoforo, 7 - Monreale (PA),")
       ], { align: "both", spacingAfter: 160 }),
 
       pRunsXml([
@@ -1292,20 +1292,20 @@ document.addEventListener("DOMContentLoaded", function () {
       pRunsXml([
         runXml("In data "),
         runXml(dataFirma, { bold: true }),
-        runXml(" stipulava con l’Associato "),
+        runXml(" stipulava con l'Associato "),
         runXml(refAssociato, { bold: true }),
         runXml(" (Codice Associato "),
         runXml(numIscr, { bold: true }),
-        runXml(") un contratto avente come oggetto “"),
+        runXml(") un contratto avente come oggetto \""),
         runXml(nomeCorsoContratto, { bold: true }),
-        runXml("” e che, in forza del predetto contratto, l’Associato non ha ancora provveduto a saldare il qui elenco dettagliato di Quote Associative:")
+        runXml("\" e che, in forza del predetto contratto, l'Associato non ha ancora provveduto a saldare il qui elenco dettagliato di Quote Associative:")
       ], { align: "both", spacingAfter: 100 })
     );
 
     vociInsolute.forEach(function (v, idx) {
       var sep = idx === vociInsolute.length - 1 ? "." : ";";
       paragraphs.push(
-        pRunsXml([runXml("• " + v.label + sep, { size: 21 })], { indentLeft: 360, spacingAfter: 45, line: 240 })
+        pRunsXml([runXml("- " + v.label + sep, { size: 21 })], { indentLeft: 360, spacingAfter: 45, line: 240 })
       );
     });
 
@@ -1322,7 +1322,7 @@ document.addEventListener("DOMContentLoaded", function () {
       vociVersate.forEach(function (v, idx) {
         var sep = idx === vociVersate.length - 1 ? "." : ";";
         paragraphs.push(
-          pRunsXml([runXml("• " + v.label + sep, { size: 21, color: "1E293B" })], { indentLeft: 360, spacingAfter: 40, line: 240 })
+          pRunsXml([runXml("- " + v.label + sep, { size: 21, color: "1E293B" })], { indentLeft: 360, spacingAfter: 40, line: 240 })
         );
       });
     } else {
@@ -1332,14 +1332,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     paragraphs.push(
-      pRunsXml([runXml("Tutto ciò premesso, L’Associazione,", { size: 22 })], { spacingBefore: 120, spacingAfter: 120 }),
+      pRunsXml([runXml("Tutto cio' premesso, L'Associazione,", { size: 22 })], { spacingBefore: 120, spacingAfter: 120 }),
 
       pRunsXml([
         runXml("CHIEDE", { bold: true, underline: true, size: 23, color: "0F172A" })
       ], { align: "center", spacingAfter: 140 }),
 
       pRunsXml([
-        runXml("All’Associato "),
+        runXml("All'Associato "),
         runXml(associato, { bold: true }),
         runXml(", di adempiere alle proprie Obbligazioni Contrattuali Associative, quindi al Pagamento della Quota Associativa Complessiva di "),
         runXml("€ " + fmtEuro(totInsoluto), { bold: true }),
@@ -1347,31 +1347,31 @@ document.addEventListener("DOMContentLoaded", function () {
       ], { align: "both", spacingAfter: 110 }),
 
       pRunsXml([
-        runXml("• Pagamento in misura ridotta pari a "),
+        runXml("- Pagamento in misura ridotta pari a "),
         runXml("€ " + fmtEuro(totRidotto), { bold: true, color: "15803D" }),
-        runXml(", come previsto dall’"),
+        runXml(", come previsto dall'"),
         runXml("Art. 7", { bold: true }),
         runXml(" del sopra citato Contratto, da effettuarsi entro e non oltre il "),
         runXml(dataTermineStr, { bold: true }),
-        runXml(" per la definizione e risoluzione integrale dell’insoluto e del relativo Contratto Associativo (scadenza naturale "),
+        runXml(" per la definizione e risoluzione integrale dell'insoluto e del relativo Contratto Associativo (scadenza naturale "),
         runXml(scadenza, { bold: true }),
         runXml("). Le ricordiamo che, in considerazione della data di sottoscrizione del contratto ("),
         runXml(dataFirma, { bold: true }),
-        runXml("), questa rappresenta l'ultima possibilità di avvalersi dell'applicazione del suddetto Art. 7. In caso di mancato saldo entro il termine indicato, l'agevolazione non sarà più applicabile e l'intero ammontare dell'insoluto dovrà essere versato in un'unica soluzione, per un importo pari a "),
+        runXml("), questa rappresenta l'ultima possibilita' di avvalersi dell'applicazione del suddetto Art. 7. In caso di mancato saldo entro il termine indicato, l'agevolazione non sara' piu' applicabile e l'intero ammontare dell'insoluto dovra' essere versato in un'unica soluzione, per un importo pari a "),
         runXml("€ " + fmtEuro(totInsoluto), { bold: true }),
         runXml(".")
       ], { align: "both", indentLeft: 240, spacingAfter: 140 }),
 
-      pRunsXml([runXml("Il Pagamento dovrà pervenire tramite Bonifico Bancario alle seguenti Coordinate Bancarie :", { size: 21 })], { spacingAfter: 60 }),
+      pRunsXml([runXml("Il Pagamento dovra' pervenire tramite Bonifico Bancario alle seguenti Coordinate Bancarie :", { size: 21 })], { spacingAfter: 60 }),
       pRunsXml([runXml("Conto : ", { bold: true }), runXml("Monte dei Paschi di Siena")], { indentLeft: 360, spacingAfter: 30, line: 240 }),
       pRunsXml([runXml("Intestato a : ", { bold: true }), runXml("Sicily Music Academy APS.")], { indentLeft: 360, spacingAfter: 30, line: 240 }),
       pRunsXml([runXml("IBAN : ", { bold: true }), runXml("IT20C0103004604000004330514", { bold: true })], { indentLeft: 360, spacingAfter: 30, line: 240 }),
       pRunsXml([runXml("Causale : ", { bold: true }), runXml(causaleSuggerita)], { indentLeft: 360, spacingAfter: 130, line: 240 }),
 
       pRunsXml([
-        runXml("Una volta effettuato il Pagamento chiediamo all’Associato di mandare la Ricevuta del Bonifico (se intende anche disdire il contratto allegare il Modulo di Disdetta Associativa, scaricabile da qui : "),
+        runXml("Una volta effettuato il Pagamento chiediamo all'Associato di mandare la Ricevuta del Bonifico (se intende anche disdire il contratto allegare il Modulo di Disdetta Associativa, scaricabile da qui : "),
         runXml("https://bit.ly/3R49Qjv", { underline: true, color: "0369A1" }),
-        runXml(" , compilato e firmato) nei formati PDF o JPG all’Email "),
+        runXml(" , compilato e firmato) nei formati PDF o JPG all'Email "),
         runXml("direzione.sicilymusicacademy@gmail.com", { bold: true }),
         runXml(";")
       ], { align: "both", spacingAfter: 140 }),
@@ -1390,41 +1390,66 @@ document.addEventListener("DOMContentLoaded", function () {
       ], { spacingAfter: 40 })
     );
 
-    var docXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    var docXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
       '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" ' +
       'xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" ' +
-      'xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">' +
+      'xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" ' +
+      'xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" ' +
+      'xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture">' +
       '<w:body>' + paragraphs.join("") +
       '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1000" w:right="1100" w:bottom="1000" w:left="1100"/></w:sectPr>' +
       '</w:body></w:document>';
 
-    var stylesXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    var stylesXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
       '<w:styles xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
       '<w:docDefaults><w:rPrDefault><w:rPr>' +
-      '<w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/>' +
-      '<w:sz w:val="22"/><w:szCs w:val="22"/>' +
-      '</w:rPr></w:rPrDefault></w:docDefaults>' +
-      '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>' +
+      '<w:rFonts w:ascii="Arial" w:hAnsi="Arial" w:cs="Arial"/>' +
+      '<w:sz w:val="22"/><w:szCs w:val="22"/><w:lang w:val="it-IT"/>' +
+      '</w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="240" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>' +
+      '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/><w:qFormat/></w:style>' +
       '</w:styles>';
 
-    var ctXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    var settingsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+      '<w:settings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+      '<w:zoom w:percent="100"/>' +
+      '<w:defaultTabStop w:val="708"/>' +
+      '<w:characterSpacingControl w:val="doNotCompress"/>' +
+      '<w:compat><w:compatSetting w:name="compatibilityMode" w:uri="http://schemas.microsoft.com/office/word" w:val="15"/></w:compat>' +
+      '<w:themeFontLang w:val="it-IT"/>' +
+      '</w:settings>';
+
+    var fontTableXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+      '<w:fonts xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">' +
+      '<w:font w:name="Arial"><w:panose1 w:val="020B0604020202020204"/><w:charset w:val="00"/><w:family w:val="swiss"/><w:pitch w:val="variable"/></w:font>' +
+      '</w:fonts>';
+
+    var webSettingsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+      '<w:webSettings xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:optimizeForBrowser/></w:webSettings>';
+
+    var ctXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
       '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
       '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
       '<Default Extension="xml" ContentType="application/xml"/>' +
-      (hasLogo ? '<Default Extension="' + imgExt + '" ContentType="' + imgMime + '"/>' : '') +
+      (hasLogo ? '<Default Extension="png" ContentType="image/png"/>' : '') +
       '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-package.document.main+xml"/>' +
       '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-package.styles+xml"/>' +
+      '<Override PartName="/word/settings.xml" ContentType="application/vnd.openxmlformats-package.settings+xml"/>' +
+      '<Override PartName="/word/fontTable.xml" ContentType="application/vnd.openxmlformats-package.fontTable+xml"/>' +
+      '<Override PartName="/word/webSettings.xml" ContentType="application/vnd.openxmlformats-package.webSettings+xml"/>' +
       '</Types>';
 
-    var relsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
-      '<Relationships xmlns="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
+    var relsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
+      '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
       '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/>' +
       '</Relationships>';
 
-    var docRelsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
+    var docRelsXml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n' +
       '<Relationships xmlns="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
-      '<Relationship Id="rIdStyles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>' +
-      (hasLogo ? '<Relationship Id="rIdLogo" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/logo.' + imgExt + '"/>' : '') +
+      '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>' +
+      '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/>' +
+      '<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings" Target="webSettings.xml"/>' +
+      '<Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable" Target="fontTable.xml"/>' +
+      (hasLogo ? '<Relationship Id="rIdLogo" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" Target="media/logo.png"/>' : '') +
       '</Relationships>';
 
     var zip = new window.JSZip();
@@ -1432,13 +1457,16 @@ document.addEventListener("DOMContentLoaded", function () {
     zip.folder("_rels").file(".rels", relsXml);
     zip.folder("word").file("document.xml", docXml);
     zip.folder("word").file("styles.xml", stylesXml);
+    zip.folder("word").file("settings.xml", settingsXml);
+    zip.folder("word").file("fontTable.xml", fontTableXml);
+    zip.folder("word").file("webSettings.xml", webSettingsXml);
     zip.folder("word").folder("_rels").file("document.xml.rels", docRelsXml);
     if (hasLogo) {
-      zip.folder("word").folder("media").file("logo." + imgExt, logoOriginaleData.arrayBuffer);
+      zip.folder("word").folder("media").file("logo.png", pngLogoBuffer);
     }
 
     var blob = await zip.generateAsync({ type: "blob", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
-    var fileName = "Comunicazione_Insoluto_" + numIscr + "_" + associato.replace(/\s+/g, "_") + ".docx";
+    var fileName = "Comunicazione_Insoluto_" + numIscr + "_" + associato.replace(/[^a-zA-Z0-9_\-]/g, "_") + ".docx";
     var url = URL.createObjectURL(blob);
     var aLink = document.createElement("a"); aLink.href = url; aLink.download = fileName; document.body.appendChild(aLink); aLink.click(); document.body.removeChild(aLink);
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
